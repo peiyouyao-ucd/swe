@@ -1,13 +1,15 @@
-1.5-Minute Reservation Allows users to reserve a bike 5 minutes in advance to ensure a ride is waiting for them upon arrival.
+1.5-Minute Reservation : Allows users to reserve a bike 5 minutes in advance to ensure a ride is waiting for them upon arrival.
 
-2.Dublin Weather & News Provides real-time weather updates and relevant local news to help users decide if it is a good day for cycling.
+2.Dublin Weather & News : Provides real-time weather updates and relevant local news to help users decide if it is a good day for cycling.
 
-3.Station Information Displays precise station locations and a list of available services at each dock on an interactive map.
+3.Station Information : Displays precise station locations and a list of available services at each dock on an interactive map.
 
-4.Real-Time Bike Availability Shows the live count of available bikes and empty stands at every station to prevent "no-bike" or "no-dock" frustrations.
+4.Real-Time Bike Availability : Shows the live count of available bikes and empty stands at every station to prevent "no-bike" or "no-dock" frustrations.
 
-5.Rental Tracking & History Monitors the duration of the current ride to track costs and provides a detailed history of all past rentals.
+5.Rental Tracking & History : Monitors the duration of the current ride to track costs and provides a detailed history of all past rentals.
 
-6.Subscriptions & Top-Ups Enables users to manage various plans (Daily, Monthly, or Annual) or add credit to their account for single-use trips.
+6.Subscriptions & Top-Ups : Enables users to manage various plans (Daily, Monthly, or Annual) or add credit to their account for single-use trips.
 
-7.Bike Damage Reporting A reporting tool for users to flag broken bikes; successful reports earn "Reward Points" that can be redeemed for free cycling time.
+7.Bike Damage : Reporting A reporting tool for users to flag broken bikes; successful reports earn "Reward Points" that can be redeemed for free cycling time.
+
+8.Journey Planner	: Calculates optimal routes using real-time and predictive data for bikes and parking.
