@@ -26,26 +26,34 @@ The goal is to build a web application for the Dublin bike-sharing system. The a
 - **`fetch_and_store_bike_info()`**:
   - A scheduled task running every **5 minutes**.
   - Scrapes real-time station data from the **JCDecaux API** and saves it to MySQL.
+  - Implement at `backend/scraper/jcdecaux.py`.
 - **`get_all_bike_station_briefs()`**:
   - Returns basic data (ID, name, lat, lng, current bikes) for all stations to show on the map.
+  - Implement at `backend/service/station_service.py`.
 - **`get_one_bike_station_detail()`**:
   - Returns historical trends for a specific station so the frontend can draw charts.
+  - Implement at `backend/service/station_service.py`.
 - **`predict_for_one_bike_station()`**:
   - **Training**: We will train a model using the `.csv` file provided by the course.
   - **Usage**: Save the model as a `.pkl` file. The Flask app loads this file into memory and makes predictions when called.
+  - Unimplemented. Will be implemented at `backend/service/station_service.py`.
 
 ### `WeatherService`
 
 - **`fetch_and_store_weather_info()`**:
   - A scheduled task running every **1 hour**.
   - Scrapes current weather and forecasts from **OpenWeather**.
+  - Implement at `backend/scraper/openweather.py`.
 - **`get_weather()`**:
   - Provides Dublin's current weather data for the frontend header.
+  - Unimplemented. Will be implemented at `backend/service/weather_service.py`.
 
 ### `UserService` (Additional Feature)
 
 - **`register()`** & **`login()`**:
   - Acts as a "gatekeeper". Guest users can view the map, but only logged-in users can use the **Predict** function.
+  - Unimplemented. Will be implemented at `backend/service/user_service.py`.
 - **`delete_account()`**:
   - Basic account management.
+  - Unimplemented. Will be implemented at `backend/service/user_service.py`.
 - **Note**: Do **NOT** use personal info (student/worker) to "enhance" predictions. The school's training data doesn't have these categories, so it won't work.
