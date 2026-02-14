@@ -1,0 +1,25 @@
+[project]
+name = "dublin-bikes-backend"
+version = "0.1.0"
+description = "Backend for Dublin Bike-Sharing App"
+# 删除了 readme 项，因为你的主 README 在外层，backend 目录内不需要 
+requires-python = ">=3.9"
+dependencies = [
+    "flask",
+    "flask-cors",
+    "sqlalchemy",
+    "pymysql",
+    "requests",
+    "pandas",
+    "scikit-learn",
+    "apscheduler",
+    "simplejson",
+]
+
+[tool.hatch.build.targets.wheel]
+# 自动发现 backend 目录下的所有包，不再需要手动写死 packages 列表 
+packages = ["/"] 
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
