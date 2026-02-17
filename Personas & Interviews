@@ -1,46 +1,45 @@
-Liam — The Punctual Efficientist
+Liam — The Data-Driven Commuter
 
-"I almost cycle in all weather conditions. I just need to know if there's a bike available so I won't be late for my 9 AM lecture."
+"Dublin traffic is unpredictable. I need a system that integrates predictions, weather, and account management so I can control every minute of my commute and every cent of my budget."
 
 
 
 Profile
 
-Identity: Full-time UCD student with a part-time job.
+Identity: Full-time UCD student managing academic deadlines and a part-time job.
 
-Location: Lives in Portobello, Dublin 8 (a high-demand residential area for students).
+Location: Lives in Portobello, Dublin 8, an area where Dublin Bikes are the primary artery for local transit.
 
-Frequency: Heavy user, approximately 6 times per week.
+Route Logic: Cycles to the city bus corridor (e.g., Leeson St) for his "first-mile" commute to UCD Belfield; uses bikes for late-night returns from work.
 
-Commute: Cycles from Portobello to the city bus corridor to catch a bus to UCD; cycles to work after class.
+Frequency: High-intensity user (6+ times per week).
 
 
 
-Goals & Behaviors
+Behaviors & Motivations
 
-Punctuality: Needs to leave between 8:00–8:30 AM to catch his 9:00 AM lecture.
+Proactive Planning: Liam’s commute is multi-modal. He uses Dublin Weather to choose his attire and ML Predictions to ensure a dock will be empty by the time he reaches the bus interchange 30 minutes later.
 
-Pre-planning: Always checks bike availability on a phone or laptop before leaving his dorm to plan effectively.
+Cost-Efficiency: As a budget-conscious student, he uses the Annual Subscription. He relies heavily on the Rental Tracking timer to stay within the 30-minute free window, avoiding unnecessary surcharges.
 
-Weather Hardy: Cycles in almost any Dublin weather except for snow or icy roads; uses weather info to choose attire.
+Digital-First Lifestyle: He hates carrying physical change and relies on the Top-Ups feature to manage his account balance for single-use extensions or late fees.
 
-Cashless Preference: Strictly prefers credit cards and long-term subscriptions over carrying cash.
 
 
 Pain Points
 
-Availability Anxiety: Arriving at a station with "no bikes" or "no free stands" causes him to be late and forced to walk.
+Interrupted Flow: Arriving at a full station causes a "domino effect"—he misses his bus connection and ends up late for a 9 AM lecture.
 
-High-Demand Area: Portobello stations often empty out right when he needs to depart for campus.
+Data Fragmentation: Frustrated by having to switch between weather apps, news sites, and bike apps to plan a single trip.
 
-Safety Backup: Worries about faulty bikes; prefers journey planners that suggest routes passing more bike stations.
+System Trust: Worries about faulty equipment; he needs the How-to guide for quick troubleshooting and Rental History to verify his billing accuracy.
 
 
 
-Digital & Interface Needs
+Key Feature Requirements
 
-Visual Intuition: Prefers color-coded availability on maps for quicker navigation over marker sizes.
+Unified Dashboard: Wants real-time weather, Dublin News, and bike counts in one glance before leaving his room.
 
-Foresight: Values 30-minute ML predictions and hourly trend charts to feel more in control of his journey.
+Visual Confidence: Values Trend Charts that show occupancy patterns (e.g., Wednesdays at 10 AM) to optimize his weekly schedule.
 
-Top Priorities: His interface must feature Distance, Station Name, and Weather.
+Engagement: Checks Special Offers for potential student-specific discounts or cycling gear rewards.
