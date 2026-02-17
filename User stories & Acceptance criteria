@@ -309,3 +309,158 @@ Given the user is reviewing a past rental entry,
 When the duration exceeded the 30-minute free period,
 
 Then the system displays the breakdown of the surcharge applied to their account balance.
+
+
+
+
+
+
+
+Thomas's User stories
+
+
+1. Landmark-Based Intuitive Search (Feature 2)
+
+
+User story:
+"As a tourist unfamiliar with local Dublin street names, I want to search for landmarks like the Guinness Storehouse or Phoenix Park directly on the map so that I can find the nearest docking station to my sightseeing destination without frustration."
+
+
+Acceptance criteria:
+
+Search by Landmark Keyword
+
+Given the user is on the interactive map search interface,
+
+When the user types "Trinity College" or "Dublin Zoo" into the search bar,
+
+Then the system prioritizes these landmarks in the suggestions and centers the map on that location.
+
+
+Identify Nearby Tourist Stations
+
+Given the map is centered on a major landmark,
+
+When the user views the station markers,
+
+Then the system highlights the closest 3 stations with a distinct "Tourist-friendly" icon (e.g., a Red 'T' flag).
+
+
+
+
+2. Predictive Sightseeing & Weather Planning (Features 1, 4)
+
+
+User story:
+"As a visitor with limited time, I want to see 1-hour occupancy predictions and rain forecasts for my target station so that I can decide whether to cycle to Kilmainham Gaol now or switch to an indoor activity."
+
+
+
+Acceptance criteria:
+
+Long-Term ML Prediction (1-Hour)
+
+Given the user is viewing a station near a popular tourist site,
+
+When the user checks the "1-Hour Prediction" toggle,
+
+Then the system displays the estimated bike/stand availability for one hour in the future to help avoid full stations.
+
+
+Weather-Informed Route Advice
+
+Given the user is planning a route to a landmark,
+
+When the OpenWeather forecast predicts heavy rain or temperatures below 8°C within the hour,
+
+Then the system displays a warning and suggests switching to a bus or taxi to preserve the travel experience.
+
+
+
+
+3. Payment Barrier Removal (Feature 6)
+
+
+User story:
+"As an international traveler without local currency, I want to identify "Card Accepted" stations or use in-app Top-Ups so that I can pay for my rental without being blocked by physical payment terminals."
+
+
+
+Acceptance criteria:
+
+Filter for Card Payment Terminals
+
+Given the user taps on a station marker on the map,
+
+When the station does not have a physical credit card reader,
+
+Then the system displays a clear "No Card Accepted" warning in the station info panel.
+
+
+Instant In-App Top-Up
+
+Given the user needs to add credit to their account,
+
+When the user accesses the "Top-Ups" page and uses a saved international credit card,
+
+Then the system instantly updates the balance, allowing the user to rent a bike even at cash-only stations.
+
+
+
+
+4. Real-Time "How-to" Support (Features 7, 10)
+
+
+User story:
+"As a first-time user of Dublin Bikes, I want to access a How-to guide during my ride so that I can ensure I return the bike correctly and stop the rental timer."
+
+
+
+Acceptance criteria:
+
+Shortcut to Return Instructions
+
+Given the user has an active rental session (Rental Tracking is on),
+
+When the user clicks the "Help" icon near the timer,
+
+Then the system opens the "How to" guide specifically at the "Returning a Bike" section.
+
+
+Successful Return Notification
+
+Given the user has docked the bike into a stand,
+
+When the system detects the physical lock,
+
+Then the system sends an immediate push notification confirming the end of the session and the final cost.
+
+
+
+
+5. Local Engagement & Culture (Features 8, 9)
+
+
+User story:
+"As an explorer of Dublin, I want to see Special Offers and Dublin News in the app so that I can find discounts at nearby museums or avoid road closures during city events."
+
+
+
+Acceptance criteria:
+
+Proximity-Based Offers
+
+Given the user is viewing a station near Trinity College,
+
+When the user checks the "Special Offer" section,
+
+Then the system prioritizes discounts for nearby attractions or student/tourist bundles.
+
+
+Event & Traffic Alerts
+
+Given there is a major event like St. Patrick's Day or a local protest,
+
+When the user opens the app,
+
+Then the "Dublin News" banner highlights road closures and station suspensions in tourist zones.
