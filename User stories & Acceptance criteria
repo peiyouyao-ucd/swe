@@ -1,0 +1,148 @@
+Liam's User stories
+
+
+1. Smart Journey Planning (Features 1, 3, 4)
+
+
+User story:
+
+"As a UCD student living in Portobello, I want to see real-time weather and 30-minute occupancy predictions so that I can decide whether to cycle or take the bus to my 9 AM lecture."
+
+
+
+Acceptance criteria:
+
+Check Live Weather
+
+Given the user is on the Home screen,
+
+When the system detects the location as Dublin,
+
+Then the system displays real-time temperature, rain probability, and cycling alerts.
+
+Predict Future Availability
+
+Given the user is on the interactive map,
+
+When the user selects a specific station and clicks "30-min Prediction",
+
+Then the system displays the predicted number of bikes and stands based on ML patterns.
+
+
+
+
+2. Active Rental Tracking (Feature 10)
+
+
+User story:
+
+"As a budget-conscious student, I want to track my current rental duration in real-time so that I can return the bike within the 30-minute free period to avoid extra charges."
+
+
+
+Acceptance criteria:
+
+Start Live Timer
+
+Given a bike has been successfully unlocked,
+
+When the rental session begins,
+
+Then the system displays a dynamic timer on the main interface tracking minutes used.
+
+Estimate Surcharge
+
+Given the user is currently on an active ride,
+
+When the rental duration exceeds 30 minutes,
+
+Then the system automatically calculates and displays the current estimated rental cost.
+
+
+
+
+3. Account & Subscription Management (Features 5, 6)
+
+
+User story:
+
+"As a heavy user, I want to manage my Annual Subscription and top-up my account credit via my login so that my daily commute is never interrupted by payment issues."
+
+
+
+Acceptance criteria:
+
+Manage Subscription Plans
+
+Given the user has logged into their account,
+
+When the user navigates to the "Subscriptions" section,
+
+Then the system displays options to choose or renew Daily, Monthly, or Annual plans.
+
+Top-up Account Credit
+
+Given the user is in the payment settings,
+
+When the user inputs an amount and confirms payment,
+
+Then the system updates the account balance and displays a success message.
+
+
+
+4. Interactive Navigation & Support (Features 2, 7)
+
+
+
+User story:
+
+"As a commuter traveling to different work locations, I want to see precise station info and access 'How-to' guides so that I can find docks that support credit card payments and return bikes correctly."
+
+
+
+Acceptance criteria:
+
+Filter Station Services
+
+Given the user is viewing the interactive map,
+
+When the user taps on a specific station marker,
+
+Then the system displays a popup with the station name, distance, and available services (e.g., Credit Card terminal).
+
+Access Instructional Guide
+
+Given the user needs help with the rental process,
+
+When the user selects the "How to" option from the menu,
+
+Then the system displays step-by-step visual instructions for renting and returning bikes.
+
+
+
+5. Local Engagement (Features 8, 9)
+
+
+User story:
+
+"As a Dublin resident, I want to access local news and special student offers so that I can stay informed about city events and save money on cycling-related costs."
+
+
+
+Acceptance criteria:
+
+View Dublin Updates
+
+Given the user is on the main app dashboard,
+
+When the user navigates to "Dublin News",
+
+Then the system displays a feed of local news and traffic alerts.
+
+Claim Special Offers
+
+Given the user is in the "Special Offer" section,
+
+When the user selects a student-specific discount,
+
+Then the system provides the redemption details and applies the offer to the user's profile.
