@@ -1,4 +1,4 @@
-Liam — The Data-Driven Commuter
+Persona 1 : Liam — The Data-Driven Commuter
 
 "Dublin traffic is unpredictable. I need a system that integrates predictions, weather, and account management so I can control every minute of my commute and every cent of my budget."
 
@@ -122,3 +122,139 @@ Trust: If the app provides a "prediction for tomorrow" based on a Machine Learni
 
 Personally, it is something to get an idea of the traffic. I would not trust it 100% as sometimes there might be something going on that increases or decreases the traffic which the ML model did not pick up on thus leading to inaccurate predictions. 
 
+
+
+
+
+
+
+Persona 2 :Sarah — The Reliability Seeker
+
+"I have a strict clock-in time. Missing a bike means a €30 Uber, but not finding a stand means I can't even start my workday."
+
+
+
+Profile
+
+Identity: Senior Financial Analyst at Allied Irish Banks (AIB), based in Ballsbridge (Dublin 4).
+
+Location: Lives in Sandymount (Dublin 4).
+
+Frequency: Regular commuter (5 days/week).
+
+Commute Logic: Uses bikes for the entire journey due to infrequent bus services in her area, or as the "last mile" connection from DART stations.
+
+
+
+Goals & Behaviors
+
+Strict Punctuality: Needs to be at her desk on time. Prefers stations near transport hubs to have backup options if bikes are unavailable.
+
+Predictable Routes: Chooses routes that avoid heavy traffic, even if 2 minutes longer, to ensure a reliable arrival time.
+
+Professional Image: Monitors rain intensity strictly; switches to taxis during heavy rain to avoid ruining her work attire.
+
+Smart Efficiency: Expects a "smarter" login process and instant color-coded visual cues on the map.
+
+
+
+Pain Points
+Docking Crisis: Finding no empty stands near the office is her biggest stressor, as she cannot leave the bike unattended to go to work.
+
+Financial Impact: Failure to secure a bike results in a €20-30 taxi fare, a significant unexpected expense.
+
+Fragile Trust: While she trusts ML predictions, a single failure would make her much more cautious and increase her backup planning time.
+
+
+
+Digital Needs
+Color-Coded Markers: Needs intuitive color changes on the map to warn of "nearly full" or "nearly empty" stations.
+
+15-Minute Prediction: High-accuracy short-term predictions are vital for her "leaving home" decision.
+
+Hourly Bar Charts: Relies on occupancy trends to decide if she needs to leave 10 minutes earlier, especially on difficult days like Mondays.
+
+
+
+
+
+
+Interview Scripts
+
+
+I. General Behavior & Efficiency
+
+Commute Frequency: How many days per week do you typically use the bike-sharing service for your work commute?
+
+I use it 5 times a week for work.
+
+Fixed Scheduling: Do you have a strict "clock-in" time, and what specific hours are your highest-priority windows for finding a bike?
+
+Yes, I have a strict “clock-in” time for my work as I work an office job. I live in a place where the buses are not that frequent. 
+
+Consequences of Failure: If you arrive at a station and there are no bikes to borrow or no stands to return your bike, how significantly does it impact your workday?
+
+Thus, if I cannot find a bike early enough I will have to get an uber/taxi which will cost me anywhere from 20 to 30 euros. If I have to find a different station to return my bike that could lead to a longer walking distance for me, which I do not mind if it is in the evening after work.
+
+Usage Context: Do you use the service for the "last mile" (e.g., from a train station to the office) or for your entire journey from home?
+
+I use it for my entire journey if the subscription is long term and for the “last mile” if it is the beginning or end of my subscription
+
+Mobile Interface: When you are in a rush to get to a meeting, what is the single most important piece of information you need to see on the app's interface?
+
+Availability of the bike in the closest location would be something I would want to know. If it is not available, I can go forward with an uber or taxi.
+
+
+
+II. Specific Needs & Planning
+
+Hub Proximity: Is your preferred station located near major business districts, like Eastpoint Business Park, or transport hubs?
+
+Stations located near transportation hubs are definitely preferred by me as they provide better backup options for alternative transports as well. 
+
+Availability Anxiety: Which causes you more stress during your commute: the fear of not finding a bike in the morning, or the fear of not finding an empty stand near your office?
+
+Though not finding a bike in the morning stressful, it is even more stressful to find an empty stand near my office because I cannot move on to my work without returning it to a station.
+
+Registration Efficiency: Are you currently a registered user, and how would you rate the ease of the Sign Up or Log In process?
+
+Yes, I am currently a registered user. I do not have much thoughts regarding the sign up process as it is a one time thing. The log in process could be easier and more “smart” to enhance efficiency.
+
+Weekly Patterns: Have you noticed specific days of the week (e.g., Mondays vs. Fridays) where it is significantly harder to find a bike ?
+
+Personally, I have felt like Mondays are the hardest to find a bike with Fridays being the easiest.
+
+Journey Planner: If the Journey Planner offered a route that was 2 minutes longer but avoided heavy traffic, would you choose it for your morning commute?
+
+Yes, because heavy traffic increases the likelihood of unforeseen circumstances such as congestion that takes longer to move which makes the estimated time relatively less reliable. I usually feel more confident choosing a route with less traffic.
+
+
+
+III. Weather & Predictive Features
+
+Weather Thresholds: At what point does the OpenWeather forecast (e.g., rain or temperature below 10 degree) make you switch from cycling to another transport mode?
+
+If the rain is heavy, I have to choose a different mode of transport as my work clothes will get ruined if the rain is too heavy. I still ride a bike if the rain is light to moderate. Temperature does not make much of a difference as long as there is no snow as the roads and pathways can get slippery and dangerous to ride a bike.
+
+Real-time Prediction: Would a feature that predicts bike availability 15 minutes in the future help you feel more confident about leaving for work on time?
+
+Yes, that would help with planning my journey more efficiently and more confidently.
+
+Data Visualization: Would seeing a bar chart of hourly occupancy help you decide to leave 10 minutes earlier to ensure you get a bike?
+
+Yes, that would be helpful as well.
+
+Marker Intuition: On the map, would you find it helpful if markers changed color or size to warn you when a station is nearly full or empty?
+
+Colors would be better as it catches my attention better.
+
+System Trust: If the Machine Learning model predicted a bike would be available, but it was wrong once, would you continue to trust and use the app for your commute?
+
+I would probably still use the app but I wouldn’t have the same confidence and take more precautions around planning my journey.
+
+
+
+
+
+
+Persona 3 : 
