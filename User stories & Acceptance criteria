@@ -20,6 +20,7 @@ When the system detects the location as Dublin,
 
 Then the system displays real-time temperature, rain probability, and cycling alerts.
 
+
 Predict Future Availability
 
 Given the user is on the interactive map,
@@ -49,6 +50,7 @@ Given a bike has been successfully unlocked,
 When the rental session begins,
 
 Then the system displays a dynamic timer on the main interface tracking minutes used.
+
 
 Estimate Surcharge
 
@@ -80,6 +82,7 @@ When the user navigates to the "Subscriptions" section,
 
 Then the system displays options to choose or renew Daily, Monthly, or Annual plans.
 
+
 Top-up Account Credit
 
 Given the user is in the payment settings,
@@ -87,6 +90,7 @@ Given the user is in the payment settings,
 When the user inputs an amount and confirms payment,
 
 Then the system updates the account balance and displays a success message.
+
 
 
 
@@ -110,6 +114,7 @@ When the user taps on a specific station marker,
 
 Then the system displays a popup with the station name, distance, and available services (e.g., Credit Card terminal).
 
+
 Access Instructional Guide
 
 Given the user needs help with the rental process,
@@ -117,6 +122,7 @@ Given the user needs help with the rental process,
 When the user selects the "How to" option from the menu,
 
 Then the system displays step-by-step visual instructions for renting and returning bikes.
+
 
 
 
@@ -139,6 +145,7 @@ When the user navigates to "Dublin News",
 
 Then the system displays a feed of local news and traffic alerts.
 
+
 Claim Special Offers
 
 Given the user is in the "Special Offer" section,
@@ -146,3 +153,159 @@ Given the user is in the "Special Offer" section,
 When the user selects a student-specific discount,
 
 Then the system provides the redemption details and applies the offer to the user's profile.
+
+
+
+
+
+
+
+
+
+Sarah's User stories
+
+
+1. Predicting Office Dock Availability (Feature 4)
+
+
+User story:
+"As a worker with a strict clock-in time, I want to see a 15-minute prediction of empty stands near my office so that I can decide whether to proceed or head to a backup station without being late for my meeting."
+
+
+
+Acceptance criteria:
+
+Short-term Precision Prediction
+
+Given the user is on the station information page for their destination in Ballsbridge,
+
+When the user views the "15-min Prediction" section,
+
+Then the system displays the forecasted number of empty stands specifically for that timeframe.
+
+
+Visual Availability Warning
+
+Given the ML model predicts the station will be full within 15 minutes,
+
+When the user views the station marker on the map,
+
+Then the marker changes color (e.g., to Red) to provide an immediate visual warning.
+
+
+
+
+2. Weather-based Attire Protection (Feature 1)
+
+
+User story:
+"As a professional analyst wearing formal work attire, I want to receive precise rain intensity alerts so that I can switch to a taxi during heavy rain to avoid ruining my clothes."
+
+
+
+Acceptance criteria:
+
+Rain Intensity Monitoring
+
+Given the user is on the Home screen checking the Dublin Weather,
+
+When the forecast indicates "Heavy Rain" during the user's commute window,
+
+Then the system displays a prominent alert recommending an alternative transport mode.
+
+
+Temperature & Road Condition Warning
+
+Given the temperature is near freezing (below 2°C),
+
+When the user checks the weather update before leaving,
+
+Then the system provides a "Slippery Road" warning to indicate dangerous cycling conditions.
+
+
+
+
+3. Smart & Efficient Login (Feature 5)
+
+
+User story:
+"As a professional in a rush to get to meetings, I want a smart and efficient login process so that I can access station data instantly without re-entering credentials while on the go."
+
+
+
+Acceptance criteria:
+
+Biometric Integration
+
+Given the user has an existing account and is on the Login page,
+
+When the user chooses to enable "Smart Login,"
+
+Then the system allows future access via Face ID or fingerprint authentication.
+
+
+One-Tap Access to Favorites
+
+Given the user has successfully logged in,
+
+When the app opens during peak commute hours (e.g., 8:00 AM),
+
+Then the map automatically centers on the user's "Favorite" stations near their home and office.
+
+
+
+4. Weekly Pattern Management (Feature 4)
+
+
+User story:
+"As a commuter who finds Mondays particularly high-demand, I want to see hourly occupancy bar charts so that I can decide to leave 10 minutes earlier to guarantee a bike."
+
+
+
+Acceptance criteria:
+
+Hourly Occupancy Bar Chart
+
+Given the user is viewing the details of a specific station,
+
+When the user expands the "Historical Trends" section,
+
+Then the system displays a bar chart showing the average occupancy for each hour of the day.
+
+
+Day-of-Week Comparison
+
+Given the user is viewing the trend chart,
+
+When the user selects "Monday" from the day filter,
+
+Then the system updates the chart to show historical data specific to Mondays to help the user plan for high-demand days.
+
+
+
+5. Rental History & Cost Verification (Feature 10)
+
+
+User story:
+"As a budget-conscious professional, I want to track my rental history and durations so that I can verify my subscription usage and ensure I am staying within my free 30-minute window."
+
+
+
+Acceptance criteria:
+
+Ride Duration Confirmation
+
+Given the user has completed a trip and returned the bike,
+
+When the user navigates to the "Rental History" page,
+
+Then the system displays the start time, end time, and total duration of the trip.
+
+
+Cost Accuracy Check
+
+Given the user is reviewing a past rental entry,
+
+When the duration exceeded the 30-minute free period,
+
+Then the system displays the breakdown of the surcharge applied to their account balance.
