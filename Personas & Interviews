@@ -257,4 +257,132 @@ I would probably still use the app but I wouldn’t have the same confidence and
 
 
 
-Persona 3 : 
+Persona 3 : Thomas — The Culture & Nature Explorer
+
+"I don't know the street names here, but I know where the Wellington Monument is. As long as landmarks are marked and the weather is good, I’m ready to explore."
+
+
+
+Profile
+
+Identity: International short-term visitor (staying 3-5 days).
+
+Location: Staying in a hotel in Dublin City Centre (D1/D2).
+
+Interests: Enthusiastic about nature (e.g., Phoenix Park) and historical sites (e.g., Trinity College).
+
+Commute Logic: Prefers the flexibility of cycling over infrequent public transport for efficient sightseeing.
+
+
+
+Goals & Behaviors
+
+Visual Navigation: Relies on map landmarks (e.g., Croke Park) rather than street names to find docking stations.
+
+Digital Convenience: Depends almost exclusively on credit cards and needs a Journey Planner to manage limited sightseeing time.
+
+Weather-Responsive: Plans around OpenWeather; switches to buses/taxis immediately during heavy rain or low temperatures (below 10°C).
+
+Simplicity First: Needs quick visual results on the map rather than complex historical occupancy charts.
+
+
+
+Pain Points
+
+Payment Barriers: "No Card Accepted" stations are a major deterrent as he carries minimal local currency.
+
+Station Anxiety: Finding no available stands at destinations like Dublin Zoo causes significant stress and travel delays.
+
+Search Frustration: Inability to search for landmarks like the "Wellington Monument" makes navigation feel impossible.
+
+
+
+Digital Needs
+
+Landmark Search: Critical need to search by landmark names instead of local street names.
+
+Tourist Markers: Prefers distinct map icons (e.g., a Red 'T' flag) for tourist-friendly stations.
+
+Predictive Intelligence: Relies on ML models to predict if a station will be full in 60 minutes to avoid travel frustration.
+
+
+
+
+
+
+
+Interview Scripts
+
+
+I. General Behavior & Travel Habits
+
+Consideration: Have you considered using a bike to explore Dublin during your trip? Why or why not?
+
+Yes. Since public transportation can be infrequent, I prefer the flexibility of cycling. If a destination is relatively close but hard to reach via bus, a bike is my top choice.
+
+Timing: What times of day do you usually prefer to cycle? (e.g., early morning sightseeing or returning late to your hotel ).
+
+I prefer cycling during daylight hours for sightseeing. However, I would also consider it late at night as a backup option when other transportation to my accommodation is unavailable.
+
+Emotional Impact: If you arrived at a station like Dublin Zoo or Croke Park and found no bikes available, how would that affect your travel experience?
+
+I would feel anxious and frustrated. If walking is the only remaining option and it takes too long, it would significantly delay my travel plans.
+
+Landmark Visibility: Besides bike counts, what landmarks do you want to see on the map? (e.g., Guinness Storehouse or Trinity College ).
+
+I'd like to see major city landmarks on the map, such as the Guinness Storehouse or Trinity College. Having these as visual anchors helps me navigate to stations more intuitively than using street names alone.
+
+Data Consumption: Do you prefer looking at detailed occupancy charts or just getting a quick result directly on the map?
+
+I prefer a quick, visual result on the map. Tourists often need to find a bike in urgent situations, so clarity and speed are more important than detailed historical charts.
+
+
+
+II. Navigation & Accessibility
+
+Search Preference: How important is it for you to be able to search by "Landmark Names" (e.g., Wellington Monument ) rather than just street names?
+
+Critical. As a tourist, I am unfamiliar with local street names. Being able to search directly for the Wellington Monument or Croke Park is essential for my navigation.
+
+Ease of Use: As a short-term visitor, do you find the Sign Up or Log In process simple and fast enough?
+
+A streamlined sign-up process is fine. It is helpful for saving my rental history and ensures a higher quality of service during my stay.
+
+Payment Barriers: If a station indicates Card Accepted: NO, how much of an inconvenience would that be for you?
+
+Very inconvenient. As an international traveler, I may not have the exact local currency on hand. I rely almost exclusively on credit cards for payments, so 'No Card Accepted' stations are a major barrier.
+
+Route Planning: Do you need a Journey Planner to help you estimate the travel time between different tourist attractions?
+
+Yes, a Journey Planner is vital. It helps me manage my limited sightseeing time and identify the most convenient stations for departure and arrival.
+
+Language Support: Besides English, would you find it helpful if the interface were available in other languages?
+
+It would be helpful but isn't a dealbreaker. I prioritize a clear UI over translated text, as poor translations can often lead to more confusion.
+
+
+
+III. Weather & Predictive Intelligence
+
+Weather Decisions: Would a real-time OpenWeather forecast (e.g., rain or a temperature of 8 degree) cause you to change your cycling plans for the day?
+
+Definitely. I rely on OpenWeather forecasts to plan my day. If the app predicts heavy rain or low temperatures, I would likely switch to a bus or taxi.
+
+Predictive Departure: If the app predicted a station would be full in one hour, would you leave earlier or choose a different destination?
+
+If the ML model predicts a station will be full in an hour, I would either change my destination or opt for a different mode of transport to avoid getting stuck.
+
+Trend Analysis: Do you find seeing the Average Fraction of occupancy per hour helpful for avoiding crowded tourist areas?
+
+While helpful for context, many factors influence crowds. However, knowing the average occupancy can still guide me on which areas might be busier at certain times.
+
+Visual Cues: On the map, what colors or icons would you prefer to represent "tourist-friendly" stations?
+
+I suggest using a distinct icon, like a red capital 'T' or a tour flag. Using different colors or sizes for these 'tourist-friendly' markers would make them stand out on a crowded map.
+
+User Trust: If the Machine Learning prediction successfully helped you avoid the frustration of a full station, would you recommend this app to other travelers?
+
+Absolutely. If the app's predictive capabilities save me from the frustration of a full station, I would definitely recommend it to fellow travelers for a smoother journey.
+
+
+
