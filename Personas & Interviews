@@ -43,3 +43,82 @@ Unified Dashboard: Wants real-time weather, Dublin News, and bike counts in one 
 Visual Confidence: Values Trend Charts that show occupancy patterns (e.g., Wednesdays at 10 AM) to optimize his weekly schedule.
 
 Engagement: Checks Special Offers for potential student-specific discounts or cycling gear rewards.
+
+
+
+
+
+
+Interview Scripts
+
+
+I. General Behavior & Current Experience
+
+Frequency: On average, how many times a week do you use the Dublin Bikes service?
+
+I use it around 6 times a week as I am a full time student with a part time job.
+
+Timing: During which specific hours are you most likely to need a bike? (e.g., for a 9:00 AM lecture or returning to a residence after 10:00 PM) .
+
+I mostly need it to get to my lecture in the morning. My lectures usually start at 9AM which means I leave my room at 8AM to 8.30AM
+
+Pain Points: In the past week, have you arrived at a station only to find it has "no bikes available" or "no free stands"?. How did that impact your schedule?
+
+In that case I either walk or take the bus, and neither of them are as efficient as using a bike. I will have to wait for the bus if I miss it, and I have to walk a good amount of distance even if I take the bus. Usually it takes longer and sometimes I am late to my morning lecture because of that.
+
+Information Priority: When looking at a bike-sharing map, what are the top three pieces of information you look for first? (e.g., distance, number of bikes, station name) .
+
+I look for the distance, the station name, and the weather as it influences my attire for the bike ride.
+
+Device Usage: Do you typically check for bike availability on your phone while walking, or on a laptop before leaving your dorm?
+
+I always check for it before leaving the dorm as it is a more efficient way of planning my day.
+
+
+
+II. Student-Specific Needs & Campus Life
+
+Campus Travel: Do you frequently travel between different campus locations or city landmarks, such as the Wellington Monument or Croke Park?
+
+Not really, once I am in the university I don’t leave until I am done with my academic work for the day. After that I leave for work. 
+
+Payment: Does knowing whether a station "Accepts Credit Cards" influence which station you choose to use?
+
+Yes, I do keep cash on me, but it is usually for emergency reasons and I don’t use cash most of the time in life as most places accept cards and I don’t get new change coming in my pocket. Thus, I always prefer places that accept cards even if I have cash on me.
+
+Subscriptions: As a student, do you prefer using a long-term Subscription or paying for single trips?
+
+I surely prefer long term subscriptions as they tend to be cheaper and my schedule is quite consistent, it is just overall efficient to choose long term subscriptions over short term subscriptions.
+
+Historical Context: Would it be helpful to see the average occupancy of a station for a specific time, such as "Wednesdays at 10:00 AM," to help plan your commute to class?
+
+Yes, I think it will be very helpful to have an idea of that so that I can find a less crowded station. It is not like one station has better bikes than others anyway.
+
+Journey Planning: In a Journey Planner, would you prioritize a route that is the "shortest distance" or one that "passes by the most bike stations" in case you need to switch bikes?
+
+Usually I prefer the shortest route but I think it would be great to be able to check the route that passes the most bike stations as a back up in case I get a faulty bike.
+
+
+
+III. Weather & Predictive Features (Project Highlights)
+
+Weather Impact: Given Dublin's variable climate, at what temperature or rain intensity would you decide not to cycle?
+
+I almost cycle in all weather conditions. Perhaps the only weather conditions that would stop me from riding the bike would be days that have snow or the subsequent days of the snow with slippery roads as I have traction even while walking in those conditions.
+
+ML Predictions: If the app predicted that your target station would be full "in 30 minutes," would you change your departure time?
+
+It depends. If there is a nearby station with less traffic, I would change my target station. However, if those are crowded as well, and if I did not have anything important with the time constraint, I would change the departure time. 
+
+Data Visualization: Does seeing a "trend chart" of hourly occupancy help you feel more confident about finding a bike later in the day?
+
+Yes, it would. It would make me feel more comfortable and confident to be aware of the occupancy and availability of the bikes and plan my journey ahead accordingly. I would definitely feel more in control if I had access to such data. 
+
+Map Interface: On a map, is it more intuitive for you to see bike availability represented by different colors or by different marker sizes?
+
+I think color is easier to navigate in the map interface as especially with zooming in or out of the map can affect how we perceive the marker sizes in relation to the map.
+
+Trust: If the app provides a "prediction for tomorrow" based on a Machine Learning model, how much would you rely on that info compared to current live data?
+
+Personally, it is something to get an idea of the traffic. I would not trust it 100% as sometimes there might be something going on that increases or decreases the traffic which the ML model did not pick up on thus leading to inaccurate predictions. 
+
