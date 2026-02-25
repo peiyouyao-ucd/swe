@@ -1,0 +1,466 @@
+Liam's User stories
+
+
+√ 1. Smart Journey Planning (Features 1, 3, 4) 
+
+
+User story:
+
+"As a UCD student living in Portobello, I want to see real-time weather and 30-minute occupancy predictions so that I can decide whether to cycle or take the bus to my 9 AM lecture."
+
+
+
+Acceptance criteria:
+
+Check Live Weather
+
+Given the user is on the Home screen,
+
+When the system detects the location as Dublin,
+
+Then the system displays real-time temperature, rain probability, and cycling alerts.
+
+
+Predict Future Availability
+
+Given the user is on the interactive map,
+
+When the user selects a specific station and clicks "30-min Prediction",
+
+Then the system displays the predicted number of bikes and stands based on ML patterns.
+
+
+
+
+2. Active Rental Tracking (Feature 10)
+
+
+User story:
+
+"As a budget-conscious student, I want to track my current rental duration in real-time so that I can return the bike within the 30-minute free period to avoid extra charges."
+
+
+
+Acceptance criteria:
+
+Start Live Timer
+
+Given a bike has been successfully unlocked,
+
+When the rental session begins,
+
+Then the system displays a dynamic timer on the main interface tracking minutes used.
+
+
+Estimate Surcharge
+
+Given the user is currently on an active ride,
+
+When the rental duration exceeds 30 minutes,
+
+Then the system automatically calculates and displays the current estimated rental cost.
+
+
+
+
+√ 3. Account & Subscription Management (Features 5, 6)
+
+
+User story:
+
+"As a heavy user, I want to manage my Annual Subscription and top-up my account credit via my login so that my daily commute is never interrupted by payment issues."
+
+
+
+Acceptance criteria:
+
+Manage Subscription Plans
+
+Given the user has logged into their account,
+
+When the user navigates to the "Subscriptions" section,
+
+Then the system displays options to choose or renew Daily, Monthly, or Annual plans.
+
+
+Top-up Account Credit
+
+Given the user is in the payment settings,
+
+When the user inputs an amount and confirms payment,
+
+Then the system updates the account balance and displays a success message.
+
+
+
+
+4. Interactive Navigation & Support (Features 2, 7)
+
+
+
+User story:
+
+"As a commuter traveling to different work locations, I want to see precise station info and access 'How-to' guides so that I can find docks that support credit card payments and return bikes correctly."
+
+
+
+Acceptance criteria:
+
+Filter Station Services
+
+Given the user is viewing the interactive map,
+
+When the user taps on a specific station marker,
+
+Then the system displays a popup with the station name, distance, and available services (e.g., Credit Card terminal).
+
+
+Access Instructional Guide
+
+Given the user needs help with the rental process,
+
+When the user selects the "How to" option from the menu,
+
+Then the system displays step-by-step visual instructions for renting and returning bikes.
+
+
+
+
+√ 5. Local Engagement (Features 8, 9)
+
+
+User story:
+
+"As a Dublin resident, I want to access local news and special student offers so that I can stay informed about city events and save money on cycling-related costs."
+
+
+
+Acceptance criteria:
+
+View Dublin Updates
+
+Given the user is on the main app dashboard,
+
+When the user navigates to "Dublin News",
+
+Then the system displays a feed of local news and traffic alerts.
+
+
+Claim Special Offers
+
+Given the user is in the "Special Offer" section,
+
+When the user selects a student-specific discount,
+
+Then the system provides the redemption details and applies the offer to the user's profile.
+
+
+
+
+
+
+
+
+
+Sarah's User stories
+
+
+1. Predicting Office Dock Availability (Feature 4)
+
+
+User story:
+"As a worker with a strict clock-in time, I want to see a 15-minute prediction of empty stands near my office so that I can decide whether to proceed or head to a backup station without being late for my meeting."
+
+
+
+Acceptance criteria:
+
+Short-term Precision Prediction
+
+Given the user is on the station information page for their destination in Ballsbridge,
+
+When the user views the "15-min Prediction" section,
+
+Then the system displays the forecasted number of empty stands specifically for that timeframe.
+
+
+Visual Availability Warning
+
+Given the ML model predicts the station will be full within 15 minutes,
+
+When the user views the station marker on the map,
+
+Then the marker changes color (e.g., to Red) to provide an immediate visual warning.
+
+
+
+
+2. Weather-based Attire Protection (Feature 1)
+
+
+User story:
+"As a professional analyst wearing formal work attire, I want to receive precise rain intensity alerts so that I can switch to a taxi during heavy rain to avoid ruining my clothes."
+
+
+
+Acceptance criteria:
+
+Rain Intensity Monitoring
+
+Given the user is on the Home screen checking the Dublin Weather,
+
+When the forecast indicates "Heavy Rain" during the user's commute window,
+
+Then the system displays a prominent alert recommending an alternative transport mode.
+
+
+Temperature & Road Condition Warning
+
+Given the temperature is near freezing (below 2°C),
+
+When the user checks the weather update before leaving,
+
+Then the system provides a "Slippery Road" warning to indicate dangerous cycling conditions.
+
+
+
+
+√ 3. Smart & Efficient Login (Feature 5)
+
+
+User story:
+"As a professional in a rush to get to meetings, I want a smart and efficient login process so that I can access station data instantly without re-entering credentials while on the go."
+
+
+
+Acceptance criteria:
+
+Biometric Integration
+
+Given the user has an existing account and is on the Login page,
+
+When the user chooses to enable "Smart Login,"
+
+Then the system allows future access via Face ID or fingerprint authentication.
+
+
+One-Tap Access to Favorites
+
+Given the user has successfully logged in,
+
+When the app opens during peak commute hours (e.g., 8:00 AM),
+
+Then the map automatically centers on the user's "Favorite" stations near their home and office.
+
+
+
+4. Weekly Pattern Management (Feature 4)
+
+
+User story:
+"As a commuter who finds Mondays particularly high-demand, I want to see hourly occupancy bar charts so that I can decide to leave 10 minutes earlier to guarantee a bike."
+
+
+
+Acceptance criteria:
+
+Hourly Occupancy Bar Chart
+
+Given the user is viewing the details of a specific station,
+
+When the user expands the "Historical Trends" section,
+
+Then the system displays a bar chart showing the average occupancy for each hour of the day.
+
+
+Day-of-Week Comparison
+
+Given the user is viewing the trend chart,
+
+When the user selects "Monday" from the day filter,
+
+Then the system updates the chart to show historical data specific to Mondays to help the user plan for high-demand days.
+
+
+
+√ 5. Rental History & Cost Verification (Feature 10)
+
+
+User story:
+"As a budget-conscious professional, I want to track my rental history and durations so that I can verify my subscription usage and ensure I am staying within my free 30-minute window."
+
+
+
+Acceptance criteria:
+
+Ride Duration Confirmation
+
+Given the user has completed a trip and returned the bike,
+
+When the user navigates to the "Rental History" page,
+
+Then the system displays the start time, end time, and total duration of the trip.
+
+
+Cost Accuracy Check
+
+Given the user is reviewing a past rental entry,
+
+When the duration exceeded the 30-minute free period,
+
+Then the system displays the breakdown of the surcharge applied to their account balance.
+
+
+
+
+
+
+
+Thomas's User stories
+
+
+√ 1. Landmark-Based Intuitive Search (Feature 2)
+
+
+User story:
+"As a tourist unfamiliar with local Dublin street names, I want to search for landmarks like the Guinness Storehouse or Phoenix Park directly on the map so that I can find the nearest docking station to my sightseeing destination without frustration."
+
+
+Acceptance criteria:
+
+Search by Landmark Keyword
+
+Given the user is on the interactive map search interface,
+
+When the user types "Trinity College" or "Dublin Zoo" into the search bar,
+
+Then the system prioritizes these landmarks in the suggestions and centers the map on that location.
+
+
+Identify Nearby Tourist Stations
+
+Given the map is centered on a major landmark,
+
+When the user views the station markers,
+
+Then the system highlights the closest 3 stations with a distinct "Tourist-friendly" icon (e.g., a Red 'T' flag).
+
+
+
+
+2. Predictive Sightseeing & Weather Planning (Features 1, 4)
+
+
+User story:
+"As a visitor with limited time, I want to see 1-hour occupancy predictions and rain forecasts for my target station so that I can decide whether to cycle to Kilmainham Gaol now or switch to an indoor activity."
+
+
+
+Acceptance criteria:
+
+Long-Term ML Prediction (1-Hour)
+
+Given the user is viewing a station near a popular tourist site,
+
+When the user checks the "1-Hour Prediction" toggle,
+
+Then the system displays the estimated bike/stand availability for one hour in the future to help avoid full stations.
+
+
+Weather-Informed Route Advice
+
+Given the user is planning a route to a landmark,
+
+When the OpenWeather forecast predicts heavy rain or temperatures below 8°C within the hour,
+
+Then the system displays a warning and suggests switching to a bus or taxi to preserve the travel experience.
+
+
+
+
+√ 3. Payment Barrier Removal (Feature 6)
+
+
+User story:
+"As an international traveler without local currency, I want to identify "Card Accepted" stations or use in-app Top-Ups so that I can pay for my rental without being blocked by physical payment terminals."
+
+
+
+Acceptance criteria:
+
+Filter for Card Payment Terminals
+
+Given the user taps on a station marker on the map,
+
+When the station does not have a physical credit card reader,
+
+Then the system displays a clear "No Card Accepted" warning in the station info panel.
+
+
+Instant In-App Top-Up
+
+Given the user needs to add credit to their account,
+
+When the user accesses the "Top-Ups" page and uses a saved international credit card,
+
+Then the system instantly updates the balance, allowing the user to rent a bike even at cash-only stations.
+
+
+
+
+√ 4. Real-Time "How-to" Support (Features 7, 10)
+
+
+User story:
+"As a first-time user of Dublin Bikes, I want to access a How-to guide during my ride so that I can ensure I return the bike correctly and stop the rental timer."
+
+
+
+Acceptance criteria:
+
+Shortcut to Return Instructions
+
+Given the user has an active rental session (Rental Tracking is on),
+
+When the user clicks the "Help" icon near the timer,
+
+Then the system opens the "How to" guide specifically at the "Returning a Bike" section.
+
+
+Successful Return Notification
+
+Given the user has docked the bike into a stand,
+
+When the system detects the physical lock,
+
+Then the system sends an immediate push notification confirming the end of the session and the final cost.
+
+
+
+
+5. Local Engagement & Culture (Features 8, 9)
+
+
+User story:
+"As an explorer of Dublin, I want to see Special Offers and Dublin News in the app so that I can find discounts at nearby museums or avoid road closures during city events."
+
+
+
+Acceptance criteria:
+
+Proximity-Based Offers
+
+Given the user is viewing a station near Trinity College,
+
+When the user checks the "Special Offer" section,
+
+Then the system prioritizes discounts for nearby attractions or student/tourist bundles.
+
+
+Event & Traffic Alerts
+
+Given there is a major event like St. Patrick's Day or a local protest,
+
+When the user opens the app,
+
+Then the "Dublin News" banner highlights road closures and station suspensions in tourist zones.
