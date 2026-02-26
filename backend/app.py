@@ -1,3 +1,4 @@
+import logging
 from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -27,6 +28,7 @@ def init_weather_svc():
 # --- Initialization ---
 app = Flask(__name__, static_folder='../frontend', static_url_path='')
 CORS(app)
+logging.basicConfig(level=logging.INFO)
 
 
 # --- Repositories ---
@@ -68,7 +70,7 @@ def weather():
         data = weather_service.get_latest_weather_data()
         return jsonify(data)
     except Exception as e:
-        # It's good practice to log the exception here
+        logging.error(f"An error occurred fetching weather data: {e}")
         return jsonify({"error": "An error occurred fetching weather data."}), 500
 
 @app.route('/api/status')
@@ -79,14 +81,14 @@ def status():
 
 if __name__ == '__main__':
     # Trigger an initial data fetch for both services on startup
-    print("Performing initial data fetch...")
+    logging.info("Performing initial data fetch...")
     try:
         fetch_and_store_stations(station_service)
         fetch_and_store_weather(weather_service)
-        print("Initial data fetch successful.")
+        logging.info("Initial data fetch successful.")
     except Exception as e:
-        print(f"An error occurred during initial data fetch: {e}")
+        logging.error(f"An error occurred during initial data fetch: {e}")
     
     # Run the Flask app
-    print("Starting Flask app...")
+    logging.info("Starting Flask app...")
     app.run(debug=True, host='0.0.0.0', port=5000)
