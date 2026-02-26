@@ -18,7 +18,22 @@ class WeatherRepository(ABC):
                 'city_id': int,
                 'city_name': str,
                 'country': str,
-                # ... and all other fields
+                'lon': float,
+                'lat': float,
+                'timestamp': int,
+                'temp': float,
+                'feels_like': float,
+                'temp_min': float,
+                'temp_max': float,
+                'pressure': int,
+                'humidity': int,
+                'wind_speed': float,
+                'wind_deg': int,
+                'clouds_all': int,
+                'weather_id': int,
+                'weather_main': str,
+                'weather_description': str,
+                'weather_icon': str
             }
         """
         pass

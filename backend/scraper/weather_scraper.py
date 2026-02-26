@@ -1,6 +1,7 @@
 from config import OWM_URL, OWM_APIKEY, OWM_CITY
 from services.weather_service import WeatherService
 import requests
+import logging
 
 
 def fetch_and_store_weather(weather_service: WeatherService):
@@ -53,14 +54,13 @@ def fetch_and_store_weather(weather_service: WeatherService):
             'wind': {'deg': 300, 'speed': 4.63}
         }
     """
-    # TODO: 把 print 换成 log, 并设置适当的日志等级
     try:
         response = requests.get(OWM_URL, params={"q": OWM_CITY, "appid": OWM_APIKEY, "units": "metric"})
         if response.status_code == 200:
             raw_weather_data = response.json()
             weather_service.save_from_raw_weather_data(raw_weather_data)
-            print("Successfully scraped weather data.")
+            logging.info("Successfully scraped weather data.")
         else:
-            print(f"Failed to fetch weather data: {response.status_code}")
+            logging.error(f"Failed to fetch weather data: {response.status_code}")
     except Exception as e:
-        print(f"Error in weather scraper: {e}")
+        logging.error(f"Error in weather scraper: {e}")
