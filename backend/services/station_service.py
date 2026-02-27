@@ -1,4 +1,5 @@
 from repository.station_repo import StationRepository
+import time
 
 class StationService:
     def __init__(self, repo: StationRepository):
@@ -20,7 +21,30 @@ class StationService:
             raw_stations_data (list[dict]): A list of dictionaries, with each
                 dictionary representing a station's raw data from the API.
         """
-        saving_stations_data = {} # Transformation logic will be implemented here
+
+        stations = [
+            {
+                'address': station.get('address'),
+                'available_bike_stands': station.get('available_bike_stands'),
+                'available_bikes': station.get('available_bikes'),
+                'banking': station.get('banking'),
+                'bike_stands': station.get('bike_stands'),
+                'bonus': station.get('bonus'),
+                'contract_name': station.get('contract_name'),
+                'name': station.get('name'),
+                'number': station.get('number'),
+                'lat': station.get('position', {}).get('lat'),
+                'lng': station.get('position', {}).get('lng'),
+                'status': station.get('status'),
+            }
+            for station in raw_stations_data
+        ]
+        stations.sort(key=lambda x: x['number'])
+
+        saving_stations_data = {
+            'timestamp': time.time(),
+            'stations': stations,
+        }
         self._repo.save(saving_stations_data)
 
     def get_latest_all_stations(self) -> dict:

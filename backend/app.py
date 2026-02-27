@@ -47,7 +47,7 @@ def stations():
         data = station_service.get_latest_all_stations()
         return jsonify(data)
     except Exception as e:
-        # It's good practice to log the exception here
+        logging.error(f"An error occurred fetching station data: {e}")
         return jsonify({"error": "An error occurred fetching station data."}), 500
 
 @app.route('/api/weather')

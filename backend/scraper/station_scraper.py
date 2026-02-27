@@ -37,9 +37,9 @@ def fetch_and_store_stations(station_service: StationService):
     try:
         response = requests.get(JCD_URL, params={"apiKey": JCD_APIKEY, "contract": JCD_CONTRACT_NAME})
         if response.status_code == 200:
-            data = response.json()
-            station_service.save_station_data(data)
-            logging.info(f"Successfully scraped {len(data)} stations.")
+            raw_stations_data = response.json()
+            station_service.save_station_data(raw_stations_data)
+            logging.info(f"Successfully scraped {len(raw_stations_data)} stations.")
         else:
             logging.error(f"Failed to fetch station data: {response.status_code}")
     except Exception as e:
