@@ -3,40 +3,66 @@ from collections import deque
 
 class StationRepository(ABC):
     @abstractmethod
-    def save(self, data):
-        """
-        Save bike station data in json / string / python dict format
-        The bike station data at time `t` would be a list
-        It is better to label every list with a timestamp `t`
-        ** Example station data **
-        [
+    def save(self, saving_stations_data: dict):
+        """Saves the processed and structured station data.
+
+        Args:
+            saving_stations_data (dict): A dictionary containing the processed
+                station data, conforming to the `saving_stations_data` schema.
+
+        The `saving_stations_data` schema is:
+        .. code-block:: python
+
             {
-                'address': 'Smithfield North',
-                'available_bike_stands': 20,
-                'available_bikes': 10,
-                'banking': False,
-                'bike_stands': 30,
-                'bonus': False,
-                'contract_name': 'dublin',
-                'last_update': 1771030596000,
-                'name': 'SMITHFIELD NORTH',
-                'number': 42,
-                'position': {'lat': 53.349562, 'lng': -6.278198},
-                'status': 'OPEN'
-            },
-            ...
-        ]
+                'timestamp': int,
+                'stations': [
+                    {
+                        'address': str,
+                        'available_bike_stands': int,
+                        'available_bikes': int,
+                        'banking': bool,
+                        'bike_stands': int,
+                        'bonus': bool,
+                        'contract_name': str,
+                        'name': str,
+                        'number': int,
+                        'lat': float,
+                        'lon': float,
+                        'status': str,
+                    }
+                ]
+            }
         """
         pass
 
     @abstractmethod
-    def get(self, time_from, time_to, station_number):
-        """
-        Get station data in range of `time_from` to `time_to`, both inclusive
-        If `time_to` == None, return the data from `time_from` to last piece
-        If `time_from` == None, return the data from first piece to `time_to`
-        If they are both None, return the last piece
-        If station_number != None, return the data for the specific station with filter logic about time
+    def get(self, time_from: int = None, time_to: int = None, station_number: int = None) -> list[dict]:
+        """Retrieves historical station data based on time range and station ID.
+
+        Args:
+            time_from (int, optional): The start of the time range (UTC Unix timestamp).
+                If None, retrieves data from the beginning. Defaults to None.
+            time_to (int, optional): The end of the time range (UTC Unix timestamp).
+                If None, retrieves data up to the latest record. Defaults to None.
+            station_number (int, optional): The specific station ID to filter by.
+                If None, returns data for all stations. Defaults to None.
+
+        Returns:
+            list[dict]: A list of dictionaries containing station data. The structure
+            of the list depends on the arguments provided:
+
+            - If `station_number` is None, returns a list of `saving_stations_data`
+              snapshots that fall within the specified time range.
+              `[{'timestamp': int, 'stations': [...]}, ...]`
+
+            - If `station_number` is not None, returns a list of historical records
+              for that specific station within the time range.
+              `[{'timestamp': int, 'station': {...}}, ...]`
+
+        Special Cases:
+            - If `time_from` and `time_to` are both None, all available data is returned.
+            - If `time_from` and `time_to` are both -1, only the single most recent
+              data snapshot is returned.
         """
         pass
 
