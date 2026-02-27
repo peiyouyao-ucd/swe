@@ -4,26 +4,13 @@ from flask_cors import CORS
 from apscheduler.schedulers.background import BackgroundScheduler
 import os
 
-# from repository.station_repo import InMemoryStationRepository
+from repository.station_repo import InMemoStationRepository
 from repository.weather_repo import InMemoWeatherRepository
 from services.station_service import StationService
 from services.weather_service import WeatherService
 from scraper.station_scraper import fetch_and_store_stations
 from scraper.weather_scraper import fetch_and_store_weather
 
-
-def init_weather_svc():
-    global weather_service, weather_repo, scheduler
-    weather_repo = InMemoWeatherRepository(max_size=24) # Keep 24 hours of data
-    weather_service = WeatherService(weather_repo)
-    scheduler.add_job(func=fetch_and_store_weather, args=[weather_service], trigger="interval", hours=1)
-
-
-# def init_station_svc():
-#     global station_service, weather_repo, scheduler
-#     station_repo = InMemoryStationRepository(max_len=10)
-#     station_service = StationService(station_repo)
-#     scheduler.add_job(func=fetch_and_store_stations, args=[station_service], trigger="interval", minutes=5)
 
 # --- Initialization ---
 app = Flask(__name__, static_folder='../frontend', static_url_path='')
@@ -32,19 +19,19 @@ logging.basicConfig(level=logging.INFO)
 
 
 # --- Repositories ---
-station_repo = None
-weather_repo = None
+station_repo = InMemoStationRepository(max_size=100)
+weather_repo = InMemoWeatherRepository(max_size=24)
 
 
 # --- Services ---
-station_service = None
-weather_service = None
+station_service = StationService(station_repo)
+weather_service = WeatherService(weather_repo)
 
 
 # --- Background Scraper Tasks ---
 scheduler = BackgroundScheduler()
-# init_station_svc()
-init_weather_svc()
+scheduler.add_job(func=fetch_and_store_stations, args=[station_service], trigger="interval", minutes=5)
+scheduler.add_job(func=fetch_and_store_weather, args=[weather_service], trigger="interval", hours=1)
 scheduler.start()
 
 
@@ -53,15 +40,15 @@ scheduler.start()
 def index():
     return send_from_directory(app.static_folder, 'index.html')
 
-# @app.route('/api/stations')
-# def stations():
-#     """Returns all station information along with their latest availability."""
-#     try:
-#         data = station_service.get_all_stations_with_latest_availability()
-#         return jsonify(data)
-#     except Exception as e:
-#         # It's good practice to log the exception here
-#         return jsonify({"error": "An error occurred fetching station data."}), 500
+@app.route('/api/stations')
+def stations():
+    """Returns all station information along with their latest availability."""
+    try:
+        data = station_service.get_latest_all_stations()
+        return jsonify(data)
+    except Exception as e:
+        # It's good practice to log the exception here
+        return jsonify({"error": "An error occurred fetching station data."}), 500
 
 @app.route('/api/weather')
 def weather():

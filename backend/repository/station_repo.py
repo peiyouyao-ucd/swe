@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from collections import deque
+import threading
 
 class StationRepository(ABC):
     @abstractmethod
@@ -67,4 +68,53 @@ class StationRepository(ABC):
         pass
 
 
-# TODO: implement the InMemoStationRepository here
+import threading
+
+class InMemoStationRepository(StationRepository):
+    """An in-memory implementation of the StationRepository.
+
+    This implementation is thread-safe.
+    """
+    def __init__(self, max_size: int = 100_000_000):
+        self._data = []
+        self._max_size = max_size
+        self._lock = threading.Lock()
+
+    def save(self, saving_stations_data: dict):
+        with self._lock:
+            self._data.append(saving_stations_data)
+            if len(self._data) > self._max_size * 1.5:
+                self._data = self._data[-self._max_size:]
+
+    def get(self, time_from: int = None, time_to: int = None, station_number: int = None) -> list[dict]:
+        with self._lock:
+            # Handle special case for latest record
+            if time_from == -1 and time_to == -1:
+                return self._data[-1:] if self._data else []
+
+            # Filter by time range
+            time_filtered_snapshots = self._data
+            if time_from is not None:
+                time_filtered_snapshots = [
+                    s for s in time_filtered_snapshots if s.get('timestamp', 0) >= time_from
+                ]
+            if time_to is not None:
+                time_filtered_snapshots = [
+                    s for s in time_filtered_snapshots if s.get('timestamp', 0) <= time_to
+                ]
+
+            # If no station number is specified, return the filtered snapshots
+            if station_number is None:
+                return time_filtered_snapshots
+
+            # If a station number is specified, transform the data structure
+            station_history = []
+            for snapshot in time_filtered_snapshots:
+                for station in snapshot.get('stations', []):
+                    if station.get('number') == station_number:
+                        station_history.append({
+                            'timestamp': snapshot.get('timestamp'),
+                            'station': station
+                        })
+                        break # Move to the next snapshot
+            return station_history
