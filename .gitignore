@@ -41,3 +41,5 @@ Thumbs.db
 
 # Other
 .code_example/
+.vscode
+bike_weather_data.csv

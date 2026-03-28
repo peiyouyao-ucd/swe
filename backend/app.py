@@ -24,8 +24,8 @@ weather_repo = InMemoWeatherRepository(max_size=24)
 
 
 # --- Services ---
-station_service = StationService(station_repo)
 weather_service = WeatherService(weather_repo)
+station_service = StationService(station_repo, weather_service)
 
 
 # --- Background Scraper Tasks ---
