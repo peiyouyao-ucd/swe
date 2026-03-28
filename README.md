@@ -54,6 +54,8 @@ uv run python backend/app.py
 Training the model involves generating/collecting data, running the trainer, and copying the model to the backend:
 
 ```bash
+# /swe
+
 # 1. Generate dummy data (if you don't have CSV yet)
 uv run python ml_training/generate_dummy_data.py
 
@@ -65,3 +67,13 @@ cp ml_training/bike_availability_model.pkl backend/services/
 ```
 
 ## 3.4 Run tests
+
+```bash
+# /swe
+
+# Run all tests using discovery
+uv run python -m unittest discover tests
+
+# Or run a specific test file
+uv run python tests/services/test_station_service.py
+```

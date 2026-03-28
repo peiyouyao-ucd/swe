@@ -4,7 +4,7 @@ import unittest
 import logging
 
 # Ensure the backend directory is in the path so we can import modules
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../backend')))
 
 from repository.station_repo import InMemoStationRepository
 from repository.weather_repo import InMemoWeatherRepository
