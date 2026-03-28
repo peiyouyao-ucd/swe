@@ -1,0 +1,21 @@
+[project]
+name = "swe-project"
+version = "0.1.0"
+description = "Unified environment for Dublin Bike-Sharing App"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "flask",
+    "flask-cors",
+    "sqlalchemy",
+    "pymysql",
+    "requests",
+    "pandas",
+    "scikit-learn",
+    "apscheduler",
+    "simplejson",
+    "matplotlib",
+    "joblib",
+    "sktime",
+    "ipykernel",
+]
