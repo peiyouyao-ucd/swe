@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-import threading
+import threading 
+from utils.db import db
 
 class WeatherRepository(ABC):
     @abstractmethod
@@ -29,6 +30,7 @@ class WeatherRepository(ABC):
                 'humidity': int,
                 'wind_speed': float,
                 'wind_deg': int,
+                'precipitation': float,
                 'clouds_all': int,
                 'weather_id': int,
                 'weather_main': str,
@@ -94,3 +96,51 @@ class InMemoWeatherRepository(WeatherRepository):
                 filtered_data = [d for d in filtered_data if d.get('timestamp', 0) <= time_to]
             
             return filtered_data
+        
+
+class SQLWeatherRepository(WeatherRepository):
+    def save(self, saving_weather_data: dict):
+        from models import Weather
+        
+        # 💡 2. 建立新物件，確保所有新欄位都有被賦值
+        new_weather = Weather(
+            dt=saving_weather_data['timestamp'],
+            temp=saving_weather_data['temp'],
+            feels_like=saving_weather_data.get('feels_like'), # 👈 新增
+            temp_min=saving_weather_data.get('temp_min'),     # 👈 新增
+            temp_max=saving_weather_data.get('temp_max'),     # 👈 新增
+            visibility=saving_weather_data.get('visibility'), # 👈 新增
+            precipitation=saving_weather_data.get('precipitation', 0),
+            humidity=saving_weather_data['humidity'],
+            wind_speed=saving_weather_data['wind_speed'],
+            description=saving_weather_data['weather_description'],
+            main=saving_weather_data['weather_main']
+        )
+        
+        # 💡 3. 存進 MySQL
+        db.session.merge(new_weather) 
+        db.session.commit()
+
+    def get(self, time_from=None, time_to=None):
+        from models import Weather
+        # 1. 抓取最新的一筆資料
+        latest = Weather.query.order_by(Weather.dt.desc()).first()
+        
+        # 2. 如果資料庫是空的，回傳預設值（防止前端崩潰）
+        if latest is None:
+            return [{
+                "temp": 0,
+                "feels_like": 0,    # 👈 預設值也要補齊
+                "temp_min": 0,
+                "temp_max": 0,
+                "visibility": 0,
+                "precipitation": 0,
+                "humidity": 0,
+                "wind_speed": 0,
+                "weather_description": "Database is empty",
+                "weather_main": "None",
+                "dt": 0
+            }]
+            
+        # 3. 有資料則呼叫 models.py 裡的 to_dict()
+        return [latest.to_dict()]

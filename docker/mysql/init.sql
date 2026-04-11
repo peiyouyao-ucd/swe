@@ -1,13 +1,33 @@
 -- 1. Create the Stations table to store static information
+-- Schema for weather data (Time-series)
+CREATE TABLE IF NOT EXISTS weather (
+    dt BIGINT PRIMARY KEY,                        -- 10-digit UTC Unix timestamp
+    temp FLOAT,                                   -- Current temperature in Celsius
+    feels_like FLOAT,                             -- Human-perceived temperature
+    temp_min FLOAT,                               -- Minimum temperature at the moment
+    temp_max FLOAT,                               -- Maximum temperature at the moment
+    visibility INT,                               -- Average visibility in meters
+    humidity INT,                                 -- Humidity percentage (%)
+    wind_speed FLOAT,                             -- Wind speed in meters per second
+    precipitation FLOAT DEFAULT 0,                -- Rain volume for the last 1h/3h (mm)
+    description VARCHAR(100),                     -- Weather condition description
+    main VARCHAR(50),                             -- Group of weather parameters (Rain, Snow, etc.)
+    scrape_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
+) COMMENT='Stores historical weather data for ML analysis';
+
+-- Schema for bike stations (Static/Dynamic status)
 CREATE TABLE IF NOT EXISTS stations (
-    number INT PRIMARY KEY,                       -- Unique station identifier from JCDecaux 
-    name VARCHAR(255) NOT NULL,                   -- Station name (e.g., 'SMITHFIELD NORTH')
+    number INT PRIMARY KEY,                       -- Unique station identifier
+    name VARCHAR(255) NOT NULL,                   -- Station name
     address VARCHAR(255),                         -- Street address
-    lat DOUBLE NOT NULL,                          -- Latitude for Google Maps markers [cite: 3459, 3702]
-    lng DOUBLE NOT NULL,                          -- Longitude for Google Maps markers [cite: 3459, 3702]
-    bike_stands INT,                              -- Total number of bike docks at the station
+    lat DOUBLE NOT NULL,                          -- Latitude coordinate
+    lng DOUBLE NOT NULL,                          -- Longitude coordinate
+    bike_stands INT,                              -- Total number of bike docks
+    status VARCHAR(50),                           -- Operational status (OPEN/CLOSED)
+    banking BOOLEAN,                              -- Presence of payment terminal
+    bonus BOOLEAN,                                -- Whether the station is a bonus station
     CONSTRAINT uc_station_number UNIQUE (number)
-) COMMENT='Stores static information about bike stations';
+) COMMENT='Stores bike station metadata and current status';
 
 -- 2. Create the Availability table to store dynamic history
 CREATE TABLE IF NOT EXISTS availability (
@@ -21,13 +41,19 @@ CREATE TABLE IF NOT EXISTS availability (
     FOREIGN KEY (number) REFERENCES stations(number)
 ) COMMENT='Stores time-series data of bike availability for ML training and charts';
 
+
 -- 3. Create the Weather table to store Dublin weather data
 CREATE TABLE IF NOT EXISTS weather (
-    dt BIGINT PRIMARY KEY,                        -- 10-digit unix timestamp (seconds) from OpenWeather [cite: 5225]
-    temp FLOAT,                                   -- Current temperature in Celsius [cite: 3970]
+    dt BIGINT PRIMARY KEY,                        -- 10-digit unix timestamp
+    temp FLOAT,                                   -- Current temperature
+    feels_like FLOAT,                             
+    temp_min FLOAT,                               
+    temp_max FLOAT,                               
+    visibility INT,                               
     humidity INT,                                 -- Humidity percentage
-    wind_speed FLOAT,                             -- Wind speed in meters per second
-    description VARCHAR(100),                     -- Short description (e.g., 'broken clouds') [cite: 3971]
-    main VARCHAR(50),                             -- Main weather category (e.g., 'Clouds')
-    scrape_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Internal record creation time
+    wind_speed FLOAT,                             -- Wind speed
+    precipitation FLOAT DEFAULT 0,                -- Precipitation in mm
+    description VARCHAR(100),                     -- e.g., 'broken clouds'
+    main VARCHAR(50),                             -- e.g., 'Clouds'
+    scrape_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
 ) COMMENT='Stores hourly weather data for Dublin to be used as ML features';

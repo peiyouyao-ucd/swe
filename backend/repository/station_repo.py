@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from collections import deque
 import threading
+from utils.db import db
 
 class StationRepository(ABC):
     @abstractmethod
@@ -118,3 +119,72 @@ class InMemoStationRepository(StationRepository):
                         })
                         break # Move to the next snapshot
             return station_history
+        
+
+
+class SQLStationRepository(StationRepository):
+    """
+    MySQL implementation of the StationRepository using SQLAlchemy.
+    """
+
+    def save(self, data: dict):
+        from models import Station, Availability
+        try:
+         
+            station = Station(
+                number=data['number'],
+                name=data['name'],
+                address=data['address'],
+                lat=data['position']['lat'],
+                lng=data['position']['lng'],
+                bike_stands=data['bike_stands'],
+                status=data.get('status'),
+                banking=data.get('banking'),
+                bonus=data.get('bonus')
+            )
+            db.session.merge(station)
+            
+         
+            db.session.flush() 
+
+          
+            new_avail = Availability(
+                number=data['number'],
+                available_bikes=data.get('available_bikes', 0),
+                available_bike_stands=data.get('available_bike_stands', 0),
+                status=data.get('status'),
+                last_update=data.get('last_update')
+            )
+            db.session.add(new_avail)
+            db.session.commit()
+            
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error saving station {data.get('number')}: {e}")
+
+
+    def get(self, time_from=None, time_to=None, station_number=None):
+        from models import Station, Availability
+        from sqlalchemy import func, select
+
+       
+        subq = select(func.max(Availability.id)).group_by(Availability.number)
+
+   
+        query = db.session.query(Station, Availability).outerjoin(
+            Availability, Station.number == Availability.number
+        ).filter(
+            (Availability.id.in_(subq)) | (Availability.id == None)
+        )
+
+        results = query.all()
+        
+        output = []
+        for station, avail in results:
+            s_dict = station.to_dict()
+            if avail:
+                s_dict.update(avail.to_dict())
+            else:
+                s_dict.update({"available_bikes": 0, "available_bike_stands": 0})
+            output.append(s_dict)
+        return output
