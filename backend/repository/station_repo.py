@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from collections import deque
 import threading
 from utils.db import db
+import time
 
 class StationRepository(ABC):
     @abstractmethod
@@ -166,11 +167,26 @@ class SQLStationRepository(StationRepository):
     def get(self, time_from=None, time_to=None, station_number=None):
         from models import Station, Availability
         from sqlalchemy import func, select
+        if station_number is not None:
 
-       
+            if time_from is None:
+                time_from = int((time.time() - 24 * 3600) * 1000)
+
+            query = db.session.query(Availability).filter(
+                Availability.number == station_number,
+                Availability.last_update >= time_from
+            )
+
+            if time_to:
+                query = query.filter(Availability.last_update <= time_to)
+
+            results = query.order_by(Availability.last_update.asc()).all()
+            
+            return [avail.to_dict() for avail in results]
+
+
         subq = select(func.max(Availability.id)).group_by(Availability.number)
 
-   
         query = db.session.query(Station, Availability).outerjoin(
             Availability, Station.number == Availability.number
         ).filter(
@@ -187,4 +203,5 @@ class SQLStationRepository(StationRepository):
             else:
                 s_dict.update({"available_bikes": 0, "available_bike_stands": 0})
             output.append(s_dict)
+        
         return output

@@ -420,8 +420,16 @@ async function showStationDetails(station) {
   
     try {
         const response = await fetch(`/api/stations/${station.number}`);
-        const history = await response.json();
+        let history = await response.json(); 
+        
+      
+        if (history && Array.isArray(history)) {
+            history.sort((a, b) => a.last_update - b.last_update);
+        }
+
+        console.log("Sorted history:", history); 
         updateChart(history);
+        
     } catch (e) {
         console.error("Error fetching station history:", e);
     }
@@ -453,29 +461,29 @@ function updateChart(history) {
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
 
-    if (predictionChart instanceof Chart) {
-        predictionChart.destroy();
+    if (window.predictionChart instanceof Chart) {
+        window.predictionChart.destroy();
     }
 
- 
-    const labels = history.map(h => {
+    
+    history.sort((a, b) => new Date(a.last_update) - new Date(b.last_update));
 
+    
+    const labels = history.map(h => {
         let dateStr = h.last_update;
         if (typeof dateStr === 'string') {
             dateStr = dateStr.replace(/-/g, "/");
         }
-        
         const dateObj = new Date(dateStr);
-        
-      
         if (isNaN(dateObj)) return h.last_update;
         
         return dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    }).reverse();
+    });
 
-    const data = history.map(h => h.available_bikes).reverse();
 
-    predictionChart = new Chart(ctx, {
+    const data = history.map(h => h.available_bikes);
+
+    window.predictionChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
@@ -489,7 +497,6 @@ function updateChart(history) {
                 borderWidth: 1.5,      
                 pointRadius: 2,        
                 pointHoverRadius: 5,   
-
             }]
         },
         options: {
@@ -497,8 +504,17 @@ function updateChart(history) {
             maintainAspectRatio: false,
             plugins: { legend: { display: false } },
             scales: { 
-                y: { beginAtZero: true },
-                x: { ticks: { maxRotation: 45, minRotation: 45 } }
+                y: { 
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 } 
+                },
+                x: { 
+                    ticks: { 
+                        maxRotation: 0, 
+                        autoSkip: true,    
+                        maxTicksLimit: 8  
+                    } 
+                }
             }
         }
     });

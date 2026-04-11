@@ -2370,9 +2370,11 @@ body.theme-rainy { background: linear-gradient(135deg, #616161 0%, #9bc5c3 100%)
     border-radius: 16px;
     display: flex;
     align-items: center;
+    justify-content: center; 
     gap: 20px;
     border: 1px solid #f3f4f6;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
 }
 
 .stat-card:hover {
@@ -2381,14 +2383,17 @@ body.theme-rainy { background: linear-gradient(135deg, #616161 0%, #9bc5c3 100%)
 }
 
 .stat-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    flex-shrink: 0; 
+    padding-top: 15px; 
+    box-sizing: border-box;
 }
+
 
 .stat-icon.blue { background: #eff6ff; color: #3b82f6; }
 .stat-icon.green { background: #ecfdf5; color: #10b981; }

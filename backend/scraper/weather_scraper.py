@@ -74,7 +74,7 @@ def fetch_and_store_weather(weather_service: WeatherService):
             raw_weather_data['temp_min'] = main_data.get('temp_min')
             raw_weather_data['temp_max'] = main_data.get('temp_max')
             raw_weather_data['humidity'] = main_data.get('humidity')
-            raw_weather_data['visibility'] = raw_weather_data.get('visibility') # 它本來就在第一層
+            raw_weather_data['visibility'] = raw_weather_data.get('visibility') 
             raw_weather_data['wind_speed'] = raw_weather_data.get('wind', {}).get('speed')
             raw_weather_data['precipitation'] = precipitation
             
