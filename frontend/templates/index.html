@@ -1,0 +1,277 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <header class="hero">
+    <div class="hero-content">
+        <h1>Explore Dublin by Bike</h1>
+        <p>Discover the city at your own pace with convenient bike rental stations across Dublin</p>
+        <a href="#map-section" class="btn-view-map"><i class="fa-solid fa-location-dot"></i>View Map</a>
+    </div>
+    </header>
+
+    <section class="forecast-dashboard">
+    <div class="card weather-card">
+        <div class="weather-main">
+            <i id="weather-icon-main" class="fa-solid fa-cloud weather-icon-large"></i>
+            <div class="temp-group">
+            <span id="display-temp" class="current-temp">--°C</span>
+            <p class="temp-range">
+                L: <span id="temp-min">--</span>° | H: <span id="temp-max">--</span>°
+            </p>
+            <p id="feels-like" class="feels-like">Feels like --°C</p>
+            <p id="weather-condition" class="condition-text">Loading weather...</p>
+            </div>
+        </div>
+
+        <ul class="detail-list">
+            <li>
+                <i class="fa-solid fa-wind"></i> 
+                <span>Wind Speed</span> 
+                <strong id="wind-val">-- km/h</strong>
+            </li>
+            <li>
+                <i class="fa-solid fa-droplet"></i> 
+                <span>Humidity</span> 
+                <strong id="hum-val">--%</strong>
+            </li>
+            <li>
+                <i class="fa-solid fa-eye"></i> 
+                <span>Visibility</span> 
+                <strong id="vis-val">-- km</strong>
+            </li>
+            <li>
+                <i class="fa-solid fa-cloud-showers-heavy"></i> 
+                <span>Precipitation</span> 
+                <strong id="precip-val">0 mm</strong>
+            </li>
+        </ul>
+    </div>
+
+    <div class="card score-card">
+        <div class="score-header">
+            <h3>Cycling Favorability Score</h3>
+            <span id="status-badge" class="badge">--</span>
+        </div>
+
+        <div class="progress-section">
+            <div class="progress-bar">
+                <div id="score-fill" class="progress-fill" style="width: 0%;">0/100</div>
+            </div>
+            <div class="progress-labels">
+                <span>Dangerous</span><span>Poor</span><span>Fair</span><span>Good</span><span>Excellent</span>
+            </div>
+        </div>
+
+        <h4>Key Factors Analyzed:</h4>
+        <div class="factor-grid">
+            <div id="factor-temp" class="factor-item">
+                <strong>Temperature</strong>
+                <p>Analyzing...</p>
+            </div>
+            <div id="factor-wind" class="factor-item">
+                <i class="fa-solid fa-triangle-exclamation warning-icon" style="display:none;"></i>
+                <strong>Wind</strong>
+                <p>Analyzing...</p>
+            </div>
+            <div id="factor-weather" class="factor-item">
+                <strong>Weather</strong>
+                <p>Analyzing...</p>
+            </div>
+        </div>
+
+        <div class="ml-footer">
+            <p><strong>ML Model Insight:</strong> Our machine learning model analyzes temperature, wind speed, precipitation, visibility, and historical cycling patterns to provide real-time favorability predictions.</p>
+        </div>
+    </div>
+    </section>
+    
+    <section id="map-section" style="position: relative;">
+    <div class="map-filters">
+        <button id="btn-show-bikes" class="filter-btn active" onclick="switchMapMode('bikes')">
+            <i class="fa-solid fa-bicycle"></i> Available Bikes
+        </button>
+        <button id="btn-show-spaces" class="filter-btn" onclick="switchMapMode('spaces')">
+            <i class="fa-solid fa-parking"></i> Available Spaces
+        </button>
+    </div>
+
+    <div id="map"></div>
+    
+    <div class="map-legend">
+        <div class="legend-header">Availability</div>
+        <div class="legend-item">
+            <span class="dot green"></span>
+            <span class="label">High (10+)</span>
+        </div>
+        <div class="legend-item">
+            <span class="dot orange"></span>
+            <span class="label">Low (1-10)</span>
+        </div>
+        <div class="legend-item">
+            <span class="dot red"></span>
+            <span class="label">Empty (0)</span>
+        </div>
+    </div>
+        
+    <aside id="details-panel">
+        <button class="close-panel-btn" onclick="closeDetailsPanel()">×</button>
+
+        <div class="panel-content">
+            <h2 id="selected-station-name">Select a Station</h2>
+
+            <div class="details-tabs">
+                <button class="d-tab active" onclick="switchDetailsView('info')">Station Info</button>
+                <button class="d-tab" onclick="switchDetailsView('ml')">ML Forecast</button>
+            </div>
+
+            <div id="view-info" class="details-view active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <label><i class="fa-solid fa-bicycle"></i> Bikes</label>
+                        <div id="bikes-count" class="stat-value">--</div>
+                    </div>
+                    <div class="stat-card">
+                        <label><i class="fa-solid fa-parking"></i> Stands</label>
+                        <div id="stands-count" class="stat-value">--</div>
+                    </div>
+                </div>
+                <div class="chart-section">
+                    <h4>Last 24h Trend</h4>
+                    <div id="prediction-chart-container">
+                        <canvas id="predictionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-ml" class="details-view">
+                <div class="ml-prediction-box">
+                    <h4>AI Availability Prediction</h4>
+                    <div class="predicted-main">
+                        <span id="predicted-value">--</span>
+                        <p>Expected Bikes Available</p>
+                    </div>
+                    <p class="ml-note">Our model predicts availability based on current weather, time of day, and historical patterns.</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+    </section>
+
+    <section id="how-to-section">
+    <h2>How to Book a Bike</h2>
+    <p>Get started with DublinBikes in three easy steps</p>
+    
+    <div class="steps-container">
+    
+    <a href="{{ url_for('pages.howto') }}#rent-content" class="step-card green-card">
+        <div class="icon-bike"><i class="fa-solid fa-bicycle"></i></div>
+        <h3>Rent a Bike</h3>
+        <p>Learn how to find and rent a bike from any station</p>
+    </a>
+
+     <a href="{{ url_for('pages.howto') }}#use-content" class="step-card blue-card">
+        <div class="icon-play"><i class="fa-solid fa-play"></i></div>
+        <h3>Use the Service</h3>
+        <p>Discover all features and get the most out of your ride</p>
+    </a>
+
+    <a href="{{ url_for('pages.howto') }}#return-content" class="step-card purple-card">
+        <div class="icon-rotate"><i class="fa-solid fa-rotate"></i></div>
+        <h3>Return the Bike</h3>
+        <p>Find out how to safely return your bike to any station</p>
+    </a>
+
+    </div>
+    </section>
+
+    <section class="subscription-section">
+    <div class="sub-container">
+        <div class="promo-badge">
+            <i class="fa-solid fa-sparkles"></i> Limited Time Offer
+        </div>
+
+        <h1>Subscribe Now & Save More</h1>
+        <p class="sub-description">
+            Get unlimited rides, exclusive benefits, and save up to 60% <br>
+            compared to pay-as-you-go
+        </p>
+        <p class="sub-note">Choose from flexible plans designed for your lifestyle. No commitments, cancel anytime.</p>
+
+        <div class="sub-cta">
+            <button class="btn-primary-white" onclick="location.href='{{ url_for('pages.subscription') }}'">
+                View All Plans <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            
+            <button class="btn-outline-white" onclick="location.href='{{ url_for('pages.subscription') }}#special-offers'">
+                See Special Offers
+            </button>
+        </div>
+
+        <div class="feature-grid">
+            <div class="feature-box">
+                <h3>7 Days</h3>
+                <span>Free Trial</span>
+            </div>
+            <div class="feature-box">
+                <h3>60%</h3>
+                <span>Maximum Savings</span>
+            </div>
+            <div class="feature-box">
+                <h3>24/7</h3>
+                <span>Customer Support</span>
+            </div>
+        </div>
+    </div>
+    </section>
+    
+    <section class="app-download-section">
+    <div class="app-container">
+        <div class="app-info">
+            <h1>Get the DublinBikes App</h1>
+            <p class="app-description">
+                Download our app for the best bike rental experience. Find stations, 
+                unlock bikes, and manage your subscriptions all in one place.
+            </p>
+
+            <div class="store-buttons">
+                <a href="#" class="store-btn">
+                    <i class="fa-brands fa-apple"></i>
+                    <div class="btn-text">
+                        <span>Download on the</span>
+                        <strong>App Store</strong>
+                    </div>
+                </a>
+                <a href="#" class="store-btn">
+                    <i class="fa-brands fa-google-play"></i>
+                    <div class="btn-text">
+                        <span>Get it on</span>
+                        <strong>Google Play</strong>
+                    </div>
+                </a>
+            </div>
+
+            <div class="app-stats">
+                <div class="stat-item">
+                    <strong>500K+</strong>
+                    <span>Downloads</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <strong>4.8★</strong>
+                    <span>App Rating</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="app-image">
+            <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=600" alt="App Display">
+        </div>
+    </div>
+    </section>
+
+{% block scripts %}
+    <script async src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap"></script>
+{% endblock %}
+
+{% endblock %}

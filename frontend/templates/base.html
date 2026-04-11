@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DublinBikes | Real-time Availability & AI Forecast{% endblock %}</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    {% block head %}{% endblock %}
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a href="{{ url_for('pages.home') }}">
+                <span class="fa-solid fa-bicycle logo-icon"></span>DublinBikes
+            </a>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="{{ url_for('pages.home') }}#map-section">Station Map</a></li>
+            <li><a href="{{ url_for('pages.about') }}">About</a></li>
+            <li><a href="{{ url_for('pages.subscription') }}">Subscription</a></li>
+            <li><a href="{{ url_for('pages.howto') }}">How To</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            {% if user_name %}
+                <button class="btn-outline" onclick="location.href='{{ url_for('pages.profile') }}'">
+                    <i class="fa-regular fa-user"></i>
+                    <span>Hi, {{ user_name }}</span> </button>
+                <button class="btn-solid" onclick="location.href='{{ url_for('auth.logout') }}'">Logout</button>
+            {% else %}
+                <button class="btn-outline" onclick="location.href='{{ url_for('auth.login') }}'">
+                    <i class="fa-regular fa-user"></i>
+                    <span>Profile</span>
+                </button>
+                <button class="btn-solid" onclick="location.href='{{ url_for('auth.login') }}'">Login / Signup</button>
+            {% endif %}
+        </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-col brand-info">
+                <div class="footer-logo">
+                    <i class="fa-solid fa-bicycle"></i>
+                    <span>DublinBikes</span>
+                </div>
+                <p>Sustainable bike sharing for a greener Dublin. Explore the city at your own pace.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{{ url_for('pages.about') }}">About Us</a></li>
+                    <li><a href="{{ url_for('pages.subscription') }}">Subscriptions</a></li>
+                    <li><a href="{{ url_for('pages.home') }}#map">Station Map</a></li>
+                    <li><a href="{{ url_for('pages.howto') }}">How It Works</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Safety Guidelines</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col contact-info">
+                <h4>Contact Info</h4>
+                <ul>
+                    <li><i class="fa-solid fa-location-dot"></i><span>123 O'Connell Street<br>Dublin 1, Ireland</span></li>
+                    <li><i class="fa-solid fa-phone"></i><span>+353 1 234 5678</span></li>
+                    <li><i class="fa-solid fa-envelope"></i><span>hello@dublinbikes.ie</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 DublinBikes. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script> 
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

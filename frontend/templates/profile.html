@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile | DublinBikes{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <header class="profile-header">
+        <div class="user-main-info">
+            <h1>{{ user.name }}</h1>
+            <p class="user-email">{{ user.email }}</p>
+            <p class="member-tag"><i class="fa-solid fa-calendar-days"></i> Member since {{ user.member_since }}</p>
+        </div>
+        <div class="total-rides-badge">
+            <span class="count">{{ user.total_rides }}</span>
+            <span class="label">Total Rides</span>
+        </div>
+    </header>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon blue"><i class="fa-solid fa-chart-line"></i></div>
+            <div class="stat-content">
+                <h3>{{ user.total_distance }} km</h3>
+                <p>Total Distance</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green"><i class="fa-solid fa-leaf"></i></div>
+            <div class="stat-content">
+                <h3>{{ user.co2_saved }} kg</h3>
+                <p>CO2 Saved</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon purple"><i class="fa-solid fa-bicycle"></i></div>
+            <div class="stat-content">
+                <h3>{{ user.rides_this_month }}</h3>
+                <p>Rides This Month</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon orange"><i class="fa-solid fa-location-dot"></i></div>
+            <div class="stat-content">
+                <h3>{{ user.fav_station }}</h3>
+                <p>Favorite Station</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-main">
+        <div class="dashboard-left">
+            <section class="info-card subscription-card">
+                <div class="card-header">
+                    <h2>Current Subscription</h2>
+                    <span class="status-pill active">Active</span>
+                </div>
+                <div class="sub-details">
+                    <p class="plan-name">Monthly Plan</p>
+                    <div class="sub-dates">
+                        <div><span>Start Date</span><strong>Feb 1, 2026</strong></div>
+                        <div><span>End Date</span><strong>Mar 1, 2026</strong></div>
+                    </div>
+                </div>
+                <div class="sub-actions">
+                    <button class="btn-primary" onclick="location.href='{{ url_for('pages.subscription') }}'">Renew Subscription</button>
+                    <button class="btn-outline" onclick="location.href='{{ url_for('pages.subscription') }}'">Change Plan</button>
+                </div>
+            </section>
+
+            <section class="info-card history-card">
+                <div class="card-header">
+                    <h2>Rental History</h2>
+                    <button class="btn-text btn-export-csv"><i class="fa-solid fa-download"></i> Export CSV</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>DATE</th>
+                                <th>ROUTE</th>
+                                <th>DURATION</th>
+                                <th>DISTANCE</th>
+                                <th>COST</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Feb 17, 2026</td>
+                                <td>Trinity College → Temple Bar</td>
+                                <td><i class="fa-regular fa-clock"></i> 15 min</td>
+                                <td>2.3 km</td>
+                                <td class="cost-free">€0.00</td>
+                            </tr>
+                            <tr>
+                                <td>Feb 16, 2026</td>
+                                <td>St. Stephen's Green → O'Connell St</td>
+                                <td><i class="fa-regular fa-clock"></i> 22 min</td>
+                                <td>3.1 km</td>
+                                <td class="cost-free">€0.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <a href="#" class="view-all">View All History →</a>
+            </section>
+        </div>
+
+        <div class="dashboard-right">
+            <section class="info-card achievement-card">
+                <div class="card-header">
+                    <h2>Achievements</h2>
+                </div>
+                <div class="achievement-list">
+                    <div class="achievement-item unlocked">
+                        <div class="badge-icon"><i class="fa-solid fa-sun"></i></div>
+                        <div class="badge-text">
+                            <h4>Early Bird</h4>
+                            <p>10 rides before 8 AM</p>
+                        </div>
+                        <i class="fa-solid fa-circle-check check"></i>
+                    </div>
+                    <div class="achievement-item unlocked">
+                        <div class="badge-icon"><i class="fa-solid fa-hundred-points"></i></div>
+                        <div class="badge-text">
+                            <h4>Century Club</h4>
+                            <p>100+ total rides</p>
+                        </div>
+                        <i class="fa-solid fa-circle-check check"></i>
+                    </div>
+                    <div class="achievement-item locked">
+                        <div class="badge-icon"><i class="fa-solid fa-map"></i></div>
+                        <div class="badge-text">
+                            <h4>Explorer</h4>
+                            <p>Visit all 110 stations</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}

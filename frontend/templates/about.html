@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <header class="sub-hero">
+        <h1>About DublinBikes</h1>
+        <p>Ireland's premier bike-sharing service, dedicated to making cycling accessible, affordable, and convenient for everyone in Dublin.</p>
+    </header>
+
+    <div class="content-wrapper">
+        <section class="stats-grid">
+            <div class="stat-card">
+                <i class="fa-solid fa-users"></i>
+                <h2>100K+</h2>
+                <p>Active Users</p>
+            </div>
+            <div class="stat-card">
+                <i class="fa-solid fa-leaf"></i>
+                <h2>2.5M</h2>
+                <p>CO₂ Saved (kg)</p>
+            </div>
+            <div class="stat-card">
+                <i class="fa-solid fa-medal"></i>
+                <h2>110</h2>
+                <p>Bike Stations</p>
+            </div>
+            <div class="stat-card">
+                <i class="fa-solid fa-chart-line"></i>
+                <h2>98%</h2>
+                <p>User Satisfaction</p>
+            </div>
+        </section>
+
+        <section class="story-section">
+            <div class="story-text">
+                <h2>Our Story</h2>
+                <p>DublinBikes was launched in 2009 as a pioneering bike-sharing initiative to transform urban mobility in Dublin. What started with 40 stations has grown into a comprehensive network serving the entire city.</p>
+                <p>Since our launch, we've helped thousands of people discover the joy of cycling while reducing traffic congestion and promoting a healthier, more sustainable way to explore our beautiful city.</p>
+                <p>With over 110 stations across Dublin and a fleet of well-maintained bikes, we're committed to providing a reliable, eco-friendly transportation solution that fits your lifestyle. Our AI-powered systems now help cyclists plan better routes and make informed decisions about when and where to ride.</p>
+            </div>
+            <div class="story-image">
+                <img src="{{ url_for('static', filename='images/bike.jpg') }}" alt="DublinBike">
+            </div>
+        </section>
+
+        <section class="values-section">
+            <div class="section-header">
+                <h2>Our Values</h2>
+                <p>The principles that guide everything we do at DublinBikes</p>
+            </div>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon-box"><i class="fa-solid fa-leaf"></i></div>
+                    <h3>Sustainability</h3>
+                    <p>We're committed to reducing carbon emissions and promoting eco-friendly transportation throughout Dublin.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon-box"><i class="fa-solid fa-heart-pulse"></i></div>
+                    <h3>Health & Wellness</h3>
+                    <p>Encouraging active lifestyles and making it easier for Dubliners to incorporate exercise into their daily routine.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon-box"><i class="fa-solid fa-bullseye"></i></div>
+                    <h3>Accessibility</h3>
+                    <p>Making cycling accessible to everyone with affordable pricing and strategically located stations across the city.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon-box"><i class="fa-solid fa-shield"></i></div>
+                    <h3>Safety First</h3>
+                    <p>Regular bike maintenance, safety guidelines, and support to ensure a safe cycling experience for all users.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <section class="mission-section">
+    <div class="mission-content">
+        <div class="mission-icon">
+            <i class="fa-solid fa-bolt-lightning"></i>
+        </div>
+        <h2>Our Mission</h2>
+        <p>To create a sustainable, healthy, and connected Dublin by making cycling the easiest, most enjoyable way to move around our city – one ride at a time.</p>
+    </div>
+</section>
+
+<section class="join-section">
+    <div class="join-content">
+        <h2>Join the Movement</h2>
+        <p>Become part of Dublin's cycling community and help us build a greener, healthier future.</p>
+        <div class="cta-buttons">
+            <a href="{{ url_for('pages.subscription') }}" class="btn-cta-solid">Get Started Today</a>
+            <a href="{{ url_for('pages.howto') }}" class="btn-cta-outline">Learn More</a>
+        </div>
+    </div>
+</section>
+    
+{% endblock %}
