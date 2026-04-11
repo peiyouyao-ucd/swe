@@ -23,7 +23,7 @@ class StationService:
     def _load_model(self):
         """Loads the pre-trained machine learning model."""
         try:
-            model_path = os.path.join(os.path.dirname(__file__), 'bike_availability_model.pkl')
+            model_path = os.path.join(os.path.dirname(__file__), '../../ml_training/bike_availability_model.pkl')
             if os.path.exists(model_path):
                 with open(model_path, 'rb') as f:
                     self._model = pickle.load(f)
