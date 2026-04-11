@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <header class="sub-hero">
+        <h1>Choose Your Perfect Plan</h1>
+        <p>Flexible subscription options designed for every rider. No commitments, cancel anytime.</p>
+    </header>
+    
+    
+    <section class="section-plans">
+        <div class="pricing-header-inner">
+            <h1>Simple, Transparent Pricing</h1>
+            <p>Choose the plan that works best for you</p>
+        </div>
+
+        <div class="pricing-container">
+            <div class="plans-grid">
+                <div class="plan-card" onclick="selectPlan('Day Pass')">
+                    <h3>Day Pass</h3>
+                    <div class="price">€5 <span>/ day</span></div>
+                    <ul>
+                        <li><i class="fa-solid fa-check"></i> Unlimited 30-minute rides</li>
+                        <li><i class="fa-solid fa-check"></i> Access to all stations</li>
+                        <li><i class="fa-solid fa-check"></i> Mobile app access</li>
+                        <li><i class="fa-solid fa-check"></i> Customer support</li>
+                    </ul>
+                    <button class="btn-plan">Choose Plan</button>
+                </div>
+
+                <div class="plan-card featured" onclick="selectPlan('Monthly')">
+                    <h3>Monthly</h3>
+                    <div class="price">€25 <span>/ month</span></div>
+                    <ul>
+                        <li><i class="fa-solid fa-check"></i> Unlimited 60-minute rides</li>
+                        <li><i class="fa-solid fa-check"></i> Access to all stations</li>
+                        <li><i class="fa-solid fa-check"></i> Priority bike availability</li>
+                        <li><i class="fa-solid fa-check"></i> Mobile app access</li>
+                        <li><i class="fa-solid fa-check"></i> 24/7 customer support</li>
+                    </ul>
+                    <button class="btn-plan">Choose Plan</button>
+                </div>
+
+                <div class="plan-card" onclick="selectPlan('Annual')">
+                    <h3>Annual</h3>
+                    <div class="price">€120 <span>/ year</span></div>
+                    <ul>
+                        <li><i class="fa-solid fa-check"></i> Unlimited 90-minute rides</li>
+                        <li><i class="fa-solid fa-check"></i> Access to all stations</li>
+                        <li><i class="fa-solid fa-check"></i> Priority bike availability</li>
+                        <li><i class="fa-solid fa-check"></i> Mobile app access</li>
+                        <li><i class="fa-solid fa-check"></i> 24/7 premium support</li>
+                        <li><i class="fa-solid fa-check"></i> Free guest passes</li>
+                    </ul>
+                    <button class="btn-plan">Choose Plan</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-features">
+        <div class="container">
+            <div class="section-title">
+                <h2>All Plans Include</h2>
+                <p>Everything you need for a premium cycling experience</p>
+            </div>
+            <div class="features-include-grid">
+                <div class="feature-tag"><i class="fa-solid fa-circle-check"></i> Unlimited 30-minute rides</div>
+                <div class="feature-tag"><i class="fa-solid fa-circle-check"></i> No late fees for first hour</div>
+                <div class="feature-tag"><i class="fa-solid fa-circle-check"></i> Priority customer support</div>
+                <div class="feature-tag"><i class="fa-solid fa-circle-check"></i> Access to premium bikes</div>
+                <div class="feature-tag"><i class="fa-solid fa-circle-check"></i> Exclusive member events</div>
+                <div class="feature-tag"><i class="fa-solid fa-circle-check"></i> Carbon footprint tracking</div>
+                <div class="feature-tag"><i class="fa-solid fa-circle-check"></i> Ride history & analytics</div>
+                <div class="feature-tag"><i class="fa-solid fa-circle-check"></i> Multi-device app access</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-offers" id="special-offers">
+        <div class="container">
+            <div class="section-title">
+                <h2>Special Offers</h2>
+                <p>Save more with our exclusive deals</p>
+            </div>
+            <div class="offers-grid">
+                <div class="offer-card blue">
+                    <span class="badge">Limited Time</span>
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <h4>Student Discount</h4>
+                    <p>25% off annual subscriptions for students with valid ID</p>
+                
+                </div>
+                <div class="offer-card purple">
+                    <span class="badge">Popular</span>
+                    <i class="fa-solid fa-users"></i>
+                    <h4>Family Bundle</h4>
+                    <p>Get 3 monthly passes for the price of 2. Perfect for families!</p>
+            
+                </div>
+                <div class="offer-card green">
+                    <span class="badge">New</span>
+                    <i class="fa-solid fa-gift"></i>
+                    <h4>First Ride Free</h4>
+                    <p>New users get their first 30-minute ride completely free</p>
+            
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>What Our Members Say</h2>
+                <p>Join thousands of happy DublinBikes subscribers</p>
+            </div>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="stars">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p>"The monthly subscription has saved me so much money. I use it every day to get to work and it's incredibly convenient!"</p>
+                    <div class="user-info">
+                        <img src="https://i.pravatar.cc/150?u=emma" alt="Emma">
+                        <div><strong>Emma Walsh</strong><br><span>Daily Commuter</span></div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p>"Perfect for students! The annual plan gives amazing value and I can explore the whole city without worrying about costs."</p>
+                    <div class="user-info">
+                        <img src="https://i.pravatar.cc/150?u=liam" alt="Liam">
+                        <div><strong>Liam Murphy</strong><br><span>Student</span></div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p>"I love the flexibility. Sometimes I use it for commuting, other times for leisure rides. Best investment I've made!"</p>
+                    <div class="user-info">
+                        <img src="https://i.pravatar.cc/150?u=sophie" alt="Sophie">
+                        <div><strong>Sophie Chen</strong><br><span>Fitness Enthusiast</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-ready">
+        <div class="container text-center">
+            <i class="fa-solid fa-bolt-lightning mission-icon"></i>
+            <h2>Ready to Start Riding?</h2>
+            <p>Join DublinBikes today and experience the freedom of unlimited cycling</p>
+            <div class="btn-group">
+                <a href="{{ url_for('pages.subscription') }}" class="btn-cta-solid">Subscribe Now</a>
+                <a href="{{ url_for('auth.login') }}" class="btn-cta-outline">Start Free Trial</a>
+            </div>
+        </div>
+    </section>
+    
+{% endblock %}

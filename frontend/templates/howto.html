@@ -1,0 +1,490 @@
+{% extends "base.html" %}
+
+{% block content %}
+    
+    <header class="sub-hero">
+        <h1>How It Works</h1>
+        <p>Everything you need to know about using DublinBikes</p>
+    </header>
+
+    <div class="how-to-container">
+        
+        <nav class="tabs-nav">
+    <div class="tab-item active" onclick="switchTab(event, 'rent-content')">
+        <i class="fa-solid fa-bicycle"></i>
+        <span>How to Rent a Bike</span>
+    </div>
+    <div class="tab-item tab-blue" onclick="switchTab(event, 'use-content')">
+        <i class="fa-solid fa-play"></i>
+        <span>How to Use the Service</span>
+    </div>
+    <div class="tab-item tab-purple" onclick="switchTab(event, 'return-content')">
+        <i class="fa-solid fa-rotate"></i>
+        <span>How to Return the Bike</span>
+    </div>
+    <div class="tab-item tab-grey" onclick="switchTab(event, 'terms-content')">
+        <i class="fa-solid fa-file-lines"></i>
+        <span>Terms and Conditions</span>
+    </div>
+    <div class="tab-item tab-grey" onclick="switchTab(event, 'faq-content')">
+        <i class="fa-solid fa-circle-question"></i>
+        <span>Frequently Asked Questions</span>
+    </div>
+</nav>
+
+    <div class="tab-viewport">
+
+    <article id="rent-content" class="how-to-page active">
+    <div class="page-header">
+        <div class="icon-bg-light-green">
+            <i class="fa-solid fa-bicycle"></i>
+        </div>
+        <h2>How to Rent a Bike</h2>
+    </div>
+    <p class="intro-text">Renting a bike is simple and quick</p>
+
+    <div class="steps-grid">
+        <div class="step-card-detail">
+            <div class="step-num-circle">1</div>
+            <div class="step-content">
+                <h3>Find a Station</h3>
+                <p>Use the DublinBikes app or website to locate the nearest bike station with available bikes. Our real-time map shows bike availability at all 110+ stations.</p>
+                <div class="step-footer-info">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>Live station data updated every 30 seconds</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-card-detail">
+            <div class="step-num-circle">2</div>
+            <div class="step-content">
+                <h3>Select Your Bike</h3>
+                <p>Check the bike's condition before renting. Look for any visible damage and ensure the tires are properly inflated and brakes work correctly.</p>
+            </div>
+        </div>
+
+        <div class="step-card-detail">
+            <div class="step-num-circle">3</div>
+            <div class="step-content">
+                <h3>Unlock the Bike</h3>
+                <p>Open the DublinBikes app and scan the QR code on the bike, or enter the bike number manually. The bike will unlock automatically within seconds.</p>
+                <div class="step-footer-info">
+                    <i class="fa-solid fa-qrcode"></i>
+                    <span>QR code located on the handlebars</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-card-detail">
+            <div class="step-num-circle">4</div>
+            <div class="step-content">
+                <h3>Start Your Ride</h3>
+                <p>Once unlocked, remove the bike from the dock. Adjust the seat height if needed and start your journey. Your ride timer begins automatically.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="reminder-box-blue">
+        <h4><i class="fa-solid fa-mobile-screen-button"></i> First Time Renting?</h4>
+        <ul class="check-list">
+            <li>
+                <i class="fa-solid fa-circle-check"></i>
+                <span>Make sure you have the DublinBikes app installed and an active account</span>
+            </li>
+            <li>
+                <i class="fa-solid fa-circle-check"></i>
+                <span>Add a valid payment method to your account before renting</span>
+            </li>
+            <li>
+                <i class="fa-solid fa-circle-check"></i>
+                <span>Check your phone has a stable internet connection</span>
+            </li>
+            <li>
+                <i class="fa-solid fa-circle-check"></i>
+                <span>Choose a subscription plan or use pay-as-you-go option</span>
+            </li>
+        </ul>
+    </div>
+    </article>
+
+    <article id="use-content" class="how-to-page">
+    <div class="page-header">
+        <div class="icon-bg-light-blue">
+            <i class="fa-solid fa-play"></i>
+        </div>
+        <h2>How to Use the Service</h2>
+    </div>
+    <p class="intro-text">Making the most of your DublinBikes experience</p>
+
+    <div class="info-grid">
+        <div class="info-card-blue">
+            <div class="card-title">
+                <i class="fa-solid fa-mobile-screen"></i>
+                <h3>Mobile App Features</h3>
+            </div>
+            <ul class="feature-list">
+                <li><i class="fa-regular fa-circle-check"></i> <strong>Real-time Map:</strong> See all stations and bike availability</li>
+                <li><i class="fa-regular fa-circle-check"></i> <strong>Route Planning:</strong> Get directions to your destination</li>
+                <li><i class="fa-regular fa-circle-check"></i> <strong>Ride History:</strong> Track all your rides and statistics</li>
+                <li><i class="fa-regular fa-circle-check"></i> <strong>Weather Forecast:</strong> AI-powered cycling conditions</li>
+                <li><i class="fa-regular fa-circle-check"></i> <strong>Station Alerts:</strong> Get notified about station status</li>
+            </ul>
+        </div>
+
+        <div class="info-card-blue">
+            <div class="card-title">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h3>Safety Guidelines</h3>
+            </div>
+            <ul class="feature-list">
+                <li><i class="fa-regular fa-circle-check"></i> Always wear a helmet (not provided, bring your own)</li>
+                <li><i class="fa-regular fa-circle-check"></i> Follow all traffic rules and signals</li>
+                <li><i class="fa-regular fa-circle-check"></i> Use bike lanes where available</li>
+                <li><i class="fa-regular fa-circle-check"></i> Turn on lights in low visibility conditions</li>
+                <li><i class="fa-regular fa-circle-check"></i> Stay visible to other road users</li>
+            </ul>
+        </div>
+
+        <div class="info-card-blue">
+            <div class="card-title">
+                <i class="fa-regular fa-clock"></i>
+                <h3>Ride Duration</h3>
+            </div>
+            <div class="card-body-text">
+                <p><strong>30-Minute Rides:</strong> All subscription plans include unlimited 30-minute rides at no extra cost.</p>
+                <p><strong>Extended Rides:</strong> Rides over 30 minutes incur additional charges (€0.50 per 30 minutes).</p>
+                <p class="pro-tip"><strong>Pro Tip:</strong> Return your bike to any station before 30 minutes, then rent again to avoid extra charges!</p>
+            </div>
+            <div class="status-pill-blue">Active ride timer visible in app</div>
+        </div>
+
+        <div class="info-card-blue">
+            <div class="card-title">
+                <i class="fa-solid fa-credit-card"></i>
+                <h3>Subscription Plans</h3>
+            </div>
+            <ul class="price-list">
+                <li><span>Pay As You Go:</span> <strong>€2 per ride (30 minutes)</strong></li>
+                <li><span>Weekly Pass:</span> <strong>€15 for unlimited 30-min rides</strong></li>
+                <li><span>Monthly Pass:</span> <strong>€35 for unlimited 30-min rides</strong></li>
+                <li><span>Annual Pass:</span> <strong>€120 for unlimited 30-min rides (Save 60%!)</strong></li>
+            </ul>
+            <div class="status-pill-blue">Change plans anytime in the app</div>
+        </div>
+    </div>
+
+    <div class="reminder-box-yellow">
+        <h4><i class="fa-solid fa-triangle-exclamation"></i> Important Reminders</h4>
+        <ul class="bullet-list">
+            <li>Bikes are for personal use only - no passengers allowed</li>
+            <li>Do not leave your bike unattended outside a station</li>
+            <li>Report any damage or issues immediately through the app</li>
+            <li>Lock your bike if you need to make a quick stop</li>
+            <li>You are responsible for the bike until it's properly returned</li>
+        </ul>
+    </div>
+    </article>
+
+            <article id="return-content" class="how-to-page">
+    <div class="page-header">
+        <div class="icon-bg-purple">
+            <i class="fa-solid fa-rotate-left"></i>
+        </div>
+        <h2>How to Return the Bike</h2>
+    </div>
+    <p class="intro-text">Returning your bike safely and correctly</p>
+
+    <div class="steps-grid">
+        <div class="step-card-purple">
+            <div class="step-num-purple">1</div>
+            <div class="step-body">
+                <h3>Find an Available Dock</h3>
+                <p>Use the app to find nearby stations with free docking spaces. The map shows real-time availability at each station.</p>
+                <div class="step-footer-purple"><i class="fa-solid fa-magnifying-glass"></i> Filter by stations with available docks</div>
+            </div>
+        </div>
+
+        <div class="step-card-purple">
+            <div class="step-num-purple">2</div>
+            <div class="step-body">
+                <h3>Align the Bike</h3>
+                <p>Push the bike firmly into an empty dock. Make sure the front wheel is properly aligned with the docking mechanism.</p>
+            </div>
+        </div>
+
+        <div class="step-card-purple">
+            <div class="step-num-purple">3</div>
+            <div class="step-body">
+                <h3>Wait for Confirmation</h3>
+                <p>The dock will beep and show a green light when the bike is securely locked. Wait for this confirmation before leaving.</p>
+                <div class="step-footer-purple"><i class="fa-solid fa-lock"></i> Green light = Successfully returned</div>
+            </div>
+        </div>
+
+        <div class="step-card-purple">
+            <div class="step-num-purple">4</div>
+            <div class="step-body">
+                <h3>Check Your App</h3>
+                <p>Your ride will automatically end and you'll receive a summary showing ride duration, distance, and any charges.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert-box-red">
+        <h4><i class="fa-solid fa-triangle-exclamation"></i> What if all docks are full?</h4>
+        <p><strong>Option 1:</strong> The app will show you the nearest station with available docks.</p>
+        <p><strong>Option 2:</strong> Press the call button on the station terminal for 15 extra minutes of free riding time.</p>
+        <p><strong>Option 3:</strong> Contact customer support through the app for immediate assistance.</p>
+    </div>
+
+    <div class="checklist-box-green">
+        <h4><i class="fa-solid fa-circle-check"></i> Return Checklist</h4>
+        <ul class="check-items">
+            <li><i class="fa-regular fa-square-check"></i> Bike is pushed firmly into the dock</li>
+            <li><i class="fa-regular fa-square-check"></i> Green light is displayed on dock</li>
+            <li><i class="fa-regular fa-square-check"></i> Confirmation beep heard</li>
+            <li><i class="fa-regular fa-square-check"></i> App shows ride has ended</li>
+            <li><i class="fa-regular fa-square-check"></i> No items left on the bike</li>
+        </ul>
+    </div>
+
+    <div class="remember-box-blue">
+        <h4>Remember</h4>
+        <p>You remain responsible for the bike until you receive confirmation that it has been properly returned. Always double-check before leaving the station!</p>
+    </div>
+    </article>
+
+            <article id="terms-content" class="how-to-page">
+    <div class="page-header">
+        <div class="icon-bg-grey">
+            <i class="fa-solid fa-file-contract"></i>
+        </div>
+        <h2>Terms and Conditions</h2>
+    </div>
+
+    <div class="terms-wrapper">
+        <h3>DublinBikes Terms of Service</h3>
+
+        <div class="terms-section">
+            <h4>1. Acceptance of Terms</h4>
+            <p>By accessing and using DublinBikes services, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to these terms, you should not use our services.</p>
+
+            <h4>2. Eligibility</h4>
+            <p>To use DublinBikes, you must:</p>
+            <ul class="terms-list">
+                <li>Be at least 16 years of age</li>
+                <li>Have a valid payment method</li>
+                <li>Possess a valid email address and mobile phone number</li>
+                <li>Agree to comply with all applicable traffic laws and regulations</li>
+            </ul>
+
+            <h4>3. User Responsibilities</h4>
+            <p>As a DublinBikes user, you agree to:</p>
+            <ul class="terms-list">
+                <li>Inspect the bike before each use and report any damage</li>
+                <li>Use the bike in a safe and responsible manner</li>
+                <li>Follow all traffic laws and regulations</li>
+                <li>Not carry passengers or exceed weight limits</li>
+                <li>Return bikes to designated stations within the service area</li>
+                <li>Not modify, tamper with, or damage the bikes or stations</li>
+                <li>Keep your account information confidential</li>
+            </ul>
+
+            <h4>4. Pricing and Payment</h4>
+            <ul class="terms-list">
+                <li>Subscription fees are charged in advance and are non-refundable</li>
+                <li>Additional charges apply for rides exceeding 30 minutes</li>
+                <li>Late return fees may apply if bikes are not returned within the maximum rental period</li>
+                <li>Damage or loss fees will be charged for bikes not returned in proper condition</li>
+                <li>Prices are subject to change with 30 days notice</li>
+            </ul>
+
+            <h4>5. Liability and Insurance</h4>
+            <p>You are responsible for any damage, loss, or theft of the bike during your rental period. DublinBikes is not liable for any injuries, damages, or losses incurred while using our services. Users are encouraged to have their own personal insurance coverage.</p>
+
+            <h4>6. Suspension and Termination</h4>
+            <p>DublinBikes reserves the right to suspend or terminate your account if you violate these terms, engage in fraudulent activity, or fail to pay required fees. Repeated violations may result in a permanent ban from the service.</p>
+
+            <h4>7. Privacy and Data</h4>
+            <p>We collect and process personal data in accordance with our Privacy Policy. By using DublinBikes, you consent to our collection and use of your data as described in our Privacy Policy, including location data for service improvement and safety purposes.</p>
+
+            <h4>8. Service Availability</h4>
+            <p>DublinBikes aims to provide consistent service but does not guarantee uninterrupted availability. Service may be affected by weather, maintenance, technical issues, or other factors beyond our control. We reserve the right to modify or discontinue services at any time.</p>
+
+            <h4>9. Indemnification</h4>
+            <p>You agree to indemnify and hold harmless DublinBikes, its affiliates, officers, and employees from any claims, damages, losses, or expenses arising from your use of the service or violation of these terms.</p>
+
+            <h4>10. Changes to Terms</h4>
+            <p>DublinBikes reserves the right to modify these terms at any time. Continued use of the service after changes are posted constitutes acceptance of the modified terms. Users will be notified of significant changes via email or app notification.</p>
+
+            <h4>11. Contact Information</h4>
+            <p>For questions about these terms, please contact us at:</p>
+            
+            <div class="terms-contact-card">
+                <p><strong>Email:</strong> legal@dublinbikes.ie</p>
+                <p><strong>Phone:</strong> +353 1 234 5678</p>
+                <p><strong>Address:</strong> DublinBikes HQ, Dublin 2, Ireland</p>
+            </div>
+        </div>
+
+        <div class="terms-footer-note">
+            <p>Last Updated: February 18, 2026</p>
+            <p>Version: 3.2</p>
+        </div>
+    </div>
+    </article>
+
+            <article id="faq-content" class="how-to-page">
+    <div class="page-header">
+        <div class="icon-bg-grey">
+            <i class="fa-solid fa-circle-question"></i>
+        </div>
+        <h2>Frequently Asked Questions</h2>
+    </div>
+
+    <div class="faq-wrapper">
+        <h3 class="faq-sub-title">Common Questions</h3>
+
+        <div class="faq-list">
+            <div class="faq-card">
+                <div class="faq-icon-circle"><i class="fa-regular fa-comment-dots"></i></div>
+                <div class="faq-body">
+                    <strong>How do I create an account?</strong>
+                    <p>Download the DublinBikes app from the App Store or Google Play, click "Sign Up," and follow the registration process. You'll need to provide your email, create a password, add a payment method, and verify your phone number.</p>
+                </div>
+            </div>
+
+            <div class="faq-card">
+                <div class="faq-icon-circle"><i class="fa-regular fa-comment-dots"></i></div>
+                <div class="faq-body">
+                    <strong>What payment methods do you accept?</strong>
+                    <p>We accept all major credit and debit cards (Visa, Mastercard, American Express), as well as PayPal and Apple Pay. Payment methods can be managed in your account settings.</p>
+                </div>
+            </div>
+
+            <div class="faq-card">
+                <div class="faq-icon-circle"><i class="fa-regular fa-comment-dots"></i></div>
+                <div class="faq-body">
+                    <strong>Can I rent multiple bikes at once?</strong>
+                    <p>No, each account can only have one active rental at a time. If you need to rent bikes for a group, each person will need their own account and subscription.</p>
+                </div>
+            </div>
+
+            <div class="faq-card">
+                <div class="faq-icon-circle"><i class="fa-regular fa-comment-dots"></i></div>
+                <div class="faq-body">
+                    <strong>What happens if the bike is damaged?</strong>
+                    <p>If you notice damage before renting, report it in the app and choose a different bike. If damage occurs during your ride, contact customer support immediately.</p>
+                </div>
+            </div>
+            
+
+            <div class="faq-card">
+                <div class="faq-icon-circle"><i class="fa-regular fa-comment-dots"></i></div>
+                <div class="faq-body">
+                    <strong>Can I cancel my subscription?</strong>
+                    <p>Yes, you can cancel your subscription at any time through the app settings. Your subscription will remain active until the end of your current billing period. No refunds are provided for partial months.</p>
+                </div>
+            </div>
+
+            <div class="faq-card">
+                <div class="faq-icon-circle"><i class="fa-regular fa-comment-dots"></i></div>
+                <div class="faq-body">
+                    <strong>What if I forget to return the bike?</strong>
+                    <p>The bike remains your responsibility until properly returned to a station. Extended rental fees will continue to accrue. If a bike is not returned within 24 hours, it may be reported as stolen and you'll be charged the full replacement cost (€1,200).</p>
+                </div>
+            </div>
+
+            <div class="faq-card">
+                <div class="faq-icon-circle"><i class="fa-regular fa-comment-dots"></i></div>
+                <div class="faq-body">
+                    <strong>Are helmets provided?</strong>
+                    <p>No, helmets are not provided with our bikes. We strongly recommend bringing your own helmet for safety. Helmets are legally required for cyclists under 18 in Ireland.</p>
+                </div>
+            </div>
+
+            <div class="faq-card">
+                <div class="faq-icon-circle"><i class="fa-regular fa-comment-dots"></i></div>
+                <div class="faq-body">
+                    <strong>Can I use DublinBikes outside of Dublin?</strong>
+                    <p>No, DublinBikes must be returned to a station within the Dublin service area. Taking bikes outside this area violates our terms of service and may result in additional fees and account suspension.</p>
+                </div>
+            </div>
+
+            <div class="faq-card">
+                <div class="faq-icon-circle"><i class="fa-regular fa-comment-dots"></i></div>
+                <div class="faq-body">
+                    <strong>What should I do if I have an accident?</strong>
+                    <p>First, ensure you're safe and seek medical attention if needed. Then, report the incident to local authorities if required, and contact DublinBikes customer support as soon as possible. Document the scene with photos if safe to do so.</p>
+                </div>
+            </div>
+
+            <div class="faq-card">
+                <div class="faq-icon-circle"><i class="fa-regular fa-comment-dots"></i></div>
+                <div class="faq-body">
+                    <strong>How do I report a problem with a bike or station?</strong>
+                    <p>You can report issues directly through the app by selecting the bike or station and clicking "Report Problem." Our maintenance team will be notified immediately and will address the issue as quickly as possible.</p>
+                </div>
+            </div>
+
+            <div class="faq-card">
+                <div class="faq-icon-circle"><i class="fa-regular fa-comment-dots"></i></div>
+                <div class="faq-body">
+                    <strong>Is there a student discount?</strong>
+                    <p>Yes! Students with a valid student ID can get 20% off annual subscriptions. Verify your student status through the app to access this discount.</p>
+                </div>
+            </div>
+
+            <div class="faq-card">
+                <div class="faq-icon-circle"><i class="fa-regular fa-comment-dots"></i></div>
+                <div class="faq-body">
+                    <strong>Can I reserve a bike in advance?</strong>
+                    <p>Bikes cannot be reserved in advance. Our system is designed for immediate, real-time rentals. The app shows live availability at all stations to help you plan your journey.</p>
+                </div>
+            </div>
+
+            <div class="faq-card">
+                <div class="faq-icon-circle"><i class="fa-regular fa-comment-dots"></i></div>
+                <div class="faq-body">
+                    <strong>What if my phone battery dies during a ride?</strong>
+                    <p>The bike will remain unlocked and your ride will continue. However, you won't be able to see station availability for return. We recommend carrying a portable charger or planning your route in advance.</p>
+                </div>
+            </div>
+
+            <div class="faq-card">
+                <div class="faq-icon-circle"><i class="fa-regular fa-comment-dots"></i></div>
+                <div class="faq-body">
+                    <strong>Are the bikes electric?</strong>
+                    <p>Currently, our fleet consists of traditional pedal bikes. We are piloting electric bikes at select stations and plan to expand our e-bike offering in 2026.</p>
+                </div>
+            </div>
+
+            <div class="faq-card">
+                <div class="faq-icon-circle"><i class="fa-regular fa-comment-dots"></i></div>
+                <div class="faq-body">
+                    <strong>How often are bikes maintained?</strong>
+                    <p>All bikes undergo regular maintenance checks weekly. Our maintenance team also responds to reported issues within 24 hours. Bikes are thoroughly serviced monthly and replaced every 3-5 years.</p>
+                </div>
+            </div>
+            </div>
+
+        <div class="support-cta-box">
+            <div class="support-text">
+                <h4>Still have questions?</h4>
+                <p>Our customer support team is available 24/7 to help you.</p>
+            </div>
+            <div class="support-actions">
+                <button class="btn-support-green">Contact Support</button>
+                <button class="btn-support-outline">Live Chat</button>
+            </div>
+        </div>
+        
+        
+    </div>
+    </article>
+
+        </div>
+    </div>
+    
+{% endblock %}
