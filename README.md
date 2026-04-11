@@ -78,8 +78,7 @@ uv run python ml_training/generate_dummy_data.py
 # 2. Run the training script
 uv run python "ml_training/0. linear_regression.py"
 
-# 3. Inject the trained model to the backend
-cp ml_training/bike_availability_model.pkl backend/services/
+# 3. Confirm the model pkl file generated with name and path: ml_training/bike_availability_model.pkl
 ```
 
 ## 3.4 Run tests
