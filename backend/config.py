@@ -1,18 +1,23 @@
 import requests
 import json
+import os
 from pprint import pprint
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # --- CONFIGURATION ---
-# Please fill in your API keys here
-JCD_APIKEY = "52f9ba4359889ed1c9aefe45d17b308f7aa80967"
-OWM_APIKEY = "e598ac30c7b447fd32315b33743efbc1"
+# Please fill in your API keys in the .env file
+JCD_APIKEY = os.environ.get("swe.JCD_APIKEY")
+OWM_APIKEY = os.environ.get("swe.OWM_APIKEY")
 
 JCD_CONTRACT_NAME = "dublin"
 OWM_CITY = "Dublin,IE"
 
 # --- API ENDPOINTS ---
-JCD_URL = "https://api.jcdecaux.com/vls/v1/stations"
-OWM_URL = "http://api.openweathermap.org/data/2.5/weather"
+JCD_URL = os.environ.get("swe.JCD_URL", "https://api.jcdecaux.com/vls/v1/stations")
+OWM_URL = os.environ.get("swe.OWM_URL", "http://api.openweathermap.org/data/2.5/weather")
 
 def scrape_jcdecaux():
     print("\n--- Exploring JCDecaux Data ---")
