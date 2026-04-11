@@ -465,61 +465,82 @@ function updateChart(history) {
         window.predictionChart.destroy();
     }
 
-    
     history.sort((a, b) => new Date(a.last_update) - new Date(b.last_update));
 
-    
-    const labels = history.map(h => {
-        let dateStr = h.last_update;
-        if (typeof dateStr === 'string') {
-            dateStr = dateStr.replace(/-/g, "/");
+    const hourlyLabels = [];
+    const hourlyData = [];
+    const now = new Date();
+
+    for (let i = 23; i >= 0; i--) {
+        const targetTime = new Date(now);
+        targetTime.setHours(now.getHours() - i, 0, 0, 0);
+
+   
+        const label = targetTime.getHours().toString().padStart(2, '0'); 
+        hourlyLabels.push(label);
+
+        if (history.length > 0) {
+            const closest = history.reduce((prev, curr) => {
+                const currTime = new Date(curr.last_update);
+                const prevTime = new Date(prev.last_update);
+                return Math.abs(currTime - targetTime) < Math.abs(prevTime - targetTime) ? curr : prev;
+            });
+
+            const diff = Math.abs(new Date(closest.last_update) - targetTime);
+            if (diff < 40 * 60 * 1000) { 
+                hourlyData.push(closest.available_bikes);
+            } else {
+                hourlyData.push(null); 
+            }
+        } else {
+            hourlyData.push(null);
         }
-        const dateObj = new Date(dateStr);
-        if (isNaN(dateObj)) return h.last_update;
-        
-        return dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    });
-
-
-    const data = history.map(h => h.available_bikes);
+    }
 
     window.predictionChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: labels,
+            labels: hourlyLabels,
             datasets: [{
                 label: 'Available Bikes',
-                data: data,
+                data: hourlyData,
                 borderColor: '#00a86b',
                 backgroundColor: 'rgba(0, 168, 107, 0.1)',
                 fill: true,
                 tension: 0.4,
-                borderWidth: 1.5,      
-                pointRadius: 2,        
-                pointHoverRadius: 5,   
+                borderWidth: 1.5,
+                pointRadius: 2,
+                spanGaps: true 
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
+            plugins: { 
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        title: (items) => items[0].label + ":00"
+                    }
+                }
+            },
             scales: { 
                 y: { 
                     beginAtZero: true,
                     ticks: { stepSize: 1 } 
                 },
                 x: { 
+                    grid: { display: false },
                     ticks: { 
                         maxRotation: 0, 
                         autoSkip: true,    
-                        maxTicksLimit: 8  
+                        maxTicksLimit: 12 
                     } 
                 }
             }
         }
     });
 }
-
 function jumpToTab(contentId) {
     const targetTab = document.querySelector(`.tab-item[onclick*="${contentId}"]`);
     if (targetTab) {

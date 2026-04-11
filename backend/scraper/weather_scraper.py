@@ -82,6 +82,7 @@ def fetch_and_store_weather(weather_service: WeatherService):
             weather_info = raw_weather_data.get('weather', [{}])[0]
             raw_weather_data['description'] = weather_info.get('description')
             raw_weather_data['main_weather'] = weather_info.get('main')
+            
 
        
             weather_service.save_from_raw_weather_data(raw_weather_data)
