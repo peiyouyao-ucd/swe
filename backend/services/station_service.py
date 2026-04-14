@@ -114,8 +114,6 @@ class StationService:
                 'station_id': station_number,
                 'temperature': weather_data.get('temp', 15.0), # Default if missing
                 'humidity': weather_data.get('humidity', 50),
-                'wind_speed': weather_data.get('wind_speed', 0.0),
-                'precipitation': weather_data.get('precipitation', 0.0), # Note: we might need to handle this key carefully if it doesn't exist
                 'hour': hour,
                 'day_of_week': day_of_week
             }])
