@@ -42,5 +42,5 @@ Thumbs.db
 # Other
 .code_example/
 .vscode
-ml_training/**/.csv
-ml_training/**/.joblib
+ml_training/*/.csv
+ml_training/*/.joblib
