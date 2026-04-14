@@ -47,21 +47,41 @@ source .venv/bin/activate
 .\.venv\Scripts\activate
 ```
 
-## 3.2 Run backend
+## 3.2 Run model training
 
-Before run backend, we need configure API Keys and URLs. Create `backend/.env` with
+We need run model training firstly.
+
+Run `ml_training/training.ipynb` which will generate a model file: `ml_training/bike_availability_model.pkl` 
+
+We don't upload this model file to Github because of its big size.
+
+Backend application will read that `.pkl` model file when `StationService` is initialized.
+
+## 3.3 Inject secrets
+
+We need to configure API Keys and URLs then.
+
+Create `backend/.env` with
 
 ```txt
-# JCDecaux API Key
-swe.JCD_APIKEY=<your api key>
+# JCDecaux API Configuration
+JCD_APIKEY=52f9ba4359889ed1c9aefe45d17b308f7aa80967
+JCD_URL=https://api.jcdecaux.com/vls/v1/stations
+JCD_CONTRACT_NAME=dublin
 
-# OpenWeatherMap API Key
-swe.OWM_APIKEY=<your api key>
+# OpenWeatherMap API Configuration
+OWM_APIKEY=e598ac30c7b447fd32315b33743efbc1
+OWM_URL=http://api.openweathermap.org/data/2.5/weather
+OWM_CITY=Dublin,IE
 
-# API Endpoints (Optional defaults provided in code)
-swe.JCD_URL=https://api.jcdecaux.com/vls/v1/stations
-swe.OWM_URL=http://api.openweathermap.org/data/2.5/weather
+# Google Maps API Configuration
+GOOGLE_MAPS_KEY=AIzaSyAgyAIhr_Smqjx2XN9GAz_O_XEOyNLhn-Q
+
+# Database Configuration
+SQLALCHEMY_DATABASE_URI=mysql+pymysql://root:root_password@localhost:3306/dublin_bikes
 ```
+
+## 3.4 Run backend
 
 Then, use command to run backend
 
@@ -70,23 +90,7 @@ Then, use command to run backend
 uv run python backend/app.py
 ```
 
-## 3.3 Run model training
-
-Training the model involves generating/collecting data, running the trainer, and copying the model to the backend:
-
-```bash
-# /swe
-
-# 1. Generate dummy data (if you don't have CSV yet)
-uv run python ml_training/generate_dummy_data.py
-
-# 2. Run the training script
-uv run python "ml_training/0. linear_regression.py"
-
-# 3. Confirm the model pkl file generated with name and path: ml_training/bike_availability_model.pkl
-```
-
-## 3.4 Run tests
+## 3.5 Run tests
 
 ```bash
 # /swe
