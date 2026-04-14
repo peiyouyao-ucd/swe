@@ -1,6 +1,11 @@
 import requests
 import json
+import os
 from pprint import pprint
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # --- CONFIGURATION ---
 class Config:

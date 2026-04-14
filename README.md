@@ -44,6 +44,22 @@ source .venv/bin/activate
 
 ## 3.2 Run backend
 
+Before run backend, we need configure API Keys and URLs. Create `backend/.env` with
+
+```txt
+# JCDecaux API Key
+swe.JCD_APIKEY=<your api key>
+
+# OpenWeatherMap API Key
+swe.OWM_APIKEY=<your api key>
+
+# API Endpoints (Optional defaults provided in code)
+swe.JCD_URL=https://api.jcdecaux.com/vls/v1/stations
+swe.OWM_URL=http://api.openweathermap.org/data/2.5/weather
+```
+
+Then, use command to run backend
+
 ```bash
 # /swe
 uv run python backend/app.py
@@ -62,8 +78,7 @@ uv run python ml_training/generate_dummy_data.py
 # 2. Run the training script
 uv run python "ml_training/0. linear_regression.py"
 
-# 3. Inject the trained model to the backend
-cp ml_training/bike_availability_model.pkl backend/services/
+# 3. Confirm the model pkl file generated with name and path: ml_training/bike_availability_model.pkl
 ```
 
 ## 3.4 Run tests
