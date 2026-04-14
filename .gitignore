@@ -42,6 +42,5 @@ Thumbs.db
 # Other
 .code_example/
 .vscode
-bike_weather_data.csv
-bike_availability_model.joblib
-bike_availability_model.pkl
+ml_training/**/.csv
+ml_training/**/.joblib
