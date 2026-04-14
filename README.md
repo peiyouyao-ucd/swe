@@ -39,7 +39,12 @@ Activate venv:
 
 ```bash
 # /swe
+
+# MacOS / Linux
 source .venv/bin/activate
+
+# Windows
+.\.venv\Scripts\activate
 ```
 
 ## 3.2 Run backend

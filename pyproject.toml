@@ -19,4 +19,5 @@ dependencies = [
     "sktime",
     "ipykernel",
     "python-dotenv>=1.2.2",
+    "dotenv",
 ]
