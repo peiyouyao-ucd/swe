@@ -1,5 +1,4 @@
 import requests
-import json
 import os
 from pprint import pprint
 from dotenv import load_dotenv
@@ -10,16 +9,16 @@ load_dotenv()
 # --- CONFIGURATION ---
 class Config:
     """Class-based config for Flask (New approach)"""
-    JCD_APIKEY = "52f9ba4359889ed1c9aefe45d17b308f7aa80967"
-    OWM_APIKEY = "e598ac30c7b447fd32315b33743efbc1"
-    GOOGLE_MAPS_KEY = "AIzaSyAgyAIhr_Smqjx2XN9GAz_O_XEOyNLhn-Q"
+    JCD_APIKEY = os.getenv("JCD_APIKEY")
+    OWM_APIKEY = os.getenv("OWM_APIKEY")
+    GOOGLE_MAPS_KEY = os.getenv("GOOGLE_MAPS_KEY")
 
-    JCD_CONTRACT_NAME = "dublin"
-    OWM_CITY = "Dublin,IE"
-    JCD_URL = "https://api.jcdecaux.com/vls/v1/stations"
-    OWM_URL = "http://api.openweathermap.org/data/2.5/weather"
+    JCD_CONTRACT_NAME = os.getenv("JCD_CONTRACT_NAME", "dublin")
+    OWM_CITY = os.getenv("OWM_CITY", "Dublin,IE")
+    JCD_URL = os.getenv("JCD_URL", "https://api.jcdecaux.com/vls/v1/stations")
+    OWM_URL = os.getenv("OWM_URL", "http://api.openweathermap.org/data/2.5/weather")
 
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root_password@localhost:3306/dublin_bikes'
+    SQLALCHEMY_DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI", 'mysql+pymysql://root:root_password@localhost:3306/dublin_bikes')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 

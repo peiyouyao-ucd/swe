@@ -6,7 +6,6 @@ from apscheduler.schedulers.background import BackgroundScheduler
 # --- 1. Core Configuration & Database Imports ---
 from utils.db import db
 from config import Config
-from models import User
 
 # --- 2. Blueprint Imports (Organized Routes) ---
 from routes.auth_routes import auth_bp
@@ -14,8 +13,8 @@ from routes.page_routes import pages_bp
 from routes.api_routes import api_bp
 
 # --- 3. Repository & Service Imports ---
-from repository.station_repo import InMemoStationRepository,SQLStationRepository
-from repository.weather_repo import InMemoWeatherRepository,SQLWeatherRepository 
+from repository.station_repo import SQLStationRepository
+from repository.weather_repo import SQLWeatherRepository
 from services.station_service import StationService
 from services.weather_service import WeatherService
 from scraper.station_scraper import fetch_and_store_stations

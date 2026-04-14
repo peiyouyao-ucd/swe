@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from collections import deque
 import threading
 from utils.db import db
 import time

@@ -1,5 +1,4 @@
 from repository.station_repo import StationRepository
-import time
 import pickle
 import pandas as pd
 import os
