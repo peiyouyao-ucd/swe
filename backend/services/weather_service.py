@@ -5,22 +5,17 @@ class WeatherService:
         self._repo = repo
     
     def save_from_raw_weather_data(self, raw_weather_data: dict):
-        """Processes raw weather data and saves it to the repository.
-
-        This method takes the nested dictionary returned by the OWM API,
-        flattens it into a structured format (`saving_weather_data`),
-        and then calls the repository's save method to persist it.
-
-        Args:
-            raw_weather_data (dict): The raw weather data from the API.
-                See `weather_scraper.py` for the detailed structure.
-        """
-        # Extract data from nested structures, providing default values
+  
         weather_info = raw_weather_data.get('weather', [{}])[0]
         main_info = raw_weather_data.get('main', {})
         wind_info = raw_weather_data.get('wind', {})
         coord_info = raw_weather_data.get('coord', {})
         sys_info = raw_weather_data.get('sys', {})
+
+  
+        rain_info = raw_weather_data.get('rain', {})
+
+        precipitation = rain_info.get('1h', rain_info.get('3h', 0))
 
         saving_weather_data = {
             'city_id': raw_weather_data.get('id'),
@@ -46,9 +41,11 @@ class WeatherService:
             'weather_main': weather_info.get('main'),
             'weather_description': weather_info.get('description'),
             'weather_icon': weather_info.get('icon'),
+            'precipitation': precipitation, 
         }
+        
         self._repo.save(saving_weather_data)
-
+        
     def get_latest_weather_data(self) -> dict:
         """Retrieves the most recent weather data from the repository.
 

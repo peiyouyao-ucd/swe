@@ -34,62 +34,50 @@ class StationService:
             logging.error(f"Failed to load machine learning model: {e}")
 
     def save_station_data(self, raw_stations_data: list[dict]):
-        """Transforms and saves station data.
-
-        This method takes the raw data from the scraper, transforms it into the
-        `saving_stations_data` format, and persists it using the repository.
-
-        Args:
-            raw_stations_data (list[dict]): A list of dictionaries, with each
-                dictionary representing a station's raw data from the API.
         """
-
-        stations = [
+        Processes raw station data from API and persists each station to the SQL database.
+        """
+       
+        processed_stations = [
             {
-                'address': station.get('address'),
-                'available_bike_stands': station.get('available_bike_stands'),
-                'available_bikes': station.get('available_bikes'),
-                'banking': station.get('banking'),
-                'bike_stands': station.get('bike_stands'),
-                'bonus': station.get('bonus'),
-                'contract_name': station.get('contract_name'),
-                'name': station.get('name'),
                 'number': station.get('number'),
-                'lat': station.get('position', {}).get('lat'),
-                'lng': station.get('position', {}).get('lng'),
+                'name': station.get('name'),
+                'address': station.get('address'),
+                'position': station.get('position', {}),
+                'bike_stands': station.get('bike_stands'),
                 'status': station.get('status'),
+                'banking': station.get('banking'),
+                'bonus': station.get('bonus'),
+              
+                'available_bikes': station.get('available_bikes'),
+                'available_bike_stands': station.get('available_bike_stands'),
+                'last_update': station.get('last_update')
             }
             for station in raw_stations_data
         ]
-        stations.sort(key=lambda x: x['number'])
 
-        saving_stations_data = {
-            'timestamp': time.time(),
-            'stations': stations,
-        }
-        self._repo.save(saving_stations_data)
+        # 2. Iterate and save each station
+        for station in processed_stations:
+            try:
+                self._repo.save(station)
+            except Exception as e:
+                logging.error(f"Failed to save station {station.get('number')}: {e}")
 
-    def get_latest_all_stations(self) -> dict:
-        """Retrieves the latest snapshot of all station data.
 
-        Returns:
-            dict: A dictionary conforming to the `saving_stations_data` schema,
-                  containing the timestamp and a list of all stations.
+    def get_latest_all_stations(self) -> list:
         """
-        return self._repo.get(time_from=-1, time_to=-1)
-
-    def get_one_station(self, station_number: int, time_from: int = None):
-        """Retrieves historical data for a single station.
-
-        Args:
-            station_number (int): The ID of the station to retrieve.
-            time_from (int, optional): A Unix timestamp to filter records from.
-                Defaults to None.
-
-        Returns:
-            dict: A dictionary containing the station's historical data.
+        Retrieves current snapshots of all stations from the database.
         """
-        return self._repo.get(time_from=time_from, time_to=None, station_number=station_number)
+        # Aligning with SQLStationRepository.get_all()
+        return self._repo.get()
+
+    def get_one_station(self, station_number: int) -> dict:
+        """
+        Retrieves a single station's details by its ID.
+        """
+        # Aligning with SQLStationRepository.get_by_id()
+        return self._repo.get(station_number=station_number)
+    
 
     def predict_for_one_station(self, station_number: int) -> int:
         """Predicts future availability for a single station using current weather and time.

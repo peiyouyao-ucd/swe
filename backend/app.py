@@ -1,81 +1,97 @@
 import logging
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, request
 from flask_cors import CORS
 from apscheduler.schedulers.background import BackgroundScheduler
-import os
 
-from repository.station_repo import InMemoStationRepository
-from repository.weather_repo import InMemoWeatherRepository
+# --- 1. Core Configuration & Database Imports ---
+from utils.db import db
+from config import Config
+from models import User
+
+# --- 2. Blueprint Imports (Organized Routes) ---
+from routes.auth_routes import auth_bp
+from routes.page_routes import pages_bp
+from routes.api_routes import api_bp
+
+# --- 3. Repository & Service Imports ---
+from repository.station_repo import InMemoStationRepository,SQLStationRepository
+from repository.weather_repo import InMemoWeatherRepository,SQLWeatherRepository 
 from services.station_service import StationService
 from services.weather_service import WeatherService
 from scraper.station_scraper import fetch_and_store_stations
 from scraper.weather_scraper import fetch_and_store_weather
 
+# --- APP INITIALIZATION ---
+app = Flask(__name__, 
+            static_folder='../frontend/static', 
+            template_folder='../frontend/templates')
 
-# --- Initialization ---
-app = Flask(__name__, static_folder='../frontend', static_url_path='')
+# Load settings from the Config class (includes API keys and DB URI)
+app.config.from_object(Config)
+
+# Enable Cross-Origin Resource Sharing and basic logging
 CORS(app)
 logging.basicConfig(level=logging.INFO)
 
+# Initialize the SQLAlchemy database instance
+db.init_app(app)
 
-# --- Repositories ---
-station_repo = InMemoStationRepository(max_size=100)
-weather_repo = InMemoWeatherRepository(max_size=24)
+# --- 4. Repository & Service Setup ---
+# Initialize In-Memory repositories as per original logic
+#station_repo = InMemoStationRepository(max_size=100)
+station_repo = SQLStationRepository()
+#weather_repo = InMemoWeatherRepository(max_size=24)
+weather_repo = SQLWeatherRepository()
 
-
-# --- Services ---
+# Initialize Services with their respective dependencies
+# Note: StationService requires weather_service for logic processing
 weather_service = WeatherService(weather_repo)
 station_service = StationService(station_repo, weather_service)
 
+# Store service instances in app.config so they are accessible 
+# within Blueprints using 'current_app.config'
+app.config['STATION_SERVICE'] = station_service
+app.config['WEATHER_SERVICE'] = weather_service
 
-# --- Background Scraper Tasks ---
+# --- 5. Background Scheduler Setup ---
+# Schedule scrapers to run automatically in the background
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=fetch_and_store_stations, args=[station_service], trigger="interval", minutes=5)
 scheduler.add_job(func=fetch_and_store_weather, args=[weather_service], trigger="interval", hours=1)
 scheduler.start()
 
+# --- 6. Blueprint Registration ---
+# Connect organized route files to the main application
+app.register_blueprint(auth_bp)
+app.register_blueprint(pages_bp)
+app.register_blueprint(api_bp)
 
-# --- API Endpoints ---
-@app.route('/')
-def index():
-    return send_from_directory(app.static_folder, 'index.html')
+# --- 7. Global Template Context ---
+@app.context_processor
+def inject_user_status():
+    """
+    Makes 'user_name' globally available to all HTML templates.
+    Used for displaying personalized greetings in the navigation bar.
+    """
+    user_name = request.cookies.get('user_name')
+    return dict(user_name=user_name)
 
-@app.route('/api/stations')
-def stations():
-    """Returns all station information along with their latest availability."""
-    try:
-        data = station_service.get_latest_all_stations()
-        return jsonify(data)
-    except Exception as e:
-        logging.error(f"An error occurred fetching station data: {e}")
-        return jsonify({"error": "An error occurred fetching station data."}), 500
-
-@app.route('/api/weather')
-def weather():
-    """Returns the latest available weather data."""
-    try:
-        data = weather_service.get_latest_weather_data()
-        return jsonify(data)
-    except Exception as e:
-        logging.error(f"An error occurred fetching weather data: {e}")
-        return jsonify({"error": "An error occurred fetching weather data."}), 500
-
-@app.route('/api/status')
-def status():
-    """Returns the running status of the backend."""
-    return jsonify({"status": "Backend is running", "version": "0.4.0-weather-integration"})
-
-
+# --- 8. Execution Entry Point ---
 if __name__ == '__main__':
-    # Trigger an initial data fetch for both services on startup
-    logging.info("Performing initial data fetch...")
-    try:
-        fetch_and_store_stations(station_service)
-        fetch_and_store_weather(weather_service)
-        logging.info("Initial data fetch successful.")
-    except Exception as e:
-        logging.error(f"An error occurred during initial data fetch: {e}")
+    logging.info("Initializing system: checking database and performing initial fetch...")
     
-    # Run the Flask app
-    logging.info("Starting Flask app...")
+    with app.app_context():
+        # A. Create database tables if they do not exist (e.g., the User table)
+        db.create_all()
+        
+        # B. Perform an initial data fetch to populate the UI immediately on startup
+        try:
+            fetch_and_store_stations(station_service)
+            fetch_and_store_weather(weather_service)
+            logging.info("Initial data fetch completed successfully.")
+        except Exception as e:
+            logging.error(f"Error during initial data fetch: {e}")
+
+    # Start the Flask development server
+    logging.info("Starting Dublin Bikes Modular Backend on http://0.0.0.0:5000")
     app.run(debug=True, host='0.0.0.0', port=5000)
