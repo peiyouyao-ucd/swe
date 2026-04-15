@@ -1,6 +1,6 @@
 # backend/services/auth_service.py
 from models import User
-from utils.db import db
+from db import db
 
 class AuthService:
     def register_user(self, email, name, password):

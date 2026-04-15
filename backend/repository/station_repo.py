@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import threading
-from utils.db import db
+from db import db
 import time
 
 class StationRepository(ABC):

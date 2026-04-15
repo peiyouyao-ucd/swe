@@ -4,7 +4,7 @@ from flask_cors import CORS
 from apscheduler.schedulers.background import BackgroundScheduler
 
 # --- Core Configuration & Database Imports ---
-from utils.db import db, init_db
+from db import init_db
 from config import Config
 
 # --- Blueprint Imports (Organized Routes) ---
@@ -25,7 +25,7 @@ app = Flask(__name__,
             static_folder='../frontend/static', 
             template_folder='../frontend/templates')
 
-# Load settings from the Config class (includes API keys and DB URI)
+# Load settings from Config class
 app.config.from_object(Config)
 
 # Enable Cross-Origin Resource Sharing and basic logging
@@ -35,8 +35,7 @@ logging.basicConfig(level=logging.INFO)
 # Initialize and test the database connection
 init_db(app)
 
-# --- 4. Repository & Service Setup ---
-# Initialize In-Memory repositories as per original logic
+# --- Repository & Service Setup ---
 #station_repo = InMemoStationRepository(max_size=100)
 station_repo = SQLStationRepository()
 #weather_repo = InMemoWeatherRepository(max_size=24)
@@ -47,25 +46,24 @@ weather_repo = SQLWeatherRepository()
 weather_service = WeatherService(weather_repo)
 station_service = StationService(station_repo, weather_service)
 
-# Store service instances in app.config so they are accessible 
-# within Blueprints using 'current_app.config'
+# Store service instances in app.config so they are accessible
 app.config['STATION_SERVICE'] = station_service
 app.config['WEATHER_SERVICE'] = weather_service
 
-# --- 5. Background Scheduler Setup ---
+# --- Background Scheduler Setup ---
 # Schedule scrapers to run automatically in the background
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=fetch_and_store_stations, args=[station_service], trigger="interval", minutes=5)
 scheduler.add_job(func=fetch_and_store_weather, args=[weather_service], trigger="interval", hours=1)
 scheduler.start()
 
-# --- 6. Blueprint Registration ---
+# --- Blueprint Registration ---
 # Connect organized route files to the main application
 app.register_blueprint(auth_bp)
 app.register_blueprint(pages_bp)
 app.register_blueprint(api_bp)
 
-# --- 7. Global Template Context ---
+# --- Global Template Context ---
 @app.context_processor
 def inject_user_status():
     """
@@ -75,7 +73,7 @@ def inject_user_status():
     user_name = request.cookies.get('user_name')
     return dict(user_name=user_name)
 
-# --- 8. Execution Entry Point ---
+# --- Execution Entry Point ---
 if __name__ == '__main__':
     logging.info("Initializing system: checking database and performing initial fetch...")
     
