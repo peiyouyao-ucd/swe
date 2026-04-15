@@ -3,16 +3,16 @@ from flask import Flask, request
 from flask_cors import CORS
 from apscheduler.schedulers.background import BackgroundScheduler
 
-# --- 1. Core Configuration & Database Imports ---
+# --- Core Configuration & Database Imports ---
 from utils.db import db, init_db
 from config import Config
 
-# --- 2. Blueprint Imports (Organized Routes) ---
+# --- Blueprint Imports (Organized Routes) ---
 from routes.auth_routes import auth_bp
 from routes.page_routes import pages_bp
 from routes.api_routes import api_bp
 
-# --- 3. Repository & Service Imports ---
+# --- Repository & Service Imports ---
 from repository.station_repo import SQLStationRepository
 from repository.weather_repo import SQLWeatherRepository
 from services.station_service import StationService
@@ -20,7 +20,7 @@ from services.weather_service import WeatherService
 from scraper.station_scraper import fetch_and_store_stations
 from scraper.weather_scraper import fetch_and_store_weather
 
-# --- APP INITIALIZATION ---
+# --- APP Init ---
 app = Flask(__name__, 
             static_folder='../frontend/static', 
             template_folder='../frontend/templates')

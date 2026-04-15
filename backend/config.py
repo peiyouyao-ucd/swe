@@ -18,7 +18,16 @@ class Config:
     JCD_URL = os.getenv("JCD_URL", "https://api.jcdecaux.com/vls/v1/stations")
     OWM_URL = os.getenv("OWM_URL", "http://api.openweathermap.org/data/2.5/weather")
 
-    SQLALCHEMY_DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI", 'mysql+pymysql://root:root_password@localhost:3306/dublin_bikes')
+    DB_USER = os.getenv("DB_USER", "root")
+    DB_PASSWORD = os.getenv("DB_PASSWORD", "root_password")
+    DB_HOST = os.getenv("DB_HOST", "localhost")
+    DB_PORT = os.getenv("DB_PORT", "3306")
+    DB_NAME = os.getenv("DB_NAME", "dublin_bikes")
+
+    SQLALCHEMY_DATABASE_URI = os.getenv(
+        "SQLALCHEMY_DATABASE_URI", 
+        f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
