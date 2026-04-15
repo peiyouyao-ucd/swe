@@ -4,7 +4,7 @@ from flask_cors import CORS
 from apscheduler.schedulers.background import BackgroundScheduler
 
 # --- 1. Core Configuration & Database Imports ---
-from utils.db import db
+from utils.db import db, init_db
 from config import Config
 
 # --- 2. Blueprint Imports (Organized Routes) ---
@@ -32,8 +32,8 @@ app.config.from_object(Config)
 CORS(app)
 logging.basicConfig(level=logging.INFO)
 
-# Initialize the SQLAlchemy database instance
-db.init_app(app)
+# Initialize and test the database connection
+init_db(app)
 
 # --- 4. Repository & Service Setup ---
 # Initialize In-Memory repositories as per original logic
@@ -80,10 +80,6 @@ if __name__ == '__main__':
     logging.info("Initializing system: checking database and performing initial fetch...")
     
     with app.app_context():
-        # A. Create database tables if they do not exist (e.g., the User table)
-        db.create_all()
-        
-        # B. Perform an initial data fetch to populate the UI immediately on startup
         try:
             fetch_and_store_stations(station_service)
             fetch_and_store_weather(weather_service)

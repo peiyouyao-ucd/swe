@@ -28,6 +28,19 @@ CREATE TABLE IF NOT EXISTS stations (
     CONSTRAINT uc_station_number UNIQUE (number)
 ) COMMENT='Stores bike station metadata and current status';
 
+-- User accounts and profiles 
+CREATE TABLE IF NOT EXISTS users ( 
+    email VARCHAR(120) PRIMARY KEY, 
+    name VARCHAR(80) NOT NULL, 
+    password VARCHAR(80) NOT NULL, 
+    member_since VARCHAR(20), 
+    total_rides INT DEFAULT 0, 
+    total_distance INT DEFAULT 0, 
+    co2_saved INT DEFAULT 0, 
+    rides_this_month INT DEFAULT 0, 
+    fav_station VARCHAR(100) DEFAULT "None Yet" 
+) COMMENT="Stores user profile and statistics";
+
 -- Availability table to store dynamic history
 CREATE TABLE IF NOT EXISTS availability (
     id INT AUTO_INCREMENT PRIMARY KEY,            -- Internal record ID
