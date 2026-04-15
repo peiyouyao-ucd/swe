@@ -1,1 +1,0 @@
-PYTHONPATH=. uv run --project backend python backend/app.py
