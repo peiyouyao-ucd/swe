@@ -4,7 +4,7 @@
 
 # 3. Run book
 
-## 3.0 Install UV
+## Install UV
 
 macOS and Linux
 
@@ -26,7 +26,7 @@ Windows
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-## 3.1 Python environment / dependencies
+## Python environment / dependencies
 
 Using uv to install dependencies:
 
@@ -47,7 +47,7 @@ source .venv/bin/activate
 .\.venv\Scripts\activate
 ```
 
-## 3.2 Run model training
+## Run model training
 
 We need run model training firstly.
 
@@ -57,7 +57,23 @@ We don't upload this model file to Github because of its big size.
 
 Backend application will read that `.pkl` model file when `StationService` is initialized.
 
-## 3.3 Inject secrets
+## Start database (docker)
+
+Start database using docker command:
+
+```bash
+# /swe
+
+docker-compose up -d # start container
+
+docker-compose ps # check docker status
+
+docker-compose down # stop and remove container
+
+docker-compose down -v # stop and remove container, delete data volume
+```
+
+## Inject secrets
 
 We need to configure API Keys and URLs then.
 
@@ -81,7 +97,7 @@ GOOGLE_MAPS_KEY=AIzaSyAgyAIhr_Smqjx2XN9GAz_O_XEOyNLhn-Q
 SQLALCHEMY_DATABASE_URI=mysql+pymysql://root:root_password@localhost:3306/dublin_bikes
 ```
 
-## 3.4 Run backend
+## Run backend
 
 Then, use command to run backend
 
@@ -90,7 +106,7 @@ Then, use command to run backend
 uv run python backend/app.py
 ```
 
-## 3.5 Run tests
+## Run tests
 
 ```bash
 # /swe
