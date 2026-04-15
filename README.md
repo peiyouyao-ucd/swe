@@ -1,6 +1,33 @@
 # 1. Project overview
 
+The **Dublin Bike-Sharing Data & Analytics Platform** is a full-stack web application designed to help users track real-time bike and stand availability across Dublin. It combines real-time data ingestion, historical data persistence, and machine learning to provide predictive insights.
+
+**Key Features:**
+- **Real-time Monitoring**: Integrates JCDecaux and OpenWeather APIs for live bike and weather status.
+- **Predictive Analytics**: Uses a Scikit-learn model to predict availability based on time-series data and weather conditions.
+- **Automated Ingestion**: Background scrapers periodically fetch and store data for analysis.
+- **Persistent Storage**: Robust MySQL backend managed via Docker for reliable data history.
+
 # 2. Project structure
+
+```bash
+.
+├── backend/            # Flask API, Business Logic, and DB utilities
+│   ├── db.py           # Database connection and initialization
+│   ├── models.py       # SQLAlchemy ORM schemas
+│   ├── routes/         # API endpoints and page routing
+│   ├── services/       # Business logic (Auth, Predictions, etc.)
+│   ├── repository/     # Abstracted data access layer
+│   └── scraper/        # Background data collection tasks
+├── frontend/           # Presentation layer
+│   ├── templates/      # Jinja2 HTML views
+│   └── static/         # Frontend assets (CSS, JS, Images)
+├── ml_training/        # ML pipeline (data prep, training, and pickles)
+├── docker/             # Infrastructure as Code (MySQL init scripts)
+├── tests/              # Comprehensive test suites
+├── pyproject.toml      # Dependency management via uv
+└── docker-compose.yml  # Local environment orchestration
+```
 
 # 3. Run book
 
