@@ -1,6 +1,7 @@
 # backend/utils/db.py
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import text 
+from sqlalchemy import text
+import logging
 
 db = SQLAlchemy()
 
@@ -19,6 +20,6 @@ def init_db(app):
     with app.app_context():
         try:
             db.session.execute(text('SELECT 1'))
-            print("Database connection successful!")
+            logging.info("Database connection successful")
         except Exception as e:
-            print(f"Database connection failed: {e}")
+            logging.fatal("Database connection failed", error=e)

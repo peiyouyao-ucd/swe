@@ -8,7 +8,24 @@ load_dotenv()
 
 # --- CONFIGURATION ---
 class Config:
-    """Class-based config for Flask (New approach)"""
+    """Class-based config for Flask"""
+    # APP Config
+    APP_IP = os.getenv("APP_IP", "0.0.0.0")
+    APP_PORT = os.getenv("APP_PORT", "5000")
+
+    # DB Config
+    DB_USER = os.getenv("DB_USER", "root")
+    DB_PASSWORD = os.getenv("DB_PASSWORD", "root_password")
+    DB_HOST = os.getenv("DB_HOST", "localhost")
+    DB_PORT = os.getenv("DB_PORT", "3306")
+    DB_NAME = os.getenv("DB_NAME", "dublin_bikes")
+    SQLALCHEMY_DATABASE_URI = os.getenv(
+        "SQLALCHEMY_DATABASE_URI", 
+        f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    )
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    # API Keys and URLs
     JCD_APIKEY = os.getenv("JCD_APIKEY")
     OWM_APIKEY = os.getenv("OWM_APIKEY")
     GOOGLE_MAPS_KEY = os.getenv("GOOGLE_MAPS_KEY")
@@ -17,19 +34,6 @@ class Config:
     OWM_CITY = os.getenv("OWM_CITY", "Dublin,IE")
     JCD_URL = os.getenv("JCD_URL", "https://api.jcdecaux.com/vls/v1/stations")
     OWM_URL = os.getenv("OWM_URL", "http://api.openweathermap.org/data/2.5/weather")
-
-    DB_USER = os.getenv("DB_USER", "root")
-    DB_PASSWORD = os.getenv("DB_PASSWORD", "root_password")
-    DB_HOST = os.getenv("DB_HOST", "localhost")
-    DB_PORT = os.getenv("DB_PORT", "3306")
-    DB_NAME = os.getenv("DB_NAME", "dublin_bikes")
-
-    SQLALCHEMY_DATABASE_URI = os.getenv(
-        "SQLALCHEMY_DATABASE_URI", 
-        f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-    )
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-
 
 JCD_URL = Config.JCD_URL
 JCD_APIKEY = Config.JCD_APIKEY

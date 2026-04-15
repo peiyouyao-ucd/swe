@@ -62,6 +62,11 @@ Backend application will read that `.pkl` model file when `StationService` is in
 Start database using docker command:
 
 ```bash
+# install docker in linux
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+# if you are in Window or MacOS, you can install docker desktop application
+
 # /swe
 
 docker-compose up -d # start container
@@ -80,6 +85,17 @@ We need to configure API Keys and URLs then.
 Create `backend/.env` with
 
 ```txt
+# Backend App Config
+APP_IP=0.0.0.0
+APP_PORT=5000
+
+# Database Configuration
+DB_USER=root
+DB_PASSWORD=root_password
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=dublin_bikes
+
 # JCDecaux API Configuration
 JCD_APIKEY=52f9ba4359889ed1c9aefe45d17b308f7aa80967
 JCD_URL=https://api.jcdecaux.com/vls/v1/stations
@@ -92,9 +108,6 @@ OWM_CITY=Dublin,IE
 
 # Google Maps API Configuration
 GOOGLE_MAPS_KEY=AIzaSyAgyAIhr_Smqjx2XN9GAz_O_XEOyNLhn-Q
-
-# Database Configuration
-SQLALCHEMY_DATABASE_URI=mysql+pymysql://root:root_password@localhost:3306/dublin_bikes
 ```
 
 ## Run backend
