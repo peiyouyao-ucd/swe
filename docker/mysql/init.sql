@@ -1,4 +1,3 @@
--- 1. Create the Stations table to store static information
 -- Schema for weather data (Time-series)
 CREATE TABLE IF NOT EXISTS weather (
     dt BIGINT PRIMARY KEY,                        -- 10-digit UTC Unix timestamp
@@ -29,7 +28,7 @@ CREATE TABLE IF NOT EXISTS stations (
     CONSTRAINT uc_station_number UNIQUE (number)
 ) COMMENT='Stores bike station metadata and current status';
 
--- 2. Create the Availability table to store dynamic history
+-- Availability table to store dynamic history
 CREATE TABLE IF NOT EXISTS availability (
     id INT AUTO_INCREMENT PRIMARY KEY,            -- Internal record ID
     number INT NOT NULL,                          -- Foreign key referencing stations(number) 
@@ -40,20 +39,3 @@ CREATE TABLE IF NOT EXISTS availability (
     scrape_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Time when the data was saved to our DB
     FOREIGN KEY (number) REFERENCES stations(number)
 ) COMMENT='Stores time-series data of bike availability for ML training and charts';
-
-
--- 3. Create the Weather table to store Dublin weather data
-CREATE TABLE IF NOT EXISTS weather (
-    dt BIGINT PRIMARY KEY,                        -- 10-digit unix timestamp
-    temp FLOAT,                                   -- Current temperature
-    feels_like FLOAT,                             
-    temp_min FLOAT,                               
-    temp_max FLOAT,                               
-    visibility INT,                               
-    humidity INT,                                 -- Humidity percentage
-    wind_speed FLOAT,                             -- Wind speed
-    precipitation FLOAT DEFAULT 0,                -- Precipitation in mm
-    description VARCHAR(100),                     -- e.g., 'broken clouds'
-    main VARCHAR(50),                             -- e.g., 'Clouds'
-    scrape_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
-) COMMENT='Stores hourly weather data for Dublin to be used as ML features';
