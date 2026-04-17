@@ -5,16 +5,12 @@ class WeatherService:
         self._repo = repo
     
     def save_from_raw_weather_data(self, raw_weather_data: dict):
-  
         weather_info = raw_weather_data.get('weather', [{}])[0]
         main_info = raw_weather_data.get('main', {})
         wind_info = raw_weather_data.get('wind', {})
         coord_info = raw_weather_data.get('coord', {})
         sys_info = raw_weather_data.get('sys', {})
-
-  
         rain_info = raw_weather_data.get('rain', {})
-
         precipitation = rain_info.get('1h', rain_info.get('3h', 0))
 
         saving_weather_data = {
@@ -45,7 +41,8 @@ class WeatherService:
         }
         
         self._repo.save(saving_weather_data)
-        
+    
+    
     def get_latest_weather_data(self) -> dict:
         """Retrieves the most recent weather data from the repository.
 

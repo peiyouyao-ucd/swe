@@ -1,6 +1,6 @@
 import requests
 import logging
-from config import JCD_URL, JCD_APIKEY, JCD_CONTRACT_NAME
+from config import Config
 from services.station_service import StationService
 
 def fetch_and_store_stations(station_service: StationService):
@@ -35,7 +35,7 @@ def fetch_and_store_stations(station_service: StationService):
         ]
     """
     try:
-        response = requests.get(JCD_URL, params={"apiKey": JCD_APIKEY, "contract": JCD_CONTRACT_NAME})
+        response = requests.get(Config.JCD_URL, params={"apiKey": Config.JCD_APIKEY, "contract": Config.JCD_CONTRACT_NAME})
         if response.status_code == 200:
             raw_stations_data = response.json()
             station_service.save_station_data(raw_stations_data)

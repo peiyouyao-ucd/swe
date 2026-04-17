@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import threading
 from db import db
 import time
+import logging
 
 class StationRepository(ABC):
     @abstractmethod
@@ -103,7 +104,7 @@ class InMemoStationRepository(StationRepository):
                 time_filtered_snapshots = [
                     s for s in time_filtered_snapshots if s.get('timestamp', 0) <= time_to
                 ]
-
+                
             # If no station number is specified, return the filtered snapshots
             if station_number is None:
                 return time_filtered_snapshots
@@ -119,8 +120,6 @@ class InMemoStationRepository(StationRepository):
                         })
                         break # Move to the next snapshot
             return station_history
-        
-
 
 class SQLStationRepository(StationRepository):
     """
@@ -130,7 +129,6 @@ class SQLStationRepository(StationRepository):
     def save(self, data: dict):
         from models import Station, Availability
         try:
-         
             station = Station(
                 number=data['number'],
                 name=data['name'],
@@ -143,11 +141,8 @@ class SQLStationRepository(StationRepository):
                 bonus=data.get('bonus')
             )
             db.session.merge(station)
-            
-         
             db.session.flush() 
-
-          
+            
             new_avail = Availability(
                 number=data['number'],
                 available_bikes=data.get('available_bikes', 0),
@@ -160,7 +155,7 @@ class SQLStationRepository(StationRepository):
             
         except Exception as e:
             db.session.rollback()
-            print(f"Error saving station {data.get('number')}: {e}")
+            logging.error(f"Error saving station {data.get('number')}: {e}")
 
 
     def get(self, time_from=None, time_to=None, station_number=None):

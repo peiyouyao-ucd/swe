@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 import threading 
+
+from models import Weather
 from db import db
 
 class WeatherRepository(ABC):
@@ -63,7 +65,6 @@ class WeatherRepository(ABC):
 
 class InMemoWeatherRepository(WeatherRepository):
     """An in-memory implementation of the WeatherRepository.
-
     Stores weather data in a list, with a configurable maximum size.
     This implementation is thread-safe.
     """
@@ -100,9 +101,6 @@ class InMemoWeatherRepository(WeatherRepository):
 
 class SQLWeatherRepository(WeatherRepository):
     def save(self, saving_weather_data: dict):
-        from models import Weather
-        
-     
         new_weather = Weather(
             dt=saving_weather_data['timestamp'],
             temp=saving_weather_data['temp'],
@@ -116,17 +114,11 @@ class SQLWeatherRepository(WeatherRepository):
             description=saving_weather_data['weather_description'],
             main=saving_weather_data['weather_main']
         )
-        
-      
         db.session.merge(new_weather) 
         db.session.commit()
 
     def get(self, time_from=None, time_to=None):
-        from models import Weather
-      
         latest = Weather.query.order_by(Weather.dt.desc()).first()
-        
-      
         if latest is None:
             return [{
                 "temp": 0,
@@ -141,6 +133,4 @@ class SQLWeatherRepository(WeatherRepository):
                 "weather_main": "None",
                 "dt": 0
             }]
-            
-     
         return [latest.to_dict()]

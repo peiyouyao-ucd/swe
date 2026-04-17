@@ -2,6 +2,7 @@
 from models import User
 from db import db
 from datetime import datetime
+import logging
 
 class AuthService:
     def register_user(self, email, name, password):
@@ -35,6 +36,6 @@ class AuthService:
 
         for user in expired_users:
             user.current_plan = "None"
-            print(f"User {user.email} has expired. Plan reset.")
+            logging.info(f"User {user.email} has expired. Plan reset.")
         
         db.session.commit()

@@ -6,7 +6,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 # --- Core Configuration & Database Imports ---
 from db import init_db, db
 from config import Config
-from models import User
+
 
 # --- Blueprint Imports (Organized Routes) ---
 from routes.auth_routes import auth_bp

@@ -43,14 +43,12 @@ class TestStationService(unittest.TestCase):
         # Retrieve data
         result = self.station_service.get_latest_all_stations()
         
-        # In current implementation, get_latest_all_stations returns a list of snapshots
+        # get_latest_all_stations returns a list of latest station states
         self.assertIsInstance(result, list)
-        self.assertTrue(len(result) > 0)
-        latest_snapshot = result[0]
-        self.assertIn('stations', latest_snapshot)
-        self.assertEqual(len(latest_snapshot['stations']), 1)
-        self.assertEqual(latest_snapshot['stations'][0]['number'], 42)
-        self.assertEqual(latest_snapshot['stations'][0]['available_bikes'], 10)
+        self.assertEqual(len(result), 1)
+        station_data = result[0]
+        self.assertEqual(station_data['number'], 42)
+        self.assertEqual(station_data['available_bikes'], 10)
 
     def test_prediction_with_dummy_data(self):
         """Tests the prediction logic using mocked weather and station data."""

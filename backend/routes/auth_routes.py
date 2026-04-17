@@ -1,5 +1,5 @@
 # backend/routes/auth_routes.py
-from flask import Blueprint, request, render_template, redirect, url_for, make_response,session, jsonify
+from flask import Blueprint, request, render_template, redirect, url_for, make_response, jsonify
 from services.auth_service import AuthService 
 from db import db
 from models import User
@@ -37,42 +37,27 @@ def login():
         return result["message"]
     return render_template('login.html')
 
-
-
-
-
 @auth_bp.route('/api/subscribe', methods=['POST'])
 def update_subscription():
-    
     user_email = request.cookies.get('user_email') 
     user = User.query.filter_by(email=user_email).first()
-    
     if user:
         data = request.json
         user.current_plan = data.get('plan_name') 
         user.plan_start_date = datetime.now()
-        
         if user.current_plan == 'Day Pass':
             user.plan_end_date = datetime.now() + timedelta(days=1)
         elif user.current_plan == 'Annual':
             user.plan_end_date = datetime.now() + timedelta(days=365)
         else: # Monthly
             user.plan_end_date = datetime.now() + timedelta(days=30)
-            
         db.session.commit()
         return jsonify({"success": True})
-    
     return jsonify({"success": False, "message": "User not found"}), 404
-
-
-
 
 @auth_bp.route('/api/renew', methods=['POST'])
 def handle_renew():
-    
     user_email = request.cookies.get('user_email') 
-    
-    
     found_user = User.query.filter_by(email=user_email).first()
     
     if found_user:

@@ -1,4 +1,4 @@
-from config import OWM_URL, OWM_APIKEY, OWM_CITY
+from config import Config
 from services.weather_service import WeatherService
 import requests
 import logging
@@ -55,39 +55,16 @@ def fetch_and_store_weather(weather_service: WeatherService):
         }
     """
     try:
-        response = requests.get(OWM_URL, params={
-            "q": OWM_CITY, 
-            "appid": OWM_APIKEY, 
+        response = requests.get(Config.OWM_URL, params={
+            "q": Config.OWM_CITY, 
+            "appid": Config.OWM_APIKEY, 
             "units": "metric"
         })
 
         if response.status_code == 200:
             raw_weather_data = response.json()
-
-
-            rain_data = raw_weather_data.get('rain', {})
-            precipitation = rain_data.get('1h', rain_data.get('3h', 0))
-            main_data = raw_weather_data.get('main', {})
-            
-            raw_weather_data['temp'] = main_data.get('temp')
-            raw_weather_data['feels_like'] = main_data.get('feels_like')
-            raw_weather_data['temp_min'] = main_data.get('temp_min')
-            raw_weather_data['temp_max'] = main_data.get('temp_max')
-            raw_weather_data['humidity'] = main_data.get('humidity')
-            raw_weather_data['visibility'] = raw_weather_data.get('visibility') 
-            raw_weather_data['wind_speed'] = raw_weather_data.get('wind', {}).get('speed')
-            raw_weather_data['precipitation'] = precipitation
-            
-    
-            weather_info = raw_weather_data.get('weather', [{}])[0]
-            raw_weather_data['description'] = weather_info.get('description')
-            raw_weather_data['main_weather'] = weather_info.get('main')
-            
-
-       
             weather_service.save_from_raw_weather_data(raw_weather_data)
-            
-            logging.info(f"Successfully scraped weather: {precipitation}mm rain, {raw_weather_data['temp']}°C")
+            logging.info("Successfully scraped raw weather data from OWM.")
         else:
             logging.error(f"Failed to fetch weather data: {response.status_code}")
             

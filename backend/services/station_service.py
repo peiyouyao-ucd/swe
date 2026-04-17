@@ -1,12 +1,14 @@
-from repository.station_repo import StationRepository
 import pickle
 import pandas as pd
 import os
 import logging
 from datetime import datetime, timedelta
 
+from repository.station_repo import StationRepository
+from services.weather_service import WeatherService
+
 class StationService:
-    def __init__(self, repo: StationRepository, weather_service=None):
+    def __init__(self, repo: StationRepository, weather_service: WeatherService=None):
         """Initializes the StationService with a data repository and weather service.
 
         Args:
@@ -36,7 +38,6 @@ class StationService:
         """
         Processes raw station data from API and persists each station to the SQL database.
         """
-       
         processed_stations = [
             {
                 'number': station.get('number'),
@@ -55,7 +56,6 @@ class StationService:
             for station in raw_stations_data
         ]
 
-        # 2. Iterate and save each station
         for station in processed_stations:
             try:
                 self._repo.save(station)
@@ -67,7 +67,6 @@ class StationService:
         """
         Retrieves current snapshots of all stations from the database.
         """
-        # Aligning with SQLStationRepository.get_all()
         return self._repo.get()
 
     def get_one_station(self, station_number: int) -> dict:
@@ -76,16 +75,11 @@ class StationService:
         Includes latest status, history for chart, and ML prediction.
         """
         history_records = self._repo.get(station_number=station_number)
-        
         if not history_records:
             return None
-
-        latest_record = history_records[-1] 
-
-
+        
+        latest_record = history_records[-1]
         prediction_value = self.predict_for_one_station(station_number)
-
-    
         result = {
             "number": station_number,
             "name": latest_record.get('name', f"Station {station_number}"),
@@ -96,7 +90,6 @@ class StationService:
             "history": history_records,
             "forecast_24h": self.get_24h_forecast(station_number)
         }
-        
         return result
     
 
@@ -118,28 +111,14 @@ class StationService:
             return -1
 
         try:
-            # 1. Get current weather
+            # Get current weather
             weather_data = self._weather_service.get_latest_weather_data()
             if not weather_data:
                 logging.warning("No weather data available for prediction.")
                 return -1
 
-            # 2. Get current time features
-            now = datetime.now()
-            hour = now.hour
-            day_of_week = now.weekday()
-
-            # 3. Prepare features (matches training schema)
-            # features = ['station_id','temperature', 'humidity', 'wind_speed', 'precipitation', 'hour', 'day_of_week']
-            input_df = pd.DataFrame([{
-                'station_id': station_number,
-                'temperature': weather_data.get('temp', 15.0), # Default if missing
-                'humidity': weather_data.get('humidity', 50),
-                'hour': hour,
-                'day_of_week': day_of_week
-            }])
-
-            # 4. Make prediction
+            # Prepare features and make prediction
+            input_df = self._prepare_ml_features(station_number, weather_data, datetime.now())
             prediction = self._model.predict(input_df)
             
             # Ensure output is a non-negative integer
@@ -157,34 +136,29 @@ class StationService:
 
         forecast_list = []
         now = datetime.now()
-        
-
         weather_data = self._weather_service.get_latest_weather_data() if self._weather_service else {}
-        current_temp = weather_data.get('temp', 15.0)
-        current_hum = weather_data.get('humidity', 50)
 
- 
         for i in range(24):
             future_time = now + timedelta(hours=i)
-            
-            input_df = pd.DataFrame([{
-                'station_id': station_number,
-                'temperature': current_temp,
-                'humidity': current_hum,
-                'hour': future_time.hour,
-                'day_of_week': future_time.weekday()
-            }])
-
+            input_df = self._prepare_ml_features(station_number, weather_data, future_time)
             try:
                 prediction = self._model.predict(input_df)
                 pred_value = max(0, int(round(prediction[0])))
             except Exception:
                 pred_value = -1
-
             forecast_list.append({
                 'hours_ahead': i,
                 'time_label': f"{future_time.hour:02d}:00", # 例如 "14:00"
                 'prediction': pred_value
             })
-            
         return forecast_list
+
+    def _prepare_ml_features(self, station_number: int, weather_data: dict, target_time: datetime) -> pd.DataFrame:
+        """Helper to prepare a DataFrame of features for the ML model."""
+        return pd.DataFrame([{
+            'station_id': station_number,
+            'temperature': weather_data.get('temp', 15.0),
+            'humidity': weather_data.get('humidity', 50),
+            'hour': target_time.hour,
+            'day_of_week': target_time.weekday()
+        }])

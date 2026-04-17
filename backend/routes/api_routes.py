@@ -63,5 +63,5 @@ def get_weather():
         return jsonify(data)
         
     except Exception as e:
-        print(f"DEBUG ERROR: {e}")  
+        logging.error(f"DEBUG ERROR: {e}")  
         return jsonify({"error": str(e)}), 500
