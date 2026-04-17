@@ -9,27 +9,6 @@ The **Dublin Bike-Sharing Data & Analytics Platform** is a full-stack web applic
 - **Containerized Data Persistence**: Robust MySQL backend managed via **Docker**, ensuring that all user credentials and profile data are securely stored and persistent across sessions.
 - **Real-time Monitoring & Prediction**: Integrates JCDecaux and OpenWeather APIs for live status updates and uses a Scikit-learn model for availability forecasting.
 
----
-
-## Database Schema (User Profile)
-
-The system maintains a comprehensive user database with the following fields to support analytics and subscription features:
-
-| Field | Type | Description |
-| :--- | :--- | :--- |
-| **email** | VARCHAR | Primary key; user's unique identifier used for authentication. |
-| **name** | VARCHAR | User's display name shown on the profile page. |
-| **password** | VARCHAR | Securely stored user password for account protection. |
-| **member_since** | VARCHAR | Date timestamp indicating when the user joined. |
-| **total_rides** | INT | Cumulative count of bike trips taken by the user. |
-| **total_distance**| INT | Total distance travelled in kilometers. |
-| **co2_saved** | INT | Estimated amount of CO2 emissions saved by cycling. |
-| **fav_station** | VARCHAR | Most frequently used station for rentals. |
-| **current_plan** | VARCHAR | Current subscription tier (e.g., Monthly, Day Pass). |
-| **plan_start_date**| DATETIME | The exact timestamp when the current plan was activated. |
-| **plan_end_date** | DATETIME | The expiration timestamp used to trigger auto-clear logic. |
-
-
 # 2. Project structure
 
 ```bash
