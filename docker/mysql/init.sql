@@ -39,6 +39,9 @@ CREATE TABLE IF NOT EXISTS users (
     co2_saved INT DEFAULT 0, 
     rides_this_month INT DEFAULT 0, 
     fav_station VARCHAR(100) DEFAULT "None Yet" 
+    current_plan VARCHAR(50) DEFAULT "None",
+    plan_start_date DATETIME,
+    plan_end_date DATETIME
 ) COMMENT="Stores user profile and statistics";
 
 -- Availability table to store dynamic history

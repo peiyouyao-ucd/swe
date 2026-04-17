@@ -52,25 +52,50 @@
             <section class="info-card subscription-card">
                 <div class="card-header">
                     <h2>Current Subscription</h2>
-                    <span class="status-pill active">Active</span>
-                </div>
-                <div class="sub-details">
-                    <p class="plan-name">Monthly Plan</p>
-                    <div class="sub-dates">
-                        <div><span>Start Date</span><strong>Feb 1, 2026</strong></div>
-                        <div><span>End Date</span><strong>Mar 1, 2026</strong></div>
+                    <div>
+                        <span class="status-pill active" id="subscription-status">Active</span>
+                        <span id="days-left-badge" style="font-size: 0.8rem; color: #888; margin-left: 8px;"></span>
                     </div>
                 </div>
+
+                <div class="sub-details">
+                    <h3 id="current-plan-display">
+                        {{ user.current_plan if user.current_plan and user.current_plan != 'None' else 'No Active' }} Plan
+                    </h3>
+                    
+                    <div class="sub-dates">
+                        <div>
+                            <span>Start Date</span>
+                            <strong id="start-date-display">
+                                {{ user.plan_start_date.strftime('%b %d, %Y') if user.plan_start_date else '--' }}
+                            </strong>
+                        </div>
+                        <div>
+                            <span>End Date</span>
+                            <strong id="end-date-display">
+                                {{ user.plan_end_date.strftime('%b %d, %Y') if user.plan_end_date else '--' }}
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="sub-actions">
-                    <button class="btn-primary" onclick="location.href='{{ url_for('pages.subscription') }}'">Renew Subscription</button>
-                    <button class="btn-outline" onclick="location.href='{{ url_for('pages.subscription') }}'">Change Plan</button>
+                    <button class="btn-renew" onclick="renewPlan(this)">
+                        <i class="fa-solid fa-rotate-right"></i> Renew Subscription
+                    </button>
+                    
+                    <button class="btn-change" onclick="location.href='{{ url_for('pages.subscription') }}'">
+                        <i class="fa-solid fa-arrows-rotate"></i> View Plans
+                    </button>
                 </div>
             </section>
 
             <section class="info-card history-card">
                 <div class="card-header">
                     <h2>Rental History</h2>
-                    <button class="btn-text btn-export-csv"><i class="fa-solid fa-download"></i> Export CSV</button>
+                    <button class="btn-export-csv">
+                        <i class="fa-solid fa-download"></i> Export CSV
+                    </button>
                 </div>
                 <div class="table-responsive">
                     <table class="history-table">

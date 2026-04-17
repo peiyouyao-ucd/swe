@@ -22,4 +22,4 @@ def init_db(app):
             db.session.execute(text('SELECT 1'))
             logging.info("Database connection successful")
         except Exception as e:
-            logging.fatal("Database connection failed", error=e)
+            logging.fatal(f"Database connection failed: {e}")

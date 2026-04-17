@@ -21,12 +21,16 @@ def about():
 @pages_bp.route('/subscription')
 def subscription():
     """Renders the membership or subscription plans page."""
-    return render_template('subscription.html')
+    user_email = request.cookies.get('user_email')
+    user = User.query.filter_by(email=user_email).first()
+    return render_template('subscription.html', user=user)
+
 
 @pages_bp.route('/howto')
 def howto():
     """Renders the 'How it Works' instruction page for new users."""
     return render_template('howto.html')
+
 
 @pages_bp.route('/profile')
 def profile():
@@ -35,19 +39,6 @@ def profile():
     It retrieves real-time statistics (rides, distance, CO2) from the database
     based on the identity stored in the 'user_email' cookie.
     """
-    # Attempt to retrieve the user's email from secure cookies
     user_email = request.cookies.get('user_email')
-
-    # If no identity is found, redirect the unauthorized user to the login page
-    if not user_email:
-        return redirect(url_for('auth.login'))
-
-    # Query the User record from the database using SQLAlchemy ORM
-    user_data = User.query.get(user_email)
-
-    # Safety check: If the cookie exists but the user record was deleted, trigger logout
-    if not user_data:
-        return redirect(url_for('auth.logout'))
-
-    # Render the profile page and pass the user object to fill the dashboard stats
-    return render_template('profile.html', user=user_data)
+    user = User.query.filter_by(email=user_email).first()
+    return render_template('profile.html', user=user)

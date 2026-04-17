@@ -4,8 +4,9 @@ from flask_cors import CORS
 from apscheduler.schedulers.background import BackgroundScheduler
 
 # --- Core Configuration & Database Imports ---
-from db import init_db
+from db import init_db, db
 from config import Config
+from models import User
 
 # --- Blueprint Imports (Organized Routes) ---
 from routes.auth_routes import auth_bp
@@ -17,6 +18,7 @@ from repository.station_repo import SQLStationRepository
 from repository.weather_repo import SQLWeatherRepository
 from services.station_service import StationService
 from services.weather_service import WeatherService
+from services.auth_service import AuthService
 from scraper.station_scraper import fetch_and_store_stations
 from scraper.weather_scraper import fetch_and_store_weather
 
@@ -35,6 +37,9 @@ logging.basicConfig(level=logging.INFO)
 # Initialize and test the database connection
 init_db(app)
 
+with app.app_context():
+    db.create_all()
+
 # --- Repository & Service Setup ---
 #station_repo = InMemoStationRepository(max_size=100)
 station_repo = SQLStationRepository()
@@ -45,6 +50,7 @@ weather_repo = SQLWeatherRepository()
 # Note: StationService requires weather_service for logic processing
 weather_service = WeatherService(weather_repo)
 station_service = StationService(station_repo, weather_service)
+auth_service = AuthService()
 
 # Store service instances in app.config so they are accessible
 app.config['STATION_SERVICE'] = station_service
@@ -55,6 +61,7 @@ app.config['WEATHER_SERVICE'] = weather_service
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=fetch_and_store_stations, args=[station_service], trigger="interval", minutes=5)
 scheduler.add_job(func=fetch_and_store_weather, args=[weather_service], trigger="interval", hours=1)
+scheduler.add_job(func=auth_service.check_and_clear_expired_plans, trigger="interval", hours=1)
 scheduler.start()
 
 # --- Blueprint Registration ---

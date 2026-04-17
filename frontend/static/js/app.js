@@ -8,6 +8,10 @@ let currentMode = 'bikes';
 let selectedStationNumber = null;
 let allStationsData = [];
 let currentHighlightedMarker = null;
+let currentForecastData = [];
+let directionsService = null;
+let routeRenderers = [];
+let routeCustomMarkers = [];
 
 
 /* ==========================================
@@ -28,6 +32,34 @@ function initMap() {
 
     fetchStations();
     fetchWeather();
+    initAutocomplete();
+}
+
+/* ==========================================
+   ROUTE PLANNER: AUTOCOMPLETE LOGIC
+   ========================================== */
+function initAutocomplete() {
+    const originInput = document.getElementById('route-origin');
+    const destInput = document.getElementById('route-destination');
+
+    if (!originInput || !destInput) return;
+
+    // 💡 Pro Tip: Restrict search results to Ireland ('ie')
+    // This prevents users from accidentally selecting "Trinity College" in the USA
+    const options = {
+        componentRestrictions: { country: "ie" }, 
+        fields: ["geometry", "name", "formatted_address"], 
+    };
+
+    // Attach Autocomplete to the input fields
+    const originAutocomplete = new google.maps.places.Autocomplete(originInput, options);
+    const destAutocomplete = new google.maps.places.Autocomplete(destInput, options);
+
+    // Bias the search results towards the current map viewport
+    if (map) {
+        originAutocomplete.bindTo('bounds', map);
+        destAutocomplete.bindTo('bounds', map);
+    }
 }
 
 /* ==========================================
@@ -393,45 +425,82 @@ function switchMapMode(mode) {
 
 async function showStationDetails(station) {
     const panel = document.getElementById('details-panel');
-    
-    
     panel.classList.add('active');
 
-   
-    document.getElementById('selected-station-name').innerText = station.name;
     
-   
+
+    // 1. Populate initial data from the Marker for instant UI feedback
+    document.getElementById('selected-station-name').innerText = station.name;
     document.getElementById('bikes-count').innerText = station.available_bikes;
     document.getElementById('stands-count').innerText = station.available_bike_stands || station.bike_stands;
     
- 
     const mlValue = document.getElementById('predicted-value');
     if (mlValue) {
-        mlValue.innerText = station.predicted_bikes !== undefined ? station.predicted_bikes : "Calculating...";
+        mlValue.innerText = "Calculating..."; // Show loading state initially
     }
     
-   
     switchDetailsView('info');
-
     
     const instruction = document.querySelector('.instruction');
     if (instruction) instruction.style.display = 'none';
 
-  
+    // 2. Fetch the comprehensive JSON data package from the backend
     try {
         const response = await fetch(`/api/stations/${station.number}`);
-        let history = await response.json(); 
+        const data = await response.json(); 
         
-      
-        if (history && Array.isArray(history)) {
-            history.sort((a, b) => a.last_update - b.last_update);
+        console.log("Perfect data received from API:", data);
+
+        // Key Fix A: Capture 24h forecast data and initialize the slider
+        if (data.forecast_24h && data.forecast_24h.length > 0) {
+            currentForecastData = data.forecast_24h;
+            
+            // Reset slider to 0 (Current Time) when opening a new station
+            const slider = document.getElementById('time-slider');
+            if (slider) slider.value = 0;
+            
+            // Display the current (0 hours ahead) prediction
+            updateForecastDisplay(0); 
+        } else if (mlValue && data.prediction !== undefined) {
+            // Fallback if 24h array is missing
+            mlValue.innerText = data.prediction;
         }
 
-        console.log("Sorted history:", history); 
-        updateChart(history);
+        // Key Fix B: Feed ONLY the 'history' array to the chart
+        if (data.history && Array.isArray(data.history)) {
+            updateChart(data.history);
+        }
         
     } catch (e) {
-        console.error("Error fetching station history:", e);
+        console.error("Failed to fetch station details:", e);
+    }
+}
+
+/**
+ * Updates the ML prediction number and time label based on the slider value.
+ * @param {number} hoursAhead - The value from the range slider (0 to 23).
+ */
+function updateForecastDisplay(hoursAhead) {
+    const mlValue = document.getElementById('predicted-value');
+    const timeLabel = document.getElementById('forecast-time-label');
+
+    if (!currentForecastData || currentForecastData.length === 0) return;
+
+    // Find the specific forecast data for the selected hour
+    const forecast = currentForecastData.find(f => f.hours_ahead == hoursAhead);
+
+    if (forecast) {
+        if (mlValue) {
+            mlValue.innerText = forecast.prediction !== -1 ? forecast.prediction : "N/A";
+        }
+        
+        if (timeLabel) {
+            if (hoursAhead == 0) {
+                timeLabel.innerText = `Current`;
+            } else {
+                timeLabel.innerText = `+${hoursAhead}h (${forecast.time_label})`;
+            }
+        }
     }
 }
 
@@ -457,6 +526,11 @@ function switchDetailsView(viewName) {
 
 
 function updateChart(history) {
+    if (!Array.isArray(history)) {
+        console.warn("Chart Error: 'history' is not an array. Received:", history);
+        return;
+    }
+
     const canvas = document.getElementById('predictionChart');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -541,6 +615,9 @@ function updateChart(history) {
         }
     });
 }
+
+
+
 function jumpToTab(contentId) {
     const targetTab = document.querySelector(`.tab-item[onclick*="${contentId}"]`);
     if (targetTab) {
@@ -577,41 +654,368 @@ function initPasswordToggle() {
 }
 
 
+async function subscribeToPlan(planName) {
+    const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan_name: planName })
+    });
 
-function selectPlan(planName) {
-   
-    const userName = "{{ user_name or '' }}"; 
+    const result = await response.json();
 
-    if (!userName) {
-        alert("Please log in to choose the " + planName + " plan!");
-        
-        window.location.href = "{{ url_for('auth.login') }}";
+    if (result.success) {
+        alert(`Successfully subscribed to ${planName}!`);
+        window.location.reload(); 
     } else {
-      
-        alert("Excellent choice! Processing your " + planName + " plan...");
+        alert("Subscription failed: " + result.message);
     }
 }
 
+/* ==========================================
+    1. PLAN SELECTION 
+   ========================================== */
+function selectPlan(planName, btnElement) {
+    const userName = window.CURRENT_USER_NAME;
+    if (!userName || userName === "" || userName === "None") {
+        alert("Please login first to subscribe!");
+        window.location.href = "/login";
+        return;
+    }
+
+    const card = btnElement.closest('.plan-card');
+    if (card) {
+        card.style.position = 'relative';
+        const loader = document.createElement('div');
+        loader.className = 'processing-overlay';
+        loader.style = "position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.9); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:10; border-radius:15px;";
+        loader.innerHTML = `
+            <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem; color: #00a86b; margin-bottom: 10px;"></i>
+            <p style="font-weight:bold; color:#333;">Securing your ${planName}...</p>
+        `;
+        card.appendChild(loader);
+    }
+
+    setTimeout(async () => {
+        try {
+            const response = await fetch('/api/subscribe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ plan_name: planName })
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                window.location.href = "/profile"; 
+            } else {
+                alert("Subscription failed: " + result.message);
+                const loader = card.querySelector('.processing-overlay');
+                if (loader) loader.remove();
+            }
+        } catch (error) {
+            alert("Connection error!");
+        }
+    }, 1500);
+}
 
 /* ==========================================
-   6. INITIALIZATION
+    2. RENEW LOGIC
+   ========================================== */
+async function renewPlan(btnElement) {
+    btnElement.innerText = "Processing...";
+    btnElement.disabled = true;
+
+    try {
+        const response = await fetch('/api/renew', { method: 'POST' });
+        const result = await response.json();
+
+        if (result.success) {
+            alert("Awesome! Your subscription has been extended.");
+            location.reload(); 
+        } else {
+            alert("Oops! " + result.message);
+            btnElement.disabled = false;
+            btnElement.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Renew Subscription';
+        }
+    } catch (error) {
+        alert("Connection failed.");
+        btnElement.disabled = false;
+    }
+}
+
+/* ==========================================
+    INITIALIZATION 
    ========================================== */
 document.addEventListener('DOMContentLoaded', () => {
-    initPasswordToggle();
-   
-    const hash = window.location.hash.substring(1);
-    if (hash) {
-      
-        setTimeout(() => jumpToTab(hash), 300);
+  
+    if (typeof initPasswordToggle === "function") initPasswordToggle();
+
+    
+    if (window.location.pathname.includes('profile')) {
+        const startDateElem = document.getElementById('start-date-display');
+        const endDateElem = document.getElementById('end-date-display');
+        const daysLeftElem = document.getElementById('days-left-badge');
+
+       
+        if (startDateElem && startDateElem.innerText.trim() !== "--" && startDateElem.innerText.trim() !== "") {
+            const currentEnd = new Date(endDateElem.innerText);
+            const today = new Date();
+            const diffTime = currentEnd - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (daysLeftElem && !isNaN(diffDays)) {
+                daysLeftElem.innerText = `(${diffDays > 0 ? diffDays : 0} days remaining)`;
+            }
+        }
     }
 
-   
-    if (window.location.pathname.includes('profile')) {
-        console.log("Welcome to your profile, Sarah!");
+
+    const slider = document.getElementById('time-slider');
+    if (slider) {
+        slider.addEventListener('input', (e) => updateForecastDisplay(e.target.value));
+    }
+
+    const openRouteBtn = document.getElementById('toggle-route-btn');
+    const closeRouteBtn = document.getElementById('close-route-btn');
+    const routePanel = document.getElementById('route-planner-panel');
+    const calcRouteBtn = document.getElementById('calc-route-btn');
+
+    if (calcRouteBtn) calcRouteBtn.addEventListener('click', calculateAndDisplayRoute);
+    if (openRouteBtn && closeRouteBtn && routePanel) {
+        openRouteBtn.addEventListener('click', () => routePanel.classList.add('active'));
+        closeRouteBtn.addEventListener('click', () => routePanel.classList.remove('active'));
     }
 });
-
 
 setInterval(fetchWeather, 600000);
 
 
+/* ==========================================
+   ROUTE PLANNER: CORE LOGIC
+   ========================================== */
+/**
+ * Helper: Calculate distance between two coordinates using Haversine formula
+ */
+
+function getDirections(request) {
+    return new Promise((resolve, reject) => {
+        directionsService.route(request, (response, status) => {
+            if (status === 'OK') resolve(response);
+            else reject(status);
+        });
+    });
+}
+
+function getDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Radius of the earth in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c; // Distance in km
+}
+
+/**
+ * Helper: Find the nearest station based on availability criteria
+ * @param {number} lat - Target latitude
+ * @param {number} lng - Target longitude
+ * @param {string} needType - 'bikes' (needs available bikes) or 'stands' (needs empty stands)
+ */
+function findNearestStation(lat, lng, needType) {
+    let bestStation = null;
+    let minDistance = Infinity;
+
+    // 'allStationsData' is your global array containing all 115 stations
+    allStationsData.forEach(station => {
+        const hasBikes = station.available_bikes > 0;
+        const hasStands = (station.available_bike_stands > 0 || station.stands_count > 0);
+
+        // Skip stations that don't meet our criteria
+        if (needType === 'bikes' && !hasBikes) return;
+        if (needType === 'stands' && !hasStands) return;
+
+        const dist = getDistance(lat, lng, parseFloat(station.lat), parseFloat(station.lng));
+        if (dist < minDistance) {
+            minDistance = dist;
+            bestStation = station;
+        }
+    });
+
+    return bestStation;
+}
+
+/**
+ * Main Function: Calculate and render the multi-stop route
+ */
+/**
+ * Main Function: Calculate and render the multi-stop route with times and dashed lines
+ */
+async function calculateAndDisplayRoute() {
+    const originStr = document.getElementById('route-origin').value;
+    const destStr = document.getElementById('route-destination').value;
+    const resultsContainer = document.getElementById('route-results');
+
+    if (!originStr || !destStr) {
+        alert("Please enter both origin and destination.");
+        return;
+    }
+
+    if (!directionsService) directionsService = new google.maps.DirectionsService();
+
+
+    routeRenderers.forEach(r => r.setMap(null));
+    routeRenderers = [];
+
+    resultsContainer.innerHTML = '<p style="text-align:center;">Calculating best route...</p>';
+    const geocoder = new google.maps.Geocoder();
+
+    try {
+        
+        const originResult = await geocoder.geocode({ address: originStr + ", Dublin, Ireland" });
+        const originLoc = originResult.results[0].geometry.location;
+
+        const destResult = await geocoder.geocode({ address: destStr + ", Dublin, Ireland" });
+        const destLoc = destResult.results[0].geometry.location;
+
+        
+        const startStation = findNearestStation(originLoc.lat(), originLoc.lng(), 'bikes');
+        const endStation = findNearestStation(destLoc.lat(), destLoc.lng(), 'stands');
+
+        if (!startStation || !endStation) {
+            resultsContainer.innerHTML = '<p style="color:red;">Could not find valid stations nearby.</p>';
+            return;
+        }
+
+        const startStationLoc = { lat: parseFloat(startStation.lat), lng: parseFloat(startStation.lng) };
+        const endStationLoc = { lat: parseFloat(endStation.lat), lng: parseFloat(endStation.lng) };
+
+       
+        const walk1Req = getDirections({ origin: originLoc, destination: startStationLoc, travelMode: 'WALKING' });
+        const bikeReq = getDirections({ origin: startStationLoc, destination: endStationLoc, travelMode: 'BICYCLING' });
+        const walk2Req = getDirections({ origin: endStationLoc, destination: destLoc, travelMode: 'WALKING' });
+
+ 
+        const [walk1Res, bikeRes, walk2Res] = await Promise.all([walk1Req, bikeReq, walk2Req]);
+
+       
+      
+        routeCustomMarkers.forEach(m => m.setMap(null));
+        routeCustomMarkers = [];
+
+       
+        function createRouteMarker(position, labelText, color, stationData = null) {
+            const marker = new google.maps.Marker({
+                position: position,
+                map: map,
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    fillColor: color, fillOpacity: 1,
+                    strokeWeight: 2, strokeColor: 'white',
+                    scale: 14 
+                },
+                label: { text: labelText, color: 'white', fontWeight: 'bold' },
+                zIndex: 1002,
+                cursor: stationData ? 'pointer' : 'default'
+            });
+
+            if (stationData) {
+                marker.addListener('click', () => {
+      
+                    showStationDetails(stationData);
+                });
+            }
+
+            routeCustomMarkers.push(marker);
+        }
+
+
+        createRouteMarker(originLoc, 'A', '#ea4335'); 
+        createRouteMarker(startStationLoc, 'B', '#00a86b', startStation); 
+        createRouteMarker(endStationLoc, 'C', '#00a86b', endStation); 
+        createRouteMarker(destLoc, 'D', '#ea4335');
+
+  
+        const renderWalk1 = new google.maps.DirectionsRenderer({
+            map: map, suppressMarkers: true, 
+            polylineOptions: { strokeColor: '#2196F3', strokeOpacity: 0, icons: [{ icon: { path: 'M 0,-1 0,1', strokeOpacity: 1, scale: 5 }, offset: '0', repeat: '20px' }] }
+        });
+        renderWalk1.setDirections(walk1Res);
+        routeRenderers.push(renderWalk1);
+
+       
+        const renderBike = new google.maps.DirectionsRenderer({
+            map: map, suppressMarkers: true, 
+            polylineOptions: { strokeColor: '#008b57', strokeWeight: 8, strokeOpacity: 0.9 }
+        });
+        renderBike.setDirections(bikeRes);
+        routeRenderers.push(renderBike);
+
+        const renderWalk2 = new google.maps.DirectionsRenderer({
+            map: map, suppressMarkers: true,
+            polylineOptions: { strokeColor: '#2196F3', strokeOpacity: 0, icons: [{ icon: { path: 'M 0,-1 0,1', strokeOpacity: 1, scale: 5 }, offset: '0', repeat: '20px' }] }
+        });
+        renderWalk2.setDirections(walk2Res);
+        routeRenderers.push(renderWalk2);
+
+     
+        const walk1Time = walk1Res.routes[0].legs[0].duration.text;
+        const bikeTime = bikeRes.routes[0].legs[0].duration.text;
+        const walk2Time = walk2Res.routes[0].legs[0].duration.text;
+
+        resultsContainer.innerHTML = `
+            <div style="background-color: #f8f9fa; padding: 18px; border-radius: 8px; border: 1px solid #e0e0e0;">
+                <h4 style="margin: 0 0 15px 0; color: #00a86b; font-size: 16px;">Route Found ! </h4>
+                
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px;">
+                        <div style="display: flex; align-items: center;">
+                            <span style="background:#ea4335; color:white; border-radius:50%; width:24px; height:24px; display:inline-flex; justify-content:center; align-items:center; font-size:12px; margin-right:10px; font-weight:bold; flex-shrink:0;">A</span> 
+                            <div>
+                                <i class="fa-solid fa-person-walking" style="width: 18px; color: #888; text-align: center; margin-right: 4px;"></i>
+                                Walk to <strong>${startStation.name}</strong> <span style="color:#00a86b; font-weight:bold; font-size:12px; margin-left:4px;">(B)</span>
+                            </div>
+                        </div>
+                        <span style="color:#555; font-weight:bold; white-space: nowrap; margin-left: 10px;">${walk1Time}</span>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px;">
+                        <div style="display: flex; align-items: center;">
+                            <span style="background:#00a86b; color:white; border-radius:50%; width:24px; height:24px; display:inline-flex; justify-content:center; align-items:center; font-size:12px; margin-right:10px; font-weight:bold; flex-shrink:0;">B</span> 
+                            <div>
+                                <i class="fa-solid fa-bicycle" style="width: 18px; color: #00a86b; text-align: center; margin-right: 4px;"></i>
+                                Cycle to <strong>${endStation.name}</strong> <span style="color:#ea4335; font-weight:bold; font-size:12px; margin-left:4px;">(C)</span>
+                            </div>
+                        </div>
+                        <span style="color:#555; font-weight:bold; white-space: nowrap; margin-left: 10px;">${bikeTime}</span>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px;">
+                        <div style="display: flex; align-items: center;">
+                            <span style="background:#00a86b; color:white; border-radius:50%; width:24px; height:24px; display:inline-flex; justify-content:center; align-items:center; font-size:12px; margin-right:10px; font-weight:bold; flex-shrink:0;">C</span> 
+                            <div>
+                                <i class="fa-solid fa-person-walking" style="width: 18px; color: #888; text-align: center; margin-right: 4px;"></i>
+                                Walk to destination
+                            </div>
+                        </div>
+                        <span style="color:#555; font-weight:bold; white-space: nowrap; margin-left: 10px;">${walk2Time}</span>
+                    </div>
+
+                    <div style="display: flex; align-items: center; font-size: 14px; margin-top: -4px;">
+                        <span style="background:#ea4335; color:white; border-radius:50%; width:24px; height:24px; display:inline-flex; justify-content:center; align-items:center; font-size:12px; margin-right:10px; font-weight:bold; flex-shrink:0;">D</span> 
+                        <div>
+                            <i class="fa-solid fa-flag-checkered" style="width: 18px; color: #ea4335; text-align: center; margin-right: 4px;"></i>
+                            <strong>Arrive at destination</strong>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        `;
+
+    } catch (error) {
+        console.error("Routing error:", error);
+        resultsContainer.innerHTML = '<p style="color:red;">Routing failed. Please try different locations.</p>';
+    }
+}

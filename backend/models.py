@@ -12,16 +12,16 @@ class User(db.Model):
     email = db.Column(db.String(120), primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     password = db.Column(db.String(80), nullable=False)
-    
-    
     member_since = db.Column(db.String(20), default=lambda: datetime.now().strftime('%B %Y'))
-    
-    
     total_rides = db.Column(db.Integer, default=0)
     total_distance = db.Column(db.Integer, default=0)
     co2_saved = db.Column(db.Integer, default=0)
     rides_this_month = db.Column(db.Integer, default=0)
     fav_station = db.Column(db.String(100), default="None Yet")
+    current_plan = db.Column(db.String(50), default="None")
+    plan_start_date = db.Column(db.DateTime)
+    plan_end_date = db.Column(db.DateTime)
+
 
     def __repr__(self):
         return f'<User {self.name}>'

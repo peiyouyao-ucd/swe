@@ -113,6 +113,38 @@
             <span class="label">Empty (0)</span>
         </div>
     </div>
+    <button id="toggle-route-btn" class="floating-route-btn">
+        <i class="fa-solid fa-route"></i> Route Planner
+    </button>
+
+    <div id="route-planner-panel" class="route-panel">
+        <div class="route-panel-header">
+            <h3>Bike Transit Navigation</h3>
+            <button id="close-route-btn" class="close-btn">&times;</button>
+        </div>
+        
+        <div class="route-panel-body">
+            <div class="route-inputs">
+                
+                <div class="input-group">
+                    <input type="text" id="route-origin" placeholder="Enter origin (e.g., Trinity College)">
+                </div>
+                
+                <div class="input-group">
+                    <input type="text" id="route-destination" placeholder="Enter destination (e.g., Dublin Castle)">
+                </div>
+                
+                <button id="calc-route-btn" class="calc-btn">Plan Route</button>
+            </div>
+
+            <div id="route-results" class="route-results-container">
+                <div class="empty-state">
+                    <i class="fa-solid fa-bicycle" style="font-size: 24px; color: #ccc; margin-bottom: 10px;"></i>
+                    <p>Enter your origin and destination.<br>We will calculate the best route including walking to/from stations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
         
     <aside id="details-panel">
         <button class="close-panel-btn" onclick="closeDetailsPanel()">×</button>
@@ -147,11 +179,27 @@
             <div id="view-ml" class="details-view">
                 <div class="ml-prediction-box">
                     <h4>AI Availability Prediction</h4>
-                    <div class="predicted-main">
-                        <span id="predicted-value">--</span>
-                        <p>Expected Bikes Available</p>
+                    <div class="time-slider-container">
+                        <label for="time-slider" class="time-slider-header">
+                            <span>Forecast Time</span>
+                            <span id="forecast-time-label">Current</span>
+                        </label>
+                        
+                        <input type="range" id="time-slider" min="0" max="23" value="0" step="1">
+                        
+                        <div class="time-slider-ticks">
+                            <span>Now</span>
+                            <span>+12h</span>
+                            <span>+23h</span>
+                        </div>
+                    </div> <div class="prediction-highlight-card">
+                        <div id="predicted-value" class="prediction-number">--</div>
+                        <div class="prediction-label">Expected Bikes Available</div>
                     </div>
-                    <p class="ml-note">Our model predicts availability based on current weather, time of day, and historical patterns.</p>
+
+                    <p style="font-size: 0.85rem; color: #888; margin-top: 20px; line-height: 1.5;">
+                        Our model predicts availability based on current weather, time of day, and historical patterns.
+                    </p>
                 </div>
             </div>
         </div>
@@ -164,19 +212,19 @@
     
     <div class="steps-container">
     
-    <a href="{{ url_for('pages.howto') }}#rent-content" class="step-card green-card">
+    <a href="{{ url_for('pages.howto') }}?tab=rent-content" class="step-card green-card">
         <div class="icon-bike"><i class="fa-solid fa-bicycle"></i></div>
         <h3>Rent a Bike</h3>
         <p>Learn how to find and rent a bike from any station</p>
     </a>
 
-     <a href="{{ url_for('pages.howto') }}#use-content" class="step-card blue-card">
+     <a href="{{ url_for('pages.howto') }}?tab=use-content" class="step-card blue-card">
         <div class="icon-play"><i class="fa-solid fa-play"></i></div>
         <h3>Use the Service</h3>
         <p>Discover all features and get the most out of your ride</p>
     </a>
 
-    <a href="{{ url_for('pages.howto') }}#return-content" class="step-card purple-card">
+    <a href="{{ url_for('pages.howto') }}?tab=return-content" class="step-card purple-card">
         <div class="icon-rotate"><i class="fa-solid fa-rotate"></i></div>
         <h3>Return the Bike</h3>
         <p>Find out how to safely return your bike to any station</p>
@@ -271,7 +319,7 @@
     </section>
 
 {% block scripts %}
-    <script async src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap"></script>
+    <script async src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places&callback=initMap"></script>
 {% endblock %}
 
 {% endblock %}

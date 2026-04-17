@@ -6,7 +6,9 @@
         <h1>Choose Your Perfect Plan</h1>
         <p>Flexible subscription options designed for every rider. No commitments, cancel anytime.</p>
     </header>
-    
+    <script>
+    window.CURRENT_USER_NAME = "{{ request.cookies.get('user_name') or '' }}";
+    </script>
     
     <section class="section-plans">
         <div class="pricing-header-inner">
@@ -16,7 +18,7 @@
 
         <div class="pricing-container">
             <div class="plans-grid">
-                <div class="plan-card" onclick="selectPlan('Day Pass')">
+                <div class="plan-card">
                     <h3>Day Pass</h3>
                     <div class="price">€5 <span>/ day</span></div>
                     <ul>
@@ -25,10 +27,14 @@
                         <li><i class="fa-solid fa-check"></i> Mobile app access</li>
                         <li><i class="fa-solid fa-check"></i> Customer support</li>
                     </ul>
-                    <button class="btn-plan">Choose Plan</button>
+                    {% if not user.current_plan or user.current_plan == 'None' %}
+                        <button class="btn-plan" onclick="selectPlan('Day Pass', this)">Choose Plan</button>
+                    {% elif user.current_plan == 'Day Pass' %}
+                        <button class="btn-plan current" disabled>Current Plan</button>
+                    {% endif %}
                 </div>
 
-                <div class="plan-card featured" onclick="selectPlan('Monthly')">
+                <div class="plan-card">
                     <h3>Monthly</h3>
                     <div class="price">€25 <span>/ month</span></div>
                     <ul>
@@ -38,10 +44,14 @@
                         <li><i class="fa-solid fa-check"></i> Mobile app access</li>
                         <li><i class="fa-solid fa-check"></i> 24/7 customer support</li>
                     </ul>
-                    <button class="btn-plan">Choose Plan</button>
+                    {% if not user.current_plan or user.current_plan == 'None' %}
+                        <button class="btn-plan" onclick="selectPlan('Monthly', this)">Choose Plan</button>
+                    {% elif user.current_plan == 'Monthly' %}
+                        <button class="btn-plan current" disabled>Current Plan</button>
+                    {% endif %}
                 </div>
 
-                <div class="plan-card" onclick="selectPlan('Annual')">
+                <div class="plan-card">
                     <h3>Annual</h3>
                     <div class="price">€120 <span>/ year</span></div>
                     <ul>
@@ -52,7 +62,11 @@
                         <li><i class="fa-solid fa-check"></i> 24/7 premium support</li>
                         <li><i class="fa-solid fa-check"></i> Free guest passes</li>
                     </ul>
-                    <button class="btn-plan">Choose Plan</button>
+                    {% if not user.current_plan or user.current_plan == 'None' %}
+                        <button class="btn-plan" onclick="selectPlan('Annual', this)">Choose Plan</button>
+                    {% elif user.current_plan == 'Annual' %}
+                        <button class="btn-plan current" disabled>Current Plan</button>
+                    {% endif %}
                 </div>
             </div>
         </div>

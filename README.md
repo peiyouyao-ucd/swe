@@ -1,12 +1,34 @@
-# 1. Project overview
+# 1. Project Overview
 
 The **Dublin Bike-Sharing Data & Analytics Platform** is a full-stack web application designed to help users track real-time bike and stand availability across Dublin. It combines real-time data ingestion, historical data persistence, and machine learning to provide predictive insights.
 
-**Key Features:**
-- **Real-time Monitoring**: Integrates JCDecaux and OpenWeather APIs for live bike and weather status.
-- **Predictive Analytics**: Uses a Scikit-learn model to predict availability based on time-series data and weather conditions.
-- **Automated Ingestion**: Background scrapers periodically fetch and store data for analysis.
-- **Persistent Storage**: Robust MySQL backend managed via Docker for reliable data history.
+- **Secure Authentication & Profiles**: Integrated Login/Signup system allowing users to create accounts and manage personalized profiles.
+- **Comprehensive User Analytics**: Tracks detailed riding statistics including total rides, distance travelled, CO2 saved, and favorite stations.
+- **User Subscription System**: Secure multi-tier membership system (Day, Monthly, Annual) featuring real-time database synchronization, dynamic plan locking, and automated expiration tracking.
+- **Smart Route Planning**: Integrates Google Maps APIs with a custom Haversine-based algorithm to generate seamless "Walk-Cycle-Walk" multi-leg journeys.
+- **Containerized Data Persistence**: Robust MySQL backend managed via **Docker**, ensuring that all user credentials and profile data are securely stored and persistent across sessions.
+- **Real-time Monitoring & Prediction**: Integrates JCDecaux and OpenWeather APIs for live status updates and uses a Scikit-learn model for availability forecasting.
+
+---
+
+## Database Schema (User Profile)
+
+The system maintains a comprehensive user database with the following fields to support analytics and subscription features:
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| **email** | VARCHAR | Primary key; user's unique identifier used for authentication. |
+| **name** | VARCHAR | User's display name shown on the profile page. |
+| **password** | VARCHAR | Securely stored user password for account protection. |
+| **member_since** | VARCHAR | Date timestamp indicating when the user joined. |
+| **total_rides** | INT | Cumulative count of bike trips taken by the user. |
+| **total_distance**| INT | Total distance travelled in kilometers. |
+| **co2_saved** | INT | Estimated amount of CO2 emissions saved by cycling. |
+| **fav_station** | VARCHAR | Most frequently used station for rentals. |
+| **current_plan** | VARCHAR | Current subscription tier (e.g., Monthly, Day Pass). |
+| **plan_start_date**| DATETIME | The exact timestamp when the current plan was activated. |
+| **plan_end_date** | DATETIME | The expiration timestamp used to trigger auto-clear logic. |
+
 
 # 2. Project structure
 
@@ -104,6 +126,22 @@ docker-compose down # stop and remove container
 
 docker-compose down -v # stop and remove container, delete data volume
 ```
+
+## Prepare Machine Learning Model
+
+To enable the AI availability prediction feature, you must generate the predictive model (`bike_availability_model.pkl`) using the following steps:
+
+1.  **Download Dataset**:
+    Download the `final_merged_data.csv` file from Brightspace (located in the **Week 8** materials).
+2.  **Rename and Relocate**:
+    Rename the file to `bike_weather_data.csv` and place it inside the `ml_training/` folder.
+3.  **Run Training Notebook**:
+    Navigate to the `ml_training/` directory and open the training notebook (Jupyter Notebook or `.py` script). Run all cells to process the data and train the Scikit-learn model.
+4.  **Generate Model File**:
+    Upon successful execution, the script will export a file named `bike_availability_model.pkl`. 
+5.  **Final Deployment**:
+    Ensure `bike_availability_model.pkl` is located in the root directory (or the designated backend folder) so the Flask application can load it for real-time predictions.
+    
 
 ## Inject secrets
 
