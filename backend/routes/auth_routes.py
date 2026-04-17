@@ -34,7 +34,7 @@ def login():
             resp.set_cookie('user_email', user.email, httponly=True, max_age=3600)
             resp.set_cookie('user_name', user.name, httponly=True, max_age=3600)
             return resp
-        return result["message"]
+        return render_template('login.html', error=result["message"])
     return render_template('login.html')
 
 @auth_bp.route('/api/subscribe', methods=['POST'])
