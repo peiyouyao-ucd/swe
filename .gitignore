@@ -45,3 +45,4 @@ Thumbs.db
 .vscode
 ml_training/*.csv
 ml_training/*.joblib
+.ipynb_checkpoints
