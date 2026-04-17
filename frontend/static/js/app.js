@@ -769,6 +769,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+    initPasswordToggle();
+
+    // 2. Try to get the tab ID from the URL query parameters (e.g., ?tab=use-content)
+    const urlParams = new URLSearchParams(window.location.search);
+    let targetId = urlParams.get('tab');
+
+    // 3. If no query parameter is found, check the URL hash instead (e.g., #use-content)
+    if (!targetId) {
+        targetId = window.location.hash.substring(1);
+    }
+
+    // 4. If a target ID exists (from either source), trigger the jump
+    if (targetId) {
+        console.log("Tab target detected:", targetId);
+        
+        // We use a 300ms delay to ensure all DOM elements are fully loaded
+        // before the jumpToTab function tries to click the button.
+        setTimeout(() => jumpToTab(targetId), 300);
+    }
+
+    // 5. Developer easter egg
+    if (window.location.pathname.includes('profile')) {
+        console.log("Welcome to your profile, Sarah!");
+    }
+    
+
+
     const slider = document.getElementById('time-slider');
     if (slider) {
         slider.addEventListener('input', (e) => updateForecastDisplay(e.target.value));
@@ -784,6 +811,17 @@ document.addEventListener('DOMContentLoaded', () => {
         openRouteBtn.addEventListener('click', () => routePanel.classList.add('active'));
         closeRouteBtn.addEventListener('click', () => routePanel.classList.remove('active'));
     }
+
+    initPasswordToggle();
+    const hash = window.location.hash.substring(1);
+    if (hash) {
+        setTimeout(() => jumpToTab(hash), 300);
+    }
+   
+    if (window.location.pathname.includes('profile')) {
+        console.log("Welcome to your profile, Sarah!");
+    }
+
 });
 
 setInterval(fetchWeather, 600000);
