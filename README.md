@@ -59,11 +59,9 @@ macOS and Linux
 
 ```bash
 # Use curl to download the script and execute it with sh:
-
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # If your system doesn't have curl, you can use wget:
-
 wget -qO- https://astral.sh/uv/install.sh | sh
 ```
 
@@ -71,7 +69,6 @@ Windows
 
 ```powershell
 # Use irm to download the script and execute it with iex:
-
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
@@ -98,32 +95,43 @@ source .venv/bin/activate
 
 ## Run model training
 
-We need run model training firstly.
+We need run model training firstly. We can run / generate / get model in 3 ways:
 
-Run `ml_training/training.ipynb` which will generate a model file: `ml_training/bike_availability_model.pkl` 
+1. Run `ml_training/training.ipynb` which will generate a model file: `ml_training/bike_availability_model.pkl`. This way is suitable to research which model is best in **LOCAL**, with jupyter notebook.
+2. Download raw `bike_weather_data.csv` from [here](https://drive.google.com/file/d/1CCBICc9XKv4SjipXQQV3Kbv5Uv6ELTVW/view?usp=drive_link). Place that file under `ml_train/bike_weather_data.csv` and using
+    ```bash
+    # /swe
+    uv run python ml_training/training.py
+    ```
+    to generate model file, which will take several mins. This way is suitable for **deployment**.
+3. Directly download model file [here](https://drive.google.com/file/d/1WpCTOXdx3GmuKOMfMkKZUGRF06H1YG7P/view?usp=drive_link), and place it under `ml_training/bike_availability_model.pkl`. **BUT**, I am not sure this `.pkl` program can run smoothly in EC2, because it is trained under Window WLS environment. So I recommend the deployer use way 2 to generate model file.
 
-We don't upload this model file to Github because of its big size.
+
+We don't upload model file and raw data to Github because of its big size.
 
 Backend application will read that `.pkl` model file when `StationService` is initialized.
 
 ## Start database (docker)
 
-Start database using docker command:
+Firstly, install docker if you don't have
 
 ```bash
 # install docker in linux
 curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 # if you are in Window or MacOS, you can install docker desktop application
+```
 
+Start database using docker command:
+
+```bash
 # /swe
 
-docker-compose up -d # start container
-
+docker-compose up -d # start container, where is MySQL database running
 docker-compose ps # check docker status
 
+# Close docker container, you don't need these commands in deployment
 docker-compose down # stop and remove container
-
 docker-compose down -v # stop and remove container, delete data volume
 ```
 
