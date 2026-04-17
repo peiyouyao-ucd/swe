@@ -15,7 +15,7 @@ class TestStationService(unittest.TestCase):
     def setUp(self):
         """Sets up the test environment with in-memory repositories and services."""
         # Use In-Memory repositories to avoid side effects
-        self.station_repo = InMemoStationRepository(max_size=10)
+        self.station_repo = InMemoStationRepository()
         self.weather_repo = InMemoWeatherRepository(max_size=10)
         
         # Initialize services
@@ -23,7 +23,7 @@ class TestStationService(unittest.TestCase):
         self.station_service = StationService(self.station_repo, self.weather_service)
 
     def test_save_and_get_stations(self):
-        """Tests if station data is correctly transformed and saved."""
+        """Tests if station data is correctly transformed and saved as models."""
         raw_data = [
             {
                 'number': 42,
@@ -40,15 +40,17 @@ class TestStationService(unittest.TestCase):
         # Save data
         self.station_service.save_station_data(raw_data)
         
-        # Retrieve data
+        # Retrieve data (returns list[tuple[Station, Availability]])
         result = self.station_service.get_latest_all_stations()
         
-        # get_latest_all_stations returns a list of latest station states
         self.assertIsInstance(result, list)
         self.assertEqual(len(result), 1)
-        station_data = result[0]
-        self.assertEqual(station_data['number'], 42)
-        self.assertEqual(station_data['available_bikes'], 10)
+        
+        station_model, avail_model = result[0]
+        self.assertEqual(station_model.number, 42)
+        self.assertEqual(station_model.name, 'Test Station')
+        self.assertEqual(avail_model.available_bikes, 10)
+        self.assertEqual(avail_model.number, 42)
 
     def test_prediction_with_dummy_data(self):
         """Tests the prediction logic using mocked weather and station data."""
