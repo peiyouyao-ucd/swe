@@ -53,7 +53,10 @@
                 <div class="card-header">
                     <h2>Current Subscription</h2>
                     <div>
-                        <span class="status-pill active" id="subscription-status">Active</span>
+                        <span class="status-pill {{ 'active' if user.current_plan and user.current_plan != 'None' else 'inactive' }}" 
+                            id="subscription-status">
+                            {{ 'Active' if user.current_plan and user.current_plan != 'None' else 'Inactive' }}
+                        </span>
                         <span id="days-left-badge" style="font-size: 0.8rem; color: #888; margin-left: 8px;"></span>
                     </div>
                 </div>

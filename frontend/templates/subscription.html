@@ -171,7 +171,10 @@
             <p>Join DublinBikes today and experience the freedom of unlimited cycling</p>
             <div class="btn-group">
                 <a href="{{ url_for('pages.subscription') }}" class="btn-cta-solid">Subscribe Now</a>
-                <a href="{{ url_for('auth.login') }}" class="btn-cta-outline">Start Free Trial</a>
+                <a href="{{ url_for('pages.profile') if request.cookies.get('user_email') else url_for('auth.signup') }}" 
+                class="btn-cta-outline">
+                    Start Free Trial
+                </a>
             </div>
         </div>
     </section>

@@ -633,24 +633,37 @@ function jumpToTab(contentId) {
 
 // --- Password Toggle Logic ---
 function initPasswordToggle() {
-    const toggleBtn = document.getElementById('togglePassword');
-    const passwordInput = document.getElementById('password');
+    // 1. Find all "eye" icons with the class 'toggle-password'
+    const toggleButtons = document.querySelectorAll('.toggle-password');
 
- 
-    if (toggleBtn && passwordInput) {
-        toggleBtn.addEventListener('click', function() {
-    
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
+    toggleButtons.forEach(btn => {
+        // Prevent double-binding by cloning the button (cleans up old listeners)
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
 
-         
-            this.classList.toggle('fa-eye');
-            this.classList.toggle('fa-eye-slash');
-            
-    
-            this.style.color = type === 'text' ? '#059669' : '#9ca3af';
+        newBtn.addEventListener('click', function() {
+            // 2. Find the password input inside the same container
+            const container = this.closest('.password-container') || this.parentElement;
+            const passwordInput = container.querySelector('input');
+
+            if (passwordInput) {
+                const isPassword = passwordInput.getAttribute('type') === 'password';
+                const newType = isPassword ? 'text' : 'password';
+                
+                // Toggle the input type
+                passwordInput.setAttribute('type', newType);
+
+                // 3. Toggle Icon classes (eye vs eye-slash)
+                this.classList.toggle('fa-eye', !isPassword);
+                this.classList.toggle('fa-eye-slash', isPassword);
+                
+                // 4. Toggle Color (Green for visible, Grey for hidden)
+                this.style.color = isPassword ? '#059669' : '#9ca3af';
+
+                console.log(`Switched ${passwordInput.id} to ${newType}`);
+            }
         });
-    }
+    });
 }
 
 
@@ -746,16 +759,19 @@ async function renewPlan(btnElement) {
     INITIALIZATION 
    ========================================== */
 document.addEventListener('DOMContentLoaded', () => {
-  
-    if (typeof initPasswordToggle === "function") initPasswordToggle();
-
+    // 1. Initialize Password Toggle (ONLY CALL ONCE)
+    // This handles the eye icon for login/signup pages
+    initPasswordToggle();
     
+
+    // 2. Profile Page Logic: Subscription Countdown
     if (window.location.pathname.includes('profile')) {
+        console.log("Welcome to your profile, Sarah!");
+        
         const startDateElem = document.getElementById('start-date-display');
         const endDateElem = document.getElementById('end-date-display');
         const daysLeftElem = document.getElementById('days-left-badge');
 
-       
         if (startDateElem && startDateElem.innerText.trim() !== "--" && startDateElem.innerText.trim() !== "") {
             const currentEnd = new Date(endDateElem.innerText);
             const today = new Date();
@@ -768,45 +784,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
-    initPasswordToggle();
-
-    // 2. Try to get the tab ID from the URL query parameters (e.g., ?tab=use-content)
+    // 3. Tab Redirection Logic (Handles both ?tab= and #hash)
     const urlParams = new URLSearchParams(window.location.search);
-    let targetId = urlParams.get('tab');
+    let targetId = urlParams.get('tab') || window.location.hash.substring(1);
 
-    // 3. If no query parameter is found, check the URL hash instead (e.g., #use-content)
-    if (!targetId) {
-        targetId = window.location.hash.substring(1);
-    }
-
-    // 4. If a target ID exists (from either source), trigger the jump
     if (targetId) {
         console.log("Tab target detected:", targetId);
-        
-        // We use a 300ms delay to ensure all DOM elements are fully loaded
-        // before the jumpToTab function tries to click the button.
-        setTimeout(() => jumpToTab(targetId), 300);
+        // Delay slightly to ensure content is rendered
+        setTimeout(() => {
+            if (typeof jumpToTab === "function") jumpToTab(targetId);
+        }, 300);
     }
 
-    // 5. Developer easter egg
-    if (window.location.pathname.includes('profile')) {
-        console.log("Welcome to your profile, Sarah!");
-    }
-    
-
-
+    // 4. Map & Forecast Slider Logic
     const slider = document.getElementById('time-slider');
-    if (slider) {
+    if (slider && typeof updateForecastDisplay === "function") {
         slider.addEventListener('input', (e) => updateForecastDisplay(e.target.value));
     }
 
+    // 5. Route Planner Panel Logic
     const openRouteBtn = document.getElementById('toggle-route-btn');
     const closeRouteBtn = document.getElementById('close-route-btn');
     const routePanel = document.getElementById('route-planner-panel');
     const calcRouteBtn = document.getElementById('calc-route-btn');
 
-    if (calcRouteBtn) calcRouteBtn.addEventListener('click', calculateAndDisplayRoute);
+    if (calcRouteBtn && typeof calculateAndDisplayRoute === "function") {
+        calcRouteBtn.addEventListener('click', calculateAndDisplayRoute);
+    }
+
     if (openRouteBtn && closeRouteBtn && routePanel) {
         openRouteBtn.addEventListener('click', () => routePanel.classList.add('active'));
         closeRouteBtn.addEventListener('click', () => routePanel.classList.remove('active'));

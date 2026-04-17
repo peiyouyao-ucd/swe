@@ -2603,6 +2603,16 @@ MAP & SIDE PANEL
     font-weight: 600;
 }
 
+
+.status-pill.inactive {
+    background-color: #f3f4f6;
+    color: #6b7280;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
 .sub-details {
     padding: 20px;
     background: #f9fafb;
