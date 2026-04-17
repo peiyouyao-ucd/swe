@@ -135,22 +135,6 @@ docker-compose down # stop and remove container
 docker-compose down -v # stop and remove container, delete data volume
 ```
 
-## Prepare Machine Learning Model
-
-To enable the AI availability prediction feature, you must generate the predictive model (`bike_availability_model.pkl`) using the following steps:
-
-1.  **Download Dataset**:
-    Download the `final_merged_data.csv` file from Brightspace (located in the **Week 8** materials).
-2.  **Rename and Relocate**:
-    Rename the file to `bike_weather_data.csv` and place it inside the `ml_training/` folder.
-3.  **Run Training Notebook**:
-    Navigate to the `ml_training/` directory and open the training notebook (Jupyter Notebook or `.py` script). Run all cells to process the data and train the Scikit-learn model.
-4.  **Generate Model File**:
-    Upon successful execution, the script will export a file named `bike_availability_model.pkl`. 
-5.  **Final Deployment**:
-    Ensure `bike_availability_model.pkl` is located in the root directory (or the designated backend folder) so the Flask application can load it for real-time predictions.
-    
-
 ## Inject secrets
 
 We need to configure API Keys and URLs then.
