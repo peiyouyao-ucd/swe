@@ -86,39 +86,33 @@ class StationService:
         """
         return self._repo.get_stations_latest()
 
-    def get_one_station(self, station_number: int) -> dict:
+    def get_one_station_details(self, station_number: int) -> dict:
         """
         Retrieves a comprehensive data package for a single station.
-        Includes metadata, history (models), and ML predictions.
+        Includes history availabilities, and ML predictions.
         """
         # Explicit 24h time bound (in ms)
         time_from = int((time.time() - 24 * 3600) * 1000)
         
         history_records = self._repo.get_history(station_number=station_number, time_from=time_from)
-        
-        # Fetch station metadata
-        all_latest = self._repo.get_stations_latest()
-        station_meta = next((s for s, a in all_latest if s.number == station_number), None)
-        
-        if not history_records and not station_meta:
+        if not history_records:
             return None
         
         # Latest record from history or repo
         latest_record = history_records[-1] if history_records else None
-        prediction_value = self.predict_for_one_station(station_number)
+        prediction_value = self._predict_for_one_station(station_number)
         
         # Build composite result containing Models
         result = {
-            "metadata": station_meta,
             "latest": latest_record,
             "prediction": prediction_value if prediction_value != -1 else "N/A",
             "history": history_records,
-            "forecast_24h": self.get_24h_forecast(station_number)
+            "forecast_24h": self._get_24h_forecast(station_number)
         }
         return result
     
 
-    def predict_for_one_station(self, station_number: int) -> int:
+    def _predict_for_one_station(self, station_number: int) -> int:
         """Predicts future availability for a single station using current weather and time.
 
         Args:
@@ -154,7 +148,7 @@ class StationService:
             return -1
 
 
-    def get_24h_forecast(self, station_number: int) -> list:
+    def _get_24h_forecast(self, station_number: int) -> list:
 
         if self._model is None:
             return []

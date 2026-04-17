@@ -70,7 +70,7 @@ class TestStationService(unittest.TestCase):
         
         # 2. Run Prediction
         # Even without station data saved, the model should work if it's loaded
-        prediction = self.station_service.predict_for_one_station(42)
+        prediction = self.station_service._predict_for_one_station(42)
         
         # 3. Assertions
         if self.station_service._model is not None:

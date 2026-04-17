@@ -816,6 +816,17 @@ document.addEventListener('DOMContentLoaded', () => {
         openRouteBtn.addEventListener('click', () => routePanel.classList.add('active'));
         closeRouteBtn.addEventListener('click', () => routePanel.classList.remove('active'));
     }
+
+    initPasswordToggle();
+    const hash = window.location.hash.substring(1);
+    if (hash) {
+        setTimeout(() => jumpToTab(hash), 300);
+    }
+   
+    if (window.location.pathname.includes('profile')) {
+        console.log("Welcome to your profile, Sarah!");
+    }
+
 });
 
 setInterval(fetchWeather, 600000);
