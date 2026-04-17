@@ -39,6 +39,20 @@ def login():
 
 @auth_bp.route('/api/subscribe', methods=['POST'])
 def update_subscription():
+    """
+    Subscribes the current user to a specific bike plan.
+    
+    Request Body:
+    {
+        "plan_name": str ("Day Pass", "Monthly", or "Annual")
+    }
+    
+    Response Schema:
+    {
+        "success": bool,
+        "message": str (optional, on failure)
+    }
+    """
     user_email = request.cookies.get('user_email') 
     user = User.query.filter_by(email=user_email).first()
     if user:
@@ -57,6 +71,15 @@ def update_subscription():
 
 @auth_bp.route('/api/renew', methods=['POST'])
 def handle_renew():
+    """
+    Extends the current user's active subscription.
+    
+    Response Schema:
+    {
+        "success": bool,
+        "message": str (optional, on failure)
+    }
+    """
     user_email = request.cookies.get('user_email') 
     found_user = User.query.filter_by(email=user_email).first()
     

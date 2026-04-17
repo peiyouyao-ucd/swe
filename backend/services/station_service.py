@@ -1,11 +1,14 @@
-import pickle
-import pandas as pd
 import os
 import logging
+import time
 from datetime import datetime, timedelta
+
+import pickle
+import pandas as pd
 
 from repository.station_repo import StationRepository
 from services.weather_service import WeatherService
+from models import Station, Availability
 
 class StationService:
     def __init__(self, repo: StationRepository, weather_service: WeatherService=None):
@@ -36,56 +39,78 @@ class StationService:
 
     def save_station_data(self, raw_stations_data: list[dict]):
         """
-        Processes raw station data from API and persists each station to the SQL database.
+        Transforms raw API data into Station and Availability model instances 
+        and persists them via the repository.
         """
-        processed_stations = [
-            {
-                'number': station.get('number'),
-                'name': station.get('name'),
-                'address': station.get('address'),
-                'position': station.get('position', {}),
-                'bike_stands': station.get('bike_stands'),
-                'status': station.get('status'),
-                'banking': station.get('banking'),
-                'bonus': station.get('bonus'),
-              
-                'available_bikes': station.get('available_bikes'),
-                'available_bike_stands': station.get('available_bike_stands'),
-                'last_update': station.get('last_update')
-            }
-            for station in raw_stations_data
-        ]
+        stations = []
+        availabilities = []
 
-        for station in processed_stations:
-            try:
-                self._repo.save(station)
-            except Exception as e:
-                logging.error(f"Failed to save station {station.get('number')}: {e}")
+        for item in raw_stations_data:
+            # 1. Create Station Metadata Model
+            station = Station(
+                number=item.get('number'),
+                name=item.get('name'),
+                address=item.get('address'),
+                lat=item.get('position', {}).get('lat'),
+                lng=item.get('position', {}).get('lng'),
+                bike_stands=item.get('bike_stands'),
+                status=item.get('status'),
+                banking=item.get('banking'),
+                bonus=item.get('bonus')
+            )
+            stations.append(station)
+
+            # 2. Create Availability Timeseries Model
+            availability = Availability(
+                number=item.get('number'),
+                available_bikes=item.get('available_bikes', 0),
+                available_bike_stands=item.get('available_bike_stands', 0),
+                status=item.get('status'),
+                last_update=item.get('last_update')
+            )
+            availabilities.append(availability)
+
+        # 3. Batch Save
+        try:
+            # We save metadata and dynamics separately
+            self._repo.save_stations(stations)
+            self._repo.save_availabilities(availabilities)
+        except Exception as e:
+            logging.error(f"Failed to perform batch save: {e}")
 
 
-    def get_latest_all_stations(self) -> list:
+    def get_latest_all_stations(self) -> list[tuple[Station, Availability]]:
         """
         Retrieves current snapshots of all stations from the database.
+        Returns: list[tuple[Station, Availability]]
         """
-        return self._repo.get()
+        return self._repo.get_stations_latest()
 
     def get_one_station(self, station_number: int) -> dict:
         """
         Retrieves a comprehensive data package for a single station.
-        Includes latest status, history for chart, and ML prediction.
+        Includes metadata, history (models), and ML predictions.
         """
-        history_records = self._repo.get(station_number=station_number)
-        if not history_records:
+        # Explicit 24h time bound (in ms)
+        time_from = int((time.time() - 24 * 3600) * 1000)
+        
+        history_records = self._repo.get_history(station_number=station_number, time_from=time_from)
+        
+        # Fetch station metadata
+        all_latest = self._repo.get_stations_latest()
+        station_meta = next((s for s, a in all_latest if s.number == station_number), None)
+        
+        if not history_records and not station_meta:
             return None
         
-        latest_record = history_records[-1]
+        # Latest record from history or repo
+        latest_record = history_records[-1] if history_records else None
         prediction_value = self.predict_for_one_station(station_number)
+        
+        # Build composite result containing Models
         result = {
-            "number": station_number,
-            "name": latest_record.get('name', f"Station {station_number}"),
-            "available_bikes": latest_record.get('available_bikes'),
-            "available_bike_stands": latest_record.get('available_bike_stands'),
-            "last_update": latest_record.get('last_update'),
+            "metadata": station_meta,
+            "latest": latest_record,
             "prediction": prediction_value if prediction_value != -1 else "N/A",
             "history": history_records,
             "forecast_24h": self.get_24h_forecast(station_number)
@@ -136,7 +161,7 @@ class StationService:
 
         forecast_list = []
         now = datetime.now()
-        weather_data = self._weather_service.get_latest_weather_data() if self._weather_service else {}
+        weather_data = self._weather_service.get_latest_weather_data() if self._weather_service else None
 
         for i in range(24):
             future_time = now + timedelta(hours=i)
@@ -148,17 +173,28 @@ class StationService:
                 pred_value = -1
             forecast_list.append({
                 'hours_ahead': i,
-                'time_label': f"{future_time.hour:02d}:00", # 例如 "14:00"
+                'time_label': f"{future_time.hour:02d}:00", # "14:00"
                 'prediction': pred_value
             })
         return forecast_list
 
-    def _prepare_ml_features(self, station_number: int, weather_data: dict, target_time: datetime) -> pd.DataFrame:
+    def _prepare_ml_features(self, station_number: int, weather_data, target_time: datetime) -> pd.DataFrame:
         """Helper to prepare a DataFrame of features for the ML model."""
+        # Detect if we have a Model or a dict (fallback for empty state)
+        if hasattr(weather_data, 'temp'):
+            temp = weather_data.temp
+            humidity = weather_data.humidity
+        elif isinstance(weather_data, dict):
+            temp = weather_data.get('temp', 15.0)
+            humidity = weather_data.get('humidity', 50)
+        else:
+            temp = 15.0
+            humidity = 50
+
         return pd.DataFrame([{
             'station_id': station_number,
-            'temperature': weather_data.get('temp', 15.0),
-            'humidity': weather_data.get('humidity', 50),
+            'temperature': temp,
+            'humidity': humidity,
             'hour': target_time.hour,
             'day_of_week': target_time.weekday()
         }])

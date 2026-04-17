@@ -1,55 +1,44 @@
 from repository.weather_repo import WeatherRepository
+from models import Weather
 
 class WeatherService:
     def __init__(self, repo: WeatherRepository):
         self._repo = repo
     
     def save_from_raw_weather_data(self, raw_weather_data: dict):
+        """
+        Extracts weather information and persists it as a Weather model instance.
+        """
         weather_info = raw_weather_data.get('weather', [{}])[0]
         main_info = raw_weather_data.get('main', {})
-        wind_info = raw_weather_data.get('wind', {})
-        coord_info = raw_weather_data.get('coord', {})
-        sys_info = raw_weather_data.get('sys', {})
         rain_info = raw_weather_data.get('rain', {})
+        
+        # Standardize precipitation
         precipitation = rain_info.get('1h', rain_info.get('3h', 0))
 
-        saving_weather_data = {
-            'city_id': raw_weather_data.get('id'),
-            'city_name': raw_weather_data.get('name'),
-            'country': sys_info.get('country'),
-            'lon': coord_info.get('lon'),
-            'lat': coord_info.get('lat'),
-            'timestamp': raw_weather_data.get('dt'),
-            'timezone': raw_weather_data.get('timezone'),
-            'sunrise': sys_info.get('sunrise'),
-            'sunset': sys_info.get('sunset'),
-            'temp': main_info.get('temp'),
-            'feels_like': main_info.get('feels_like'),
-            'temp_min': main_info.get('temp_min'),
-            'temp_max': main_info.get('temp_max'),
-            'pressure': main_info.get('pressure'),
-            'humidity': main_info.get('humidity'),
-            'wind_speed': wind_info.get('speed'),
-            'wind_deg': wind_info.get('deg'),
-            'clouds_all': raw_weather_data.get('clouds', {}).get('all'),
-            'visibility': raw_weather_data.get('visibility'),
-            'weather_id': weather_info.get('id'),
-            'weather_main': weather_info.get('main'),
-            'weather_description': weather_info.get('description'),
-            'weather_icon': weather_info.get('icon'),
-            'precipitation': precipitation, 
-        }
+        # Instantiate Model
+        weather = Weather(
+            dt=raw_weather_data.get('dt'),
+            temp=main_info.get('temp'),
+            feels_like=main_info.get('feels_like'),
+            temp_min=main_info.get('temp_min'),
+            temp_max=main_info.get('temp_max'),
+            visibility=raw_weather_data.get('visibility'),
+            humidity=main_info.get('humidity'),
+            wind_speed=raw_weather_data.get('wind', {}).get('speed'),
+            precipitation=precipitation,
+            description=weather_info.get('description'),
+            main=weather_info.get('main'),
+        )
         
-        self._repo.save(saving_weather_data)
+        self._repo.save(weather)
     
     
-    def get_latest_weather_data(self) -> dict:
+    def get_latest_weather_data(self) -> Weather:
         """Retrieves the most recent weather data from the repository.
 
         Returns:
-            dict: A dictionary containing the latest weather data, formatted as
-            the `saving_weather_data` schema. Returns an empty dict
-            if no data is available.
+            Weather: The latest weather model instance.
         """
         latest_data = self._repo.get()
-        return latest_data[0] if latest_data else {}
+        return latest_data[0] if latest_data else None
