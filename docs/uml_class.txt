@@ -1,0 +1,186 @@
+@startuml
+title Dublin Bikes Platform - Class Diagram
+
+skinparam classBackgroundColor #DDEEFF
+skinparam classBorderColor #2E75B6
+skinparam classHeaderBackgroundColor #2E75B6
+skinparam classHeaderFontColor #FFFFFF
+skinparam backgroundColor white
+skinparam ArrowColor #1F4E79
+
+' =====================
+' ORM MODELS
+' =====================
+
+class User {
+  +email : String <<PK>>
+  +name : String
+  +password : String
+  +member_since : String
+  +total_rides : Integer
+  +total_distance : Integer
+  +co2_saved : Integer
+  +rides_this_month : Integer
+  +fav_station : String
+  +current_plan : String
+  +plan_start_date : DateTime
+  +plan_end_date : DateTime
+}
+
+class Station {
+  +number : Integer <<PK>>
+  +name : String
+  +address : String
+  +lat : Float
+  +lng : Float
+  +bike_stands : Integer
+  +status : String
+  +banking : Boolean
+  +bonus : Boolean
+  --
+  +to_dict() : dict
+}
+
+class Availability {
+  +id : Integer <<PK, AUTO>>
+  +number : Integer <<FK -> Station>>
+  +available_bikes : Integer
+  +available_bike_stands : Integer
+  +status : String
+  +last_update : BigInteger
+  --
+  +to_dict() : dict
+}
+
+class Weather {
+  +dt : BigInteger <<PK>>
+  +temp : Float
+  +feels_like : Float
+  +temp_min : Float
+  +temp_max : Float
+  +visibility : Integer
+  +humidity : Integer
+  +wind_speed : Float
+  +precipitation : Float
+  +description : String
+  +main : String
+  --
+  +to_dict() : dict
+}
+
+' =====================
+' REPOSITORIES (Abstract)
+' =====================
+
+abstract class StationRepository {
+  +save_stations(stations : List<Station>)
+  +save_availabilities(availabilities : List<Availability>)
+  +get_stations_latest() : List<Tuple<Station, Availability>>
+  +get_history(station_number, time_from, time_to) : List<Availability>
+}
+
+abstract class WeatherRepository {
+  +save(weather : Weather)
+  +get(time_from, time_to) : List<Weather>
+}
+
+' =====================
+' REPOSITORIES (Concrete)
+' =====================
+
+class SQLStationRepository {
+  +save_stations(stations : List<Station>)
+  +save_availabilities(availabilities : List<Availability>)
+  +get_stations_latest() : List<Tuple<Station, Availability>>
+  +get_history(station_number, time_from, time_to) : List<Availability>
+}
+
+class InMemoStationRepository {
+  -_stations : dict
+  -_availability : List
+  -_lock : Lock
+  +save_stations(stations : List<Station>)
+  +save_availabilities(availabilities : List<Availability>)
+  +get_stations_latest() : List<Tuple<Station, Availability>>
+  +get_history(station_number, time_from, time_to) : List<Availability>
+}
+
+class SQLWeatherRepository {
+  +save(weather : Weather)
+  +get(time_from, time_to) : List<Weather>
+}
+
+class InMemoWeatherRepository {
+  -_data : List
+  -_max_size : Integer
+  -_lock : Lock
+  +save(weather : Weather)
+  +get(time_from, time_to) : List<Weather>
+}
+
+' =====================
+' SERVICES
+' =====================
+
+class StationService {
+  -_repo : StationRepository
+  -_weather_service : WeatherService
+  -_model : RandomForestRegressor
+  --
+  +save_station_data(raw_stations_data : List<dict>)
+  +get_latest_all_stations() : List<Tuple<Station, Availability>>
+  +get_one_station_details(station_number : int) : dict
+  -_load_model()
+  -_predict_for_one_station(station_number : int) : int
+  -_get_24h_forecast(station_number : int) : List<dict>
+  -_prepare_ml_features(station_number, weather_data, target_time) : DataFrame
+}
+
+class WeatherService {
+  -_repo : WeatherRepository
+  --
+  +save_from_raw_weather_data(raw_weather_data : dict)
+  +get_latest_weather_data() : Weather
+}
+
+class AuthService {
+  +register_user(email, name, password) : dict
+  +authenticate_user(email, password) : dict
+  +check_and_clear_expired_plans()
+}
+
+' =====================
+' SCRAPERS
+' =====================
+
+class StationScraper {
+  +fetch_and_store_stations(station_service : StationService)
+}
+
+class WeatherScraper {
+  +fetch_and_store_weather(weather_service : WeatherService)
+}
+
+' =====================
+' INHERITANCE
+' =====================
+
+SQLStationRepository --|> StationRepository
+InMemoStationRepository --|> StationRepository
+SQLWeatherRepository --|> WeatherRepository
+InMemoWeatherRepository --|> WeatherRepository
+
+' =====================
+' ASSOCIATIONS
+' =====================
+
+Station "1" -- "0..*" Availability : has >
+
+StationService --> StationRepository : uses >
+StationService --> WeatherService : uses >
+WeatherService --> WeatherRepository : uses >
+
+StationScraper --> StationService : calls >
+WeatherScraper --> WeatherService : calls >
+
+@enduml

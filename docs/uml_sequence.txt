@@ -1,0 +1,104 @@
+@startuml
+title Dublin Bikes Platform - Station Detail Request Sequence
+
+skinparam backgroundColor white
+skinparam sequenceArrowColor #2E75B6
+skinparam sequenceLifeLineBorderColor #2E75B6
+skinparam sequenceParticipantBackgroundColor #DDEEFF
+skinparam sequenceParticipantBorderColor #2E75B6
+skinparam sequenceActorBackgroundColor #E1F5EE
+skinparam sequenceActorBorderColor #0F6E56
+
+actor "User\n(Browser)" as USER
+participant "app.js\n(JavaScript)" as JS
+participant "api_routes\nBlueprint" as API
+participant "StationService" as STNSVC
+participant "StationRepository" as STNREPO
+participant "WeatherService" as WTRSVC
+participant "ML Model\n(.pkl)" as ML
+database "MySQL" as DB
+
+' =====================
+' STEP 1: USER CLICKS MARKER
+' =====================
+
+USER -> JS : clicks station marker
+activate JS
+
+JS -> API : GET /api/stations/<station_number>
+activate API
+
+' =====================
+' STEP 2: SERVICE LAYER
+' =====================
+
+API -> STNSVC : get_one_station_details(station_number)
+activate STNSVC
+
+' Fetch 24h history from DB
+STNSVC -> STNREPO : get_history(station_number, time_from=now-24h)
+activate STNREPO
+STNREPO -> DB : SELECT * FROM availability\nWHERE number = id\nAND last_update >= time_from
+activate DB
+DB --> STNREPO : List<Availability>
+deactivate DB
+STNREPO --> STNSVC : history_records : List<Availability>
+deactivate STNREPO
+
+' Fetch current weather for ML features
+STNSVC -> WTRSVC : get_latest_weather_data()
+activate WTRSVC
+WTRSVC -> DB : SELECT * FROM weather\nORDER BY dt DESC LIMIT 1
+activate DB
+DB --> WTRSVC : Weather record
+deactivate DB
+WTRSVC --> STNSVC : weather : Weather
+deactivate WTRSVC
+
+' =====================
+' STEP 3: ML PREDICTION
+' =====================
+
+STNSVC -> STNSVC : _prepare_ml_features(\n  station_number,\n  weather.temp,\n  weather.humidity,\n  datetime.now().hour,\n  datetime.now().weekday()\n)
+
+STNSVC -> ML : model.predict(features_dataframe)
+activate ML
+ML --> STNSVC : prediction : int (available bikes)
+deactivate ML
+
+' =====================
+' STEP 4: 24H FORECAST
+' =====================
+
+loop for each hour in 0..23
+  STNSVC -> STNSVC : _prepare_ml_features(\n  station_number,\n  weather (constant),\n  future_time\n)
+  STNSVC -> ML : model.predict(features)
+  activate ML
+  ML --> STNSVC : predicted_bikes : int
+  deactivate ML
+end
+
+STNSVC --> API : result = {\n  latest: Availability,\n  prediction: int,\n  history: List<Availability>,\n  forecast_24h: List<dict>\n}
+deactivate STNSVC
+
+' =====================
+' STEP 5: JSON RESPONSE
+' =====================
+
+API --> JS : HTTP 200 JSON response
+deactivate API
+
+' =====================
+' STEP 6: RENDER UI
+' =====================
+
+JS -> JS : render station name\nand live bike counts
+
+JS -> JS : render prediction badge\n(e.g. "~12 bikes in 30 min")
+
+JS -> JS : Chart.js render\n24h forecast bar chart
+
+JS --> USER : Station detail panel displayed
+deactivate JS
+
+@enduml
