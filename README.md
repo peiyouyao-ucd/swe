@@ -133,17 +133,17 @@ DB_PORT=3306
 DB_NAME=dublin_bikes
 
 # JCDecaux API Configuration
-JCD_APIKEY=52f9ba4359889ed1c9aefe45d17b308f7aa80967
+JCD_APIKEY=Your_JCD_APIKEY
 JCD_URL=https://api.jcdecaux.com/vls/v1/stations
 JCD_CONTRACT_NAME=dublin
 
 # OpenWeatherMap API Configuration
-OWM_APIKEY=e598ac30c7b447fd32315b33743efbc1
+OWM_APIKEY=Your_OWM_APIKEY
 OWM_URL=http://api.openweathermap.org/data/2.5/weather
 OWM_CITY=Dublin,IE
 
 # Google Maps API Configuration
-GOOGLE_MAPS_KEY=AIzaSyAgyAIhr_Smqjx2XN9GAz_O_XEOyNLhn-Q
+GOOGLE_MAPS_KEY=Your_GOOGLE_APIKEY
 ```
 
 ## Run backend
