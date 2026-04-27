@@ -10,13 +10,13 @@
 
 6. machine learning model for predicting occupancy based on weather patterns, trained on historical data provided.
 
-One of the following three features:
+## One of the following three features:
 
-7a. Directions/journey planner
-
-7b. Login 
-
-7c. Incorporation of generative AI support (e.g., through Gemini API)
+    7a. Directions/journey planner
+    
+    7b. Login 
+    
+    7c. Incorporation of generative AI support (e.g., through Gemini API)
 
 
 
