@@ -1,6 +1,6 @@
-Sprint 1 Summary Report
+# Sprint 1 Summary Report
 
-1. Narrative: Completed Work & Design Decisions
+## 1. Narrative: Completed Work & Design Decisions
 
   In Sprint 1, our team focused on laying the foundational research and architectural requirements for the bike-sharing application.
   
@@ -13,7 +13,7 @@ Sprint 1 Summary Report
   Process Alignment: We established Acceptance Criteria for each task to ensure technical quality and team alignment during future development cycles.
 
 
-2. Burndown Chart
+## 2. Burndown Chart
 
   The Burndown Chart for Sprint 1 illustrates our team's progress over the initial two-week period.
   
@@ -22,7 +22,7 @@ Sprint 1 Summary Report
   Task Completion: We successfully reduced the estimated workload from the initial planning phase to 9 remaining hours by the end of the sprint.
 
 
-3. Sprint Review
+## 3. Sprint Review
 
   During the Sprint 1 Review, we demonstrated the following deliverables:
   
@@ -33,10 +33,10 @@ Sprint 1 Summary Report
   Data Schema: A finalized MySQL database structure designed to support historical data storage for future ML modeling.
 
 
-4. Sprint Retrospective
+## 4. Sprint Retrospective
 
-Sprint 1 was a vital period for establishing our team’s collaborative rhythm. Initially, scrum master navigated a period of adjustment while aligning our technical goals with diverse personal and professional schedules, which made traditional synchronized meetings challenging. To address this, we collectively adopted a structured organizational framework and prioritized constant communication via platforms like WhatsApp. Maintaining this consistent dialogue outside formal meetings was instrumental in sharing rapid updates, resolving queries, and synchronizing our thoughts in real-time.
-
-Being in the early stage of the project, we also took the opportunity to explore various technical and collaborative tools. This exploration allowed us to get a "taste" of different platforms to see what best suited our workflow. Despite this experimental phase, the development team demonstrated incredible dedication, delivering high-quality web scraping modules and mockups with impressive efficiency. Our success was rooted in this adaptive coordination; we leveraged digital tools to ensure everyone’s efforts remained perfectly aligned with our shared project roadmap.
-
-Lessons Learned: Moving forward, we aim to build on this momentum by finalizing schedules even earlier and narrowing down our choice of tools to further streamline our development environment. We will continue our frequent "sync-up" sessions to ensure continued transparency as we enter the technical demands of Sprint 2.
+  Sprint 1 was a vital period for establishing our team’s collaborative rhythm. Initially, scrum master navigated a period of adjustment while aligning our technical goals with diverse personal and professional schedules, which made traditional synchronized meetings challenging. To address this, we collectively adopted a structured organizational framework and prioritized constant communication via platforms like WhatsApp. Maintaining this consistent dialogue outside formal meetings was instrumental in sharing rapid updates, resolving queries, and synchronizing our thoughts in real-time.
+  
+  Being in the early stage of the project, we also took the opportunity to explore various technical and collaborative tools. This exploration allowed us to get a "taste" of different platforms to see what best suited our workflow. Despite this experimental phase, the development team demonstrated incredible dedication, delivering high-quality web scraping modules and mockups with impressive efficiency. Our success was rooted in this adaptive coordination; we leveraged digital tools to ensure everyone’s efforts remained perfectly aligned with our shared project roadmap.
+  
+  Lessons Learned: Moving forward, we aim to build on this momentum by finalizing schedules even earlier and narrowing down our choice of tools to further streamline our development environment. We will continue our frequent "sync-up" sessions to ensure continued transparency as we enter the technical demands of Sprint 2.
