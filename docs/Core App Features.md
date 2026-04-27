@@ -1,14 +1,18 @@
-1. data collection through JCDecaux API and Openweather App
+## Main features required:
 
-2. flask web application (python) running on EC2
+    1. data collection through JCDecaux API and Openweather App
+    
+    2. flask web application (python) running on EC2
+    
+    3. display bike stations and occupancy information on a visual map
+    
+    4. display weather information
+    
+    5. interactivity (click, API request, handle response)
+    
+    6. machine learning model for predicting occupancy based on weather patterns, trained on historical data provided.
 
-3. display bike stations and occupancy information on a visual map
-
-4. display weather information
-
-5. interactivity (click, API request, handle response)
-
-6. machine learning model for predicting occupancy based on weather patterns, trained on historical data provided.
+<br>
 
 ## One of the following three features:
 
@@ -18,9 +22,9 @@
     
     7c. Incorporation of generative AI support (e.g., through Gemini API)
 
+<br>
 
-
-Main Features on the Mockup
+## Main Features on the Mockup:
 
     1. Dublin Weather : Provides real-time weather updates to help users decide if it is a good day for cycling.
     
@@ -44,9 +48,9 @@ Main Features on the Mockup
     
     11. Assess to the app
 
+<br>
 
-
-Extra features brainstorming
+## Extra features brainstorming:
 
     a. 5-Minute Reservation : Allows users to reserve a bike 5 minutes in advance to ensure a ride is waiting for them upon arrival.
     
