@@ -1,0 +1,38 @@
+@startuml
+title Dublin Bikes Platform - User Login Sequence
+
+skinparam backgroundColor white
+skinparam sequenceArrowColor #2E75B6
+skinparam sequenceParticipantBackgroundColor #DDEEFF
+skinparam sequenceParticipantBorderColor #2E75B6
+skinparam sequenceActorBackgroundColor #E1F5EE
+
+actor "User\n(Browser)" as USER
+participant "auth_routes\nBlueprint" as AUTH
+participant "AuthService" as AUTHSVC
+database "MySQL\n(users table)" as DB
+participant "Jinja2\nContext Processor" as CTX
+
+USER -> AUTH : POST /login (email, password)
+activate AUTH
+AUTH -> AUTHSVC : authenticate_user(email, password)
+activate AUTHSVC
+AUTHSVC -> DB : SELECT * FROM users WHERE email = ?
+activate DB
+DB --> AUTHSVC : User record or None
+deactivate DB
+AUTHSVC --> AUTH : {success: True, user: User}
+deactivate AUTHSVC
+AUTH -> AUTH : set cookie (user_email)
+AUTH --> USER : HTTP 302 redirect to homepage
+deactivate AUTH
+USER -> CTX : GET / (with cookie)
+activate CTX
+CTX -> DB : User.query.filter_by(email=cookie)
+activate DB
+DB --> CTX : User object
+deactivate DB
+CTX --> USER : Render index.html with Hi, [username]!
+deactivate CTX
+
+@enduml
