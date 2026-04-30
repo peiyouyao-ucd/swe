@@ -1,0 +1,68 @@
+@startuml
+title Dublin Bikes Platform - Entity Relationship Diagram
+
+skinparam backgroundColor white
+skinparam entity {
+  BackgroundColor #DDEEFF
+  BorderColor #2E75B6
+  FontColor #1F4E79
+}
+skinparam linetype ortho
+
+entity "stations" {
+  * number : INT <<PK>>
+  --
+  name : VARCHAR(100)
+  address : VARCHAR(200)
+  lat : FLOAT
+  lng : FLOAT
+  bike_stands : INT
+  status : VARCHAR(20)
+  banking : BOOLEAN
+  bonus : BOOLEAN
+}
+
+entity "availability" {
+  * id : INT <<PK, AUTO>>
+  --
+  number : INT <<FK>>
+  available_bikes : INT
+  available_bike_stands : INT
+  status : VARCHAR(20)
+  last_update : BIGINT
+}
+
+entity "weather" {
+  * dt : BIGINT <<PK>>
+  --
+  temp : FLOAT
+  feels_like : FLOAT
+  temp_min : FLOAT
+  temp_max : FLOAT
+  humidity : INT
+  wind_speed : FLOAT
+  precipitation : FLOAT
+  description : VARCHAR(100)
+  main : VARCHAR(50)
+  visibility : INT
+}
+
+entity "users" {
+  * email : VARCHAR(100) <<PK>>
+  --
+  name : VARCHAR(100)
+  password : VARCHAR(255)
+  member_since : VARCHAR(50)
+  total_rides : INT
+  total_distance : INT
+  co2_saved : INT
+  rides_this_month : INT
+  fav_station : VARCHAR(100)
+  current_plan : VARCHAR(50)
+  plan_start_date : DATETIME
+  plan_end_date : DATETIME
+}
+
+stations ||--o{ availability : "has many"
+
+@enduml
