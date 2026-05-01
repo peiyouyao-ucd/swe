@@ -5,10 +5,7 @@
 
 ## Conversation Log
 
-* **Part 1: Architectural Blueprint & MVC Pattern Implementation**
-  [https://gemini.google.com/share/link-placeholder-1](https://gemini.google.com/share/link-placeholder-1)
-* **Part 2: RESTful API Design & Interface Specifications**
-  [https://gemini.google.com/share/link-placeholder-2](https://gemini.google.com/share/link-placeholder-2)
+[Architectural Blueprint & MVC Pattern Implementation & RESTful API Design & Interface Specifications](https://gemini.google.com/app/2625c70a69d7b27f?utm_source=app_launcher&utm_medium=owned&utm_campaign=base_all)
 
 ## What I Used AI For
 
