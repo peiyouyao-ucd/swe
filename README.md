@@ -166,3 +166,7 @@ uv run python -m unittest discover tests
 # Or run a specific test file
 uv run python tests/services/test_station_service.py
 ```
+
+# 4. Attribution Video Links
+
+[Peiyou Yao](https://drive.google.com/file/d/13wzFDhmvmNSVKQCmBfblqRlBXYn8EshM/view?usp=sharing)
